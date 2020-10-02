@@ -6,13 +6,13 @@ class Squares(pygame.sprite.Sprite):
     """
     Esta clase trae todas las casillas como métodos a llamar
     """
-    def __init__(self, x_pos, y_pos, color):
+    def __init__(self, x_pos, y_pos):
         """
         Características de todas las casillas
         """
         self.square_size = [90,90]
         self.square_pos = [x_pos,y_pos]
-        self.color = color
+        self.color = randint(1,3)
     
     def Trivia_UP(self):
         """
@@ -36,13 +36,12 @@ class Squares(pygame.sprite.Sprite):
         """
         Método que activa un color de casilla aleatoriamente.
         """
-        for i in self.color:
-            if self.color[i] == 1:
-                self.Trivia_UP()
-            elif self.color[i] == 2:
-                self.Trivia_DOWN()
-            elif self.color[i] == 3:
-                self.Trivia_NONE()
+        if self.color == 1:
+            self.Trivia_UP()
+        elif self.color == 2:
+            self.Trivia_DOWN()
+        elif self.color == 3:
+            self.Trivia_NONE()
 
 # Definir Colores
 BLACK  = [0,0,0]
@@ -61,11 +60,11 @@ clock = pygame.time.Clock()
 done = False
 colors = []
 
-for i in range(0,61):
-    rand_color = randint(1,3)
-    colors.append(rand_color)
- 
-print(colors)
+#for i in range(0,61):
+#    rand_color = randint(1,3)
+#    colors.append(rand_color)
+# 
+#print(colors)
 
 squares_list = pygame.sprite.Group()
 all_sprites_list = pygame.sprite.Group()
@@ -79,10 +78,9 @@ while not done: # Bucle infinito para mantener ventana abierta.
     screen.fill(WHITE)
 
     # Dibujar
-    k = 0
     for i in range(0, 900, 90):
         for j in range(0, 540, 90):
-            square = Squares(i, j, colors).DrawSquare()
+            square = Squares(i, j).DrawSquare()
 
     pygame.display.flip()
     clock.tick(60)
