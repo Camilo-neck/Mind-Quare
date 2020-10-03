@@ -4,42 +4,44 @@ import os
 
 from pygame.constants import NOEVENT
 
+
 class Squares(pygame.sprite.Sprite):
     """
-    Esta clase trae todas las casillas como métodos a llamar
+    Esta clase trae todas las casillas como m�todos a llamar
     """
+
     def __init__(self, x_pos, y_pos):
         """
-        Características de todas las casillas
+        Caracter�sticas de todas las casillas
         """
-        self.square_size = [90,90]
-        self.square_pos = [x_pos,y_pos]
-        self.color = randint(1,6)
-    
+        self.square_size = [90, 90]
+        self.square_pos = [x_pos, y_pos]
+        self.color = randint(1, 6)
+
     def Trivia_UP(self):
         """
         Casillas que contienen preguntas y adelantan al jugador.
         """
-        pygame.draw.rect(screen, BLUE, [self.square_pos,self.square_size])
+        pygame.draw.rect(screen, BLUE, [self.square_pos, self.square_size])
         pygame.draw.rect(screen, BLACK, [self.square_pos, self.square_size], 1)
-    
+
     def Trivia_DOWN(self):
         """
         Casillas que contienen preguntas que al ser incorrectas devuelven al jugador.
         """
-        pygame.draw.rect(screen, ORANGE, [self.square_pos,self.square_size])
+        pygame.draw.rect(screen, ORANGE, [self.square_pos, self.square_size])
         pygame.draw.rect(screen, BLACK, [self.square_pos, self.square_size], 1)
 
     def Trivia_NONE(self):
         """
-        Casillas que no generan ninguna acción, es decir que son estáticas.
+        Casillas que no generan ninguna acci�n, es decir que son est�ticas.
         """
-        pygame.draw.rect(screen, GREEN, [self.square_pos,self.square_size])
+        pygame.draw.rect(screen, GREEN, [self.square_pos, self.square_size])
         pygame.draw.rect(screen, BLACK, [self.square_pos, self.square_size], 1)
 
     def DrawSquare(self):
         """
-        Método que activa un color de casilla aleatoriamente.
+        M�todo que activa un color de casilla aleatoriamente.
         """
         if self.color == 1 or self.color == 4:
             self.Trivia_UP()
@@ -48,85 +50,70 @@ class Squares(pygame.sprite.Sprite):
         elif self.color == 3 or self.color == 6:
             self.Trivia_NONE()
 
-# Definir Colores
-BLACK  = [0,0,0]
-WHITE  = [255,255,255]
-RED    = [255,0,0]
-BLUE   = [31,151,255,100]
-GREEN  = [0,255,0]
-PURPLE = [127,96,252,92]
-ORANGE = [255,136,22,100]
 
-pygame.init() # Inicializar ventana
-screen_size = [900, 540]
-screen = pygame.display.set_mode(screen_size) # Medidas
+# Definir Colores
+BLACK = [0, 0, 0]
+WHITE = [255, 255, 255]
+RED = [255, 0, 0]
+BLUE = [31, 151, 255, 100]
+GREEN = [0, 255, 0]
+PURPLE = [127, 96, 252, 92]
+ORANGE = [255, 136, 22, 100]
+
+pygame.init()  # Inicializar ventana
+screen_size = [900, 540] #ancho y largo de la ventana
+screen = pygame.display.set_mode(screen_size)  # Medidas
 pygame.display.set_caption("Tablero")
 fuente = pygame.font.SysFont('Verdana', 11)
-clock = pygame.time.Clock() # Controla las fps
+clock = pygame.time.Clock()  # Controla las fps
 running = True
 
-fill_controller = 0
+fill_controller = True
 
-while running: # Bucle infinito para mantener ventana abierta.
-    for event in pygame.event.get(): # Bucle que recibe eventos.
-        if event.type == pygame.QUIT:# Condicional para cerrar la ventana al presionar la (x).
+while running:  # Bucle infinito para mantener ventana abierta.
+    for event in pygame.event.get():  # Bucle que recibe eventos.
+        if event.type == pygame.QUIT:  # Condicional para cerrar la ventana al presionar la (x).
             running = False
     # ---Rellenar fondo
     #    NONE
 
-    # ---Lógica
+    # ---L�gica
 
     mouse_pos = pygame.mouse.get_pos()
-    #print(mouse_pos)
+    # print(mouse_pos)
 
     # ----******----
 
     # ----Dibujar
-    while fill_controller < 1: # Ciclo para que dibuje los cuadrados solo una vez.
+    while fill_controller == True:  # Ciclo para que dibuje los cuadrados solo una vez.
         screen.fill(WHITE)
         for i in range(0, 900, 90):
-            for j in range(0, 540, 90):# Ciclo for clásico para dibujar una matriz.
+            for j in range(0, 540, 90):  # Ciclo for cl�sico para dibujar una matriz.
                 square = Squares(i, j).DrawSquare()
-        fill_controller += 1
+        fill_controller = False
 
+    #Imprimir numeros de las casillas
     n_square = 1
-    for i in range(10, 901-80, 90):
-        num_square = fuente.render(str(n_square), 1, BLACK)
-        screen.blit(num_square, (i, 540-80))
-        pygame.draw.circle(screen, BLACK, (i+7, 540-72),12, 2)
-        n_square += 1
-
-    for i in range(901-80, 10, -90):
-        num_square = fuente.render(str(n_square), 1, BLACK)
-        screen.blit(num_square, (i, 450-80))
-        pygame.draw.circle(screen, BLACK, (i+7, 450-72),12, 2)
-        n_square += 1
-
-    for i in range(10, 901-80, 90):
-        num_square = fuente.render(str(n_square), 1, BLACK)
-        screen.blit(num_square, (i, 360-80))
-        pygame.draw.circle(screen, BLACK, (i+7, 360-72),12, 2)
-        n_square += 1
-
-    for i in range(901-80, 0, -90):
-        num_square = fuente.render(str(n_square), 1, BLACK)
-        screen.blit(num_square, (i, 270-80))
-        pygame.draw.circle(screen, BLACK, (i+7, 270-72),12, 2)
-        n_square += 1
-
-    for i in range(10, 901-80, 90):
-        num_square = fuente.render(str(n_square), 1, BLACK)
-        screen.blit(num_square, (i, 180-80))
-        pygame.draw.circle(screen, BLACK, (i+7, 180-72),12, 2)
-        n_square += 1
-
-    for i in range(901-80, 0, -90):
-        num_square = fuente.render(str(n_square), 1, BLACK)
-        screen.blit(num_square, (i, 90-80))
-        pygame.draw.circle(screen, BLACK, (i+7, 90-72),12, 2)
-        n_square += 1
+    pos_S = 540
+    while n_square<=60:
+        #Imprimir de izquierda a derecha
+        if n_square==1 or n_square==21 or n_square==41:
+            for i in range(10, 901 - 80, 90):
+                num_square = fuente.render(str(n_square), 1, BLACK)  # renderizar texto (numero de casilla)
+                screen.blit(num_square, (i, pos_S - 80))  # imprimir el renderizado
+                pygame.draw.circle(screen, BLACK, (i + 7, pos_S - 72), 12, 2)  # dibujar marco de circulo
+                n_square += 1
+        #Imprimir de derecha a izquierda
+        else:
+            for i in range(901 - 80, 10, -90):
+                num_square = fuente.render(str(n_square), 1, BLACK)
+                screen.blit(num_square, (i, pos_S - 80))
+                pygame.draw.circle(screen, BLACK, (i + 7, pos_S - 72), 12, 2)
+                n_square += 1
+        pos_S -= 90
 
 
+    pygame.display.flip()  # Refresca la ventana
+    clock.tick(60)  # 60fps
 
-    pygame.display.flip()# Refresca la ventana
-    clock.tick(60) # 60fps
+pygame.quit()
