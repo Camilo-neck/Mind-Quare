@@ -2,6 +2,8 @@ from random import randint
 import pygame, random, sys
 import os
 
+from pygame.constants import NOEVENT
+
 class Squares(pygame.sprite.Sprite):
     """
     Esta clase trae todas las casillas como métodos a llamar
@@ -59,6 +61,7 @@ pygame.init() # Inicializar ventana
 screen_size = [900, 540]
 screen = pygame.display.set_mode(screen_size) # Medidas
 pygame.display.set_caption("Tablero")
+fuente = pygame.font.SysFont('Verdana', 11)
 clock = pygame.time.Clock() # Controla las fps
 running = True
 
@@ -73,7 +76,8 @@ while running: # Bucle infinito para mantener ventana abierta.
 
     # ---Lógica
 
-
+    mouse_pos = pygame.mouse.get_pos()
+    #print(mouse_pos)
 
     # ----******----
 
@@ -84,6 +88,45 @@ while running: # Bucle infinito para mantener ventana abierta.
             for j in range(0, 540, 90):# Ciclo for clásico para dibujar una matriz.
                 square = Squares(i, j).DrawSquare()
         fill_controller += 1
+
+    n_square = 1
+    for i in range(10, 901-80, 90):
+        num_square = fuente.render(str(n_square), 1, BLACK)
+        screen.blit(num_square, (i, 540-80))
+        pygame.draw.circle(screen, BLACK, (i+7, 540-72),12, 2)
+        n_square += 1
+
+    for i in range(901-80, 10, -90):
+        num_square = fuente.render(str(n_square), 1, BLACK)
+        screen.blit(num_square, (i, 450-80))
+        pygame.draw.circle(screen, BLACK, (i+7, 450-72),12, 2)
+        n_square += 1
+
+    for i in range(10, 901-80, 90):
+        num_square = fuente.render(str(n_square), 1, BLACK)
+        screen.blit(num_square, (i, 360-80))
+        pygame.draw.circle(screen, BLACK, (i+7, 360-72),12, 2)
+        n_square += 1
+
+    for i in range(901-80, 0, -90):
+        num_square = fuente.render(str(n_square), 1, BLACK)
+        screen.blit(num_square, (i, 270-80))
+        pygame.draw.circle(screen, BLACK, (i+7, 270-72),12, 2)
+        n_square += 1
+
+    for i in range(10, 901-80, 90):
+        num_square = fuente.render(str(n_square), 1, BLACK)
+        screen.blit(num_square, (i, 180-80))
+        pygame.draw.circle(screen, BLACK, (i+7, 180-72),12, 2)
+        n_square += 1
+
+    for i in range(901-80, 0, -90):
+        num_square = fuente.render(str(n_square), 1, BLACK)
+        screen.blit(num_square, (i, 90-80))
+        pygame.draw.circle(screen, BLACK, (i+7, 90-72),12, 2)
+        n_square += 1
+
+
 
     pygame.display.flip()# Refresca la ventana
     clock.tick(60) # 60fps
