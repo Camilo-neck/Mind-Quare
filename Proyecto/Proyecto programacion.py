@@ -7,7 +7,7 @@ temp=20
 respuestas=['B','A','C','A','D'] #ingresar aqui las respuestas deseadas
 num_p=random.randint(0,cant_preguntas-1) #generar numero aleatorio para la pregunta
 def imprimir_pregunta(num_p): #funcion para imprimir las preguntas, esta lee un archivo que las incluye
-    archivo = open((os.getcwd() + "\preguntas.txt"), 'r') #se obtiene la ruta del archivo y este se abre
+    archivo = open((os.getcwd() + "\Proyecto\preguntas.txt"), 'r') #se obtiene la ruta del archivo y este se abre
     # se crea una lista en base a el indice de la pregunta
     with archivo as f:
         data = f.readlines()[((num_p*5)):(num_p*5)+5]

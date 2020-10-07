@@ -7,12 +7,12 @@ from pygame.constants import NOEVENT
 
 class Squares(pygame.sprite.Sprite):
     """
-    Esta clase trae todas las casillas como m�todos a llamar
+    Esta clase trae todas las casillas como metodos a llamar
     """
 
     def __init__(self, x_pos, y_pos):
         """
-        Caracter�sticas de todas las casillas
+        Caracteristicas de todas las casillas
         """
         self.square_size = [90, 90]
         self.square_pos = [x_pos, y_pos]
@@ -34,14 +34,14 @@ class Squares(pygame.sprite.Sprite):
 
     def Trivia_NONE(self):
         """
-        Casillas que no generan ninguna acci�n, es decir que son est�ticas.
+        Casillas que no generan ninguna accion, es decir que son estaticas.
         """
         pygame.draw.rect(screen, GREEN, [self.square_pos, self.square_size])
         pygame.draw.rect(screen, BLACK, [self.square_pos, self.square_size], 1)
 
     def DrawSquare(self):
         """
-        M�todo que activa un color de casilla aleatoriamente.
+        Metodo que activa un color de casilla aleatoriamente.
         """
         if self.color == 1 or self.color == 4:
             self.Trivia_UP()
@@ -77,7 +77,7 @@ while running:  # Bucle infinito para mantener ventana abierta.
     # ---Rellenar fondo
     #    NONE
 
-    # ---L�gica
+    # ---Logica
 
     mouse_pos = pygame.mouse.get_pos()
     # print(mouse_pos)
@@ -88,7 +88,7 @@ while running:  # Bucle infinito para mantener ventana abierta.
     while fill_controller == True:  # Ciclo para que dibuje los cuadrados solo una vez.
         screen.fill(WHITE)
         for i in range(0, 900, 90):
-            for j in range(0, 540, 90):  # Ciclo for cl�sico para dibujar una matriz.
+            for j in range(0, 540, 90):  # Ciclo for clasico para dibujar una matriz.
                 square = Squares(i, j).DrawSquare()
         fill_controller = False
 
@@ -97,7 +97,7 @@ while running:  # Bucle infinito para mantener ventana abierta.
     pos_S = 540
     while n_square<=60:
         #Imprimir de izquierda a derecha
-        if n_square==1 or n_square==21 or n_square==41:
+        if (n_square-1)%20==0:
             for i in range(10, 901 - 80, 90):
                 num_square = fuente.render(str(n_square), 1, BLACK)  # renderizar texto (numero de casilla)
                 screen.blit(num_square, (i, pos_S - 80))  # imprimir el renderizado
