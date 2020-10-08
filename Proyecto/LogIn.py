@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 from PIL import Image, ImageTk
 import sqlite3
-import tablero_class 
+import tablero 
 import time
 
 
@@ -14,14 +14,14 @@ class Aplicacion:
         self.root = Tk()
         self.root.eval("tk::PlaceWindow . center")
         self.root.title("LogIn")
-        self.root.iconbitmap("AppleLogo.ico")
+        self.root.iconbitmap("GameLogo.ico")
         self.root.geometry("450x430")
         self.root.resizable(width=False, height=False)
         self.root.config(bg="#F0F1F2")
 
         # -----------IMAGEN INTERFAZ------------------------
 
-        self.imagenPrincipal = PhotoImage(file="AppleLogop.png")
+        self.imagenPrincipal = PhotoImage(file="GameLogo.png")
         self.imagenLogo = Label(
             self.root,
             image=self.imagenPrincipal,
@@ -36,10 +36,10 @@ class Aplicacion:
 
         self.Bienvenida = Label(
             self.root,
-            text="Bienvenido al Sistema de ingreso Apple.Inc\n Ingrese sesión",
+            text="Bienvenido al Sistema de ingreso de este juego\n Ingrese sesión",
             bg="#F0F1F2",
             fg="black",
-            font=("Times New Roman", 19),
+            font=("Times New Roman", 17),
         )
         self.Bienvenida.place(x=0, y=205)
 
@@ -124,7 +124,7 @@ class Aplicacion:
             self.error.config(text="accedido")
             self.root.destroy()
             #self.funciones()
-            tablero_class.main()
+            tablero.main()
         else:
             messagebox.showwarning(
                 "Denegado", "El correo o la constraseña esta equivocado."
@@ -132,149 +132,154 @@ class Aplicacion:
 
     def signUp(self):
         self.root.destroy()
-        self.ventanaRegistro()
+        ventanaRegistro()
 
-    def ventanaRegistro(self):
-        # ---------------FUNCIONES----------------------
-        def volver():
-            registro.destroy()
-            self.__init__()
+class ventanaRegistro(object):
 
-        def registrar():
-            colectaNombre = str(nombreVar.get())
-            colectaApellido = str(apellidoVar.get())
-            colectaDNI = str(DNIVar.get())
-            colectaEmail = str(emailVar.get())
-            colectaPass = str(passVar.get())
-            arrobas = colectaEmail.count("@")
-            puntos = colectaEmail.count(".")
-            validador = False
-            if (
-                colectaNombre != ""
-                or colectaApellido != ""
-                or colectaDNI != ""
-                or colectaEmail != ""
-                or colectaPass != ""
-            ):
-                if (
-                    arrobas != 1
-                    or colectaEmail.rfind("@") == len(colectaEmail) - 1
-                    or colectaEmail.find("@") == 0
-                    or puntos < 1
-                    or colectaEmail.rfind(".") == len(colectaEmail) - 1
-                    or colectaEmail.find(".") == 0
-                ):
-                    messagebox.showwarning("Error", "E-mail inválido.")
-                else:
-                    validador = True
-
-                contador = 0
-                for i in colectaPass:
-                    if len(colectaPass) < 8 or i == " ":
-                        contador += 1
-                if contador != 0:
-                    messagebox.showwarning("Error", "Constraseña Inválida.")
-                else:
-                    validador = True
-            else:
-                messagebox.showwarning("Error", "Por Favor Ingresar todos los datos.")
-            if validador == True:
-                self.miCursor.execute(
-                    "INSERT INTO USUARIOS VALUES('"
-                    + colectaDNI
-                    + "','"
-                    + colectaNombre
-                    + "','"
-                    + colectaApellido
-                    + "','"
-                    + colectaEmail
-                    + "','"
-                    + colectaPass
-                    + "')"
-                )
-                self.miCursor.execute(
-                    "SELECT DNI FROM USUARIOS WHERE DNI=" + colectaDNI
-                )
-                datoId = self.miCursor.fetchall()
-                self.miConexion.commit()
-                messagebox.showinfo("Success", "Registro Satisfactorio.")
-                volver()
-
+    def __init__(self):
         # ---------------INTERFAZ REGISTRO---------------
-        registro = Tk()
-        registro.title("Registro")
-        registro.eval("tk::PlaceWindow . center")
-        registro.iconbitmap("AppleLogo.ico")
-        registro.geometry("450x430")
-        registro.resizable(width=False, height=False)
-        registro.config(bg="#F0F1F2")
+        self.registro = Tk()
+        self.registro.title("Registro")
+        self.registro.eval("tk::PlaceWindow . center")
+        self.registro.iconbitmap("GameLogo.ico")
+        self.registro.geometry("450x430")
+        self.registro.resizable(width=False, height=False)
+        self.registro.config(bg="#F0F1F2")
 
         # ---------------TÍTULO---------------------------
-        primerFrame = Frame(registro)
-        primerFrame.pack()
+        self.primerFrame = Frame(self.registro)
+        self.primerFrame.pack()
 
-        titulo = Label(primerFrame, text="REGISTRO", font=("Times New Roman", 30))
-        titulo.pack()
+        self.titulo = Label(self.primerFrame, text="REGISTRO", font=("Times New Roman", 30))
+        self.titulo.pack()
 
         # ---------------LABELS / ENTRYS -----------------------
-        segundoFrame = Frame(registro)
-        segundoFrame.pack()
+        self.segundoFrame = Frame(self.registro)
+        self.segundoFrame.pack()
 
-        nombreLabel = Label(segundoFrame, text="Nombre:", font=("Times New Roman", 12))
-        nombreLabel.grid(row=0, column=0, pady=18, padx=10)
+        self.nombreLabel = Label(self.segundoFrame, text="Nombre:", font=("Times New Roman", 12))
+        self.nombreLabel.grid(row=0, column=0, pady=18, padx=10)
 
-        nombreVar = StringVar()
-        nombreEntry = Entry(segundoFrame, textvariable=nombreVar, width=40)
-        nombreEntry.grid(row=0, column=1, pady=18, padx=10)
-        nombreEntry.focus()
+        self.nombreVar = StringVar()
+        self.nombreEntry = Entry(self.segundoFrame, textvariable=self.nombreVar, width=40)
+        self.nombreEntry.grid(row=0, column=1, pady=18, padx=10)
+        self.nombreEntry.focus()
 
-        apellidoLabel = Label(
-            segundoFrame, text="Apellido:", font=("Times New Roman", 12)
+        self.apellidoLabel = Label(
+            self.segundoFrame, text="Apellido:", font=("Times New Roman", 12)
         )
-        apellidoLabel.grid(row=1, column=0, pady=18, padx=10)
+        self.apellidoLabel.grid(row=1, column=0, pady=18, padx=10)
 
-        apellidoVar = StringVar()
-        apellidoEntry = Entry(segundoFrame, textvariable=apellidoVar, width=40)
-        apellidoEntry.grid(row=1, column=1, pady=18, padx=10)
+        self.apellidoVar = StringVar()
+        self.apellidoEntry = Entry(self.segundoFrame, textvariable=self.apellidoVar, width=40)
+        self.apellidoEntry.grid(row=1, column=1, pady=18, padx=10)
 
-        DNILabel = Label(segundoFrame, text="DNI:", font=("Times New Roman", 12))
-        DNILabel.grid(row=2, column=0, pady=18, padx=10)
+        self.DNILabel = Label(self.segundoFrame, text="DNI:", font=("Times New Roman", 12))
+        self.DNILabel.grid(row=2, column=0, pady=18, padx=10)
 
-        DNIVar = StringVar()
-        DNIEntry = Entry(segundoFrame, textvariable=DNIVar, width=40)
-        DNIEntry.grid(row=2, column=1, pady=18, padx=10)
+        self.DNIVar = StringVar()
+        self.DNIEntry = Entry(self.segundoFrame, textvariable=self.DNIVar, width=40)
+        self.DNIEntry.grid(row=2, column=1, pady=18, padx=10)
 
-        emailLabel = Label(segundoFrame, text="E-mail:", font=("Times New Roman", 12))
-        emailLabel.grid(row=3, column=0, pady=18, padx=10)
+        self.emailLabel = Label(self.segundoFrame, text="E-mail:", font=("Times New Roman", 12))
+        self.emailLabel.grid(row=3, column=0, pady=18, padx=10)
 
-        emailVar = StringVar()
-        emailEntry = Entry(segundoFrame, textvariable=emailVar, width=40)
-        emailEntry.grid(row=3, column=1, pady=18, padx=10)
+        self.emailVar = StringVar()
+        self.emailEntry = Entry(self.segundoFrame, textvariable=self.emailVar, width=40)
+        self.emailEntry.grid(row=3, column=1, pady=18, padx=10)
 
-        passLabel = Label(
-            segundoFrame, text="Constraseña:", font=("Times New Roman", 12)
+        self.passLabel = Label(
+            self.segundoFrame, text="Constraseña:", font=("Times New Roman", 12)
         )
-        passLabel.grid(row=4, column=0, pady=18, padx=10)
+        self.passLabel.grid(row=4, column=0, pady=18, padx=10)
 
-        passVar = StringVar()
-        passEntry = Entry(segundoFrame, textvariable=passVar, width=40, show="*")
-        passEntry.grid(row=4, column=1, pady=18, padx=10)
+        self.passVar = StringVar()
+        self.passEntry = Entry(self.segundoFrame, textvariable=self.passVar, width=40, show="*")
+        self.passEntry.grid(row=4, column=1, pady=18, padx=10)
 
         # --------------------BOTONES----------------------
 
         # tercerFrame = Frame(registro)
         # tercerFrame.pack()
 
-        bVolver = ttk.Button(registro, text="Volver", command=volver)
-        bVolver.place(x=60, y=380)
+        self.bVolver = ttk.Button(self.registro, text="Volver", command=self.volver)
+        self.bVolver.place(x=60, y=380)
 
-        bsalir = ttk.Button(registro, text="Salir", command=registro.destroy)
-        bsalir.pack(side=BOTTOM)
+        self.bsalir = ttk.Button(self.registro, text="Salir", command=self.registro.destroy)
+        self.bsalir.pack(side=BOTTOM)
 
-        bRegistro = ttk.Button(registro, text="Registrarse", command=registrar)
-        bRegistro.place(x=300, y=380)
+        self.bRegistro = ttk.Button(self.registro, text="Registrarse", command=self.registrar)
+        self.bRegistro.place(x=300, y=380)
 
-        registro.mainloop()
+        self.registro.mainloop()
+        # ---------------CONEXION DATABASE---------------------------
+        self.miConexion = sqlite3.connect("Ingreso Datos.db")
+        self.miCursor = self.miConexion.cursor()
+
+    # ---------------Metodos----------------------
+    def volver(self):
+        self.registro.destroy()
+        main()
+
+    def registrar(self):
+        colectaNombre = str(self.nombreVar.get())
+        colectaApellido = str(self.apellidoVar.get())
+        colectaDNI = str(self.DNIVar.get())
+        colectaEmail = str(self.emailVar.get())
+        colectaPass = str(self.passVar.get())
+        arrobas = colectaEmail.count("@")
+        puntos = colectaEmail.count(".")
+        validador = False
+        if (
+            colectaNombre != ""
+            or colectaApellido != ""
+            or colectaDNI != ""
+            or colectaEmail != ""
+            or colectaPass != ""
+        ):
+            if (
+                arrobas != 1
+                or colectaEmail.rfind("@") == len(colectaEmail) - 1
+                or colectaEmail.find("@") == 0
+                or puntos < 1
+                or colectaEmail.rfind(".") == len(colectaEmail) - 1
+                or colectaEmail.find(".") == 0
+            ):
+                messagebox.showwarning("Error", "E-mail inválido.")
+            else:
+                validador = True
+
+            contador = 0
+            for i in colectaPass:
+                if len(colectaPass) < 8 or i == " ":
+                    contador += 1
+            if contador != 0:
+                messagebox.showwarning("Error", "Constraseña Inválida.")
+            else:
+                validador = True
+        else:
+            messagebox.showwarning("Error", "Por Favor Ingresar todos los datos.")
+        if validador == True:
+            self.miCursor.execute(
+                "INSERT INTO USUARIOS VALUES('"
+                + colectaDNI
+                + "','"
+                + colectaNombre
+                + "','"
+                + colectaApellido
+                + "','"
+                + colectaEmail
+                + "','"
+                + colectaPass
+                + "')"
+            )
+            self.miCursor.execute(
+                "SELECT DNI FROM USUARIOS WHERE DNI=" + colectaDNI
+            )
+            self.datoId = self.miCursor.fetchall()
+            self.miConexion.commit()
+            messagebox.showinfo("Success", "Registro Satisfactorio.")
+            self.volver()
 
     #def funciones(self):
     #    def volver():
