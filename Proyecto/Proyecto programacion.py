@@ -3,7 +3,7 @@ from time import sleep #sleep->simular temporizador haciendo que el programa esp
 import os #system('cls')->limpiar la consola , getcwd-> obtener la ruta actual
 from random import randint #generar numeros aleatorios
 
-cant_jugadores=10
+cant_jugadores=2
 cant_preguntas=5
 temp=20
 turnos=[]
@@ -89,9 +89,9 @@ def crear_orden_categorias(cant_jugadores):
 
 def imprimir_pregunta(num_c,num_p,turno): #funcion para imprimir las preguntas, esta lee un archivo que las incluye
     if num_c==0:
-        archivo = open((os.getcwd() + "\preguntas_matematicas.txt"), 'r') #se obtiene la ruta del archivo y este se abre
-    elif num_c==1:
-        archivo = open((os.getcwd() + "\preguntas_historia.txt"), 'r')
+        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_matematicas.txt"), 'r') #se obtiene la ruta del archivo y este se abre
+    else:
+        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_historia.txt"), 'r')
     # se crea una lista en base a el indice de la pregunta
     with archivo as f:
         data = f.readlines()[((num_p*5)):(num_p*5)+5]
@@ -108,7 +108,7 @@ def imprimir_pregunta(num_c,num_p,turno): #funcion para imprimir las preguntas, 
 def revisar_respuesta(num_c,num_p,rta): #funcion para revisar la validez de la respuesta intruducida
     if num_c==0:
         respuestas=respuestas_matematicas
-    elif num_c==1:
+    else:
         respuestas=respuestas_historia
     if rta==respuestas[num_p]:
         print("\nCORRECTO")
@@ -146,4 +146,5 @@ def main():
         if temp < 0:
             print("\nTiempo agotado")
 
-main()
+if __name__ == '__main__':
+    main()

@@ -62,7 +62,7 @@ class Squares(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(('player.png')).convert()
+        self.image = pygame.image.load(('Resources\Images\player.png')).convert()
         self.image = pygame.transform.smoothscale(self.image, (70, 70))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
@@ -87,7 +87,6 @@ class Game(object):
         """
         Metodo que inicializa la clase.
         """
-        self.fill_controller = True
         self.fuente = pygame.font.SysFont('Verdana', 11)
         pygame.display.set_caption("Tablero")
         self.colores = []
@@ -131,13 +130,9 @@ class Game(object):
         for i in range(60):
             valor = randint(1,6)
             self.colores.append(valor)
+
         self.all_sprites_list.add(self.player)
         self.all_sprites_list.update()
-
-    #def print_squares(self,screen):
-    #    """
-    #    Dibuja las casillas en ventana
-    #    """
 
     def display_frame(self, screen):
         """

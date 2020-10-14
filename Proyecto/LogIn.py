@@ -3,23 +3,20 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 import sqlite3
-import tablero 
-import time
-
-
+import tablero
 class Aplicacion:
     def __init__(self):
         # ----------CARACTERISTECAS DE VENTANA-------------------
         self.root = Tk()
         self.root.title("LogIn")
-        self.root.iconbitmap("GameLogo.ico")
+        self.root.iconbitmap("Resources\Images\GameLogo.ico")
         self.root.geometry("450x430")
         self.root.resizable(width=False, height=False)
         self.root.config(bg="#F0F1F2")
 
         # -----------IMAGEN INTERFAZ------------------------
 
-        self.imagenPrincipal = PhotoImage(file="GameLogo.png")
+        self.imagenPrincipal = PhotoImage(file="Resources\Images\GameLogo.png")
         self.imagenLogo = Label(
             self.root,
             image=self.imagenPrincipal,
@@ -39,16 +36,16 @@ class Aplicacion:
             fg="black",
             font=("Times New Roman", 17),
         )
-        self.Bienvenida.place(x=0, y=205)
+        self.Bienvenida.place(x=2, y=205)
 
         # ------------------LOG IN-----------------------------
-        self.idLabel = Label(
-            self.root,
-            text="Introduzca su ID",
-            bg="#F0F1F2",
-            fg="black",
-            font=("Times New Roman", 10),
-        )
+        #self.idLabel = Label(
+        #    self.root,
+        #    text="Introduzca su ID",
+        #    bg="#F0F1F2",
+        #    fg="black",
+        #    font=("Times New Roman", 10),
+        #)
         # self.idLabel.place(x=35, y=270)
         # self.idvar = StringVar()
         # self.idEntry = Entry(self.root, textvariable=self.idvar, width=5)
@@ -96,11 +93,6 @@ class Aplicacion:
         self.bSalir = ttk.Button(self.root, text="salir", command=self.root.destroy)
         self.bSalir.pack(side=BOTTOM)
 
-        # ------------------LABEL DE ERROR---------------------------
-
-        self.error = Label(self.root)
-        self.error.pack(side=BOTTOM)
-
         self.conexion_db()
 
         # --------------MAINLOOP-------------------------
@@ -110,7 +102,7 @@ class Aplicacion:
 
     # ---------------CONEXION DATABASE---------------------------
     def conexion_db(self):
-        self.miConexion = sqlite3.connect("Ingreso Datos.db")
+        self.miConexion = sqlite3.connect("Resources\Data_base\Ingreso Datos.db")
         self.miCursor = self.miConexion.cursor()
 
     def logIn(self):
@@ -124,7 +116,6 @@ class Aplicacion:
         self.datosUsuario = self.miCursor.fetchall()
         self.miConexion.commit()
         if self.datosUsuario != []:
-            self.error.config(text="accedido")
             self.root.destroy()
             #funciones()
             tablero.main()
@@ -142,7 +133,7 @@ class ventanaRegistro:
         # ---------------INTERFAZ REGISTRO---------------
         self.registro = Tk()
         self.registro.title("Registro")
-        self.registro.iconbitmap("GameLogo.ico")
+        self.registro.iconbitmap("Resources\Images\GameLogo.ico")
         self.registro.geometry("450x430")
         self.registro.resizable(width=False, height=False)
         self.registro.config(bg="#F0F1F2")
@@ -218,7 +209,7 @@ class ventanaRegistro:
     # ---------------Metodos----------------------
     
     def conexion_db(self):
-        self.miConexion = sqlite3.connect("Ingreso Datos.db")
+        self.miConexion = sqlite3.connect("Resources\Data_base\Ingreso Datos.db")
         self.miCursor = self.miConexion.cursor()
 
     def volver(self):
@@ -233,7 +224,8 @@ class ventanaRegistro:
         colectaPass = str(self.passVar.get())
         arrobas = colectaEmail.count("@")
         puntos = colectaEmail.count(".")
-        validador = False
+        validadorE = False
+        validadorP = False
         if (
             colectaNombre != ""
             or colectaApellido != ""
@@ -251,7 +243,7 @@ class ventanaRegistro:
             ):
                 messagebox.showwarning("Error", "E-mail inválido.")
             else:
-                validador = True
+                validadorE = True
 
             contador = 0
             for i in colectaPass:
@@ -260,10 +252,10 @@ class ventanaRegistro:
             if contador != 0:
                 messagebox.showwarning("Error", "Constraseña Inválida.")
             else:
-                validador = True
+                validadorP = True
         else:
             messagebox.showwarning("Error", "Por Favor Ingresar todos los datos.")
-        if validador == True:
+        if validadorE and validadorP:
             self.miCursor.execute(
                 "INSERT INTO USUARIOS VALUES('"
                 + colectaDNI
