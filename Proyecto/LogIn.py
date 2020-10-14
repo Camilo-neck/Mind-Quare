@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
-from PIL import Image, ImageTk
 import sqlite3
 import tablero 
 import time
@@ -12,7 +11,6 @@ class Aplicacion:
     def __init__(self):
         # ----------CARACTERISTECAS DE VENTANA-------------------
         self.root = Tk()
-        self.root.eval("tk::PlaceWindow . center")
         self.root.title("LogIn")
         self.root.iconbitmap("GameLogo.ico")
         self.root.geometry("450x430")
@@ -103,14 +101,18 @@ class Aplicacion:
         self.error = Label(self.root)
         self.error.pack(side=BOTTOM)
 
-        # ---------------CONEXION DATABASE---------------------------
-        self.miConexion = sqlite3.connect("Ingreso Datos.db")
-        self.miCursor = self.miConexion.cursor()
+        self.conexion_db()
 
         # --------------MAINLOOP-------------------------
         self.root.mainloop()
     
     # ---------------METODOS ----------------------
+
+    # ---------------CONEXION DATABASE---------------------------
+    def conexion_db(self):
+        self.miConexion = sqlite3.connect("Ingreso Datos.db")
+        self.miCursor = self.miConexion.cursor()
+
     def logIn(self):
         self.miCursor.execute(
             "SELECT * FROM USUARIOS WHERE EMAIL='"
@@ -140,7 +142,6 @@ class ventanaRegistro:
         # ---------------INTERFAZ REGISTRO---------------
         self.registro = Tk()
         self.registro.title("Registro")
-        self.registro.eval("tk::PlaceWindow . center")
         self.registro.iconbitmap("GameLogo.ico")
         self.registro.geometry("450x430")
         self.registro.resizable(width=False, height=False)
@@ -211,12 +212,12 @@ class ventanaRegistro:
         self.bRegistro = ttk.Button(self.registro, text="Registrarse", command=self.registrar)
         self.bRegistro.place(x=300, y=380)
 
+        self.conexion_db()
+
         self.registro.mainloop()
-
-        self.conxeion_db(())
-
     # ---------------Metodos----------------------
-    def conxeion_db(self):
+    
+    def conexion_db(self):
         self.miConexion = sqlite3.connect("Ingreso Datos.db")
         self.miCursor = self.miConexion.cursor()
 
@@ -283,6 +284,7 @@ class ventanaRegistro:
             self.miConexion.commit()
             messagebox.showinfo("Success", "Registro Satisfactorio.")
             self.volver()
+
 
 def main():
     Aplicacion()

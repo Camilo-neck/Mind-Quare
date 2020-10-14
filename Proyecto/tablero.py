@@ -1,5 +1,5 @@
 from random import randint
-import pygame, random, sys
+import pygame
 import os
 from pygame.constants import NOEVENT
 
@@ -18,13 +18,13 @@ class Squares(pygame.sprite.Sprite):
     """
     Esta clase trae todas las casillas como metodos a llamar
     """
-    def __init__(self, x_pos, y_pos, screen):
+    def __init__(self, x_pos, y_pos, screen, color):
         """
         Caracteristicas de todas las casillas
         """
         self.square_size = [90, 90]
         self.square_pos = [x_pos, y_pos]
-        self.color = randint(1, 6)
+        self.color = color
         self.screen = screen
 
     def Trivia_UP(self):
@@ -59,6 +59,29 @@ class Squares(pygame.sprite.Sprite):
         elif self.color == 3 or self.color == 6:
             self.Trivia_NONE()
 
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load(('player.png')).convert()
+        self.image = pygame.transform.smoothscale(self.image, (70, 70))
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        print(self.rect)
+        self.speed_x = 0
+        self.speed_y = 0
+
+    def movement(self, x, y):
+        """
+        Movimiento de la fichas
+        """
+        self.speed_x += x
+        self.speed_y += y
+
+    def update(self):
+        self.rect.x = self.speed_x
+        self.rect.y = 460 + self.speed_y
+
+
 class Game(object):
     def __init__(self):
         """
@@ -67,6 +90,12 @@ class Game(object):
         self.fill_controller = True
         self.fuente = pygame.font.SysFont('Verdana', 11)
         pygame.display.set_caption("Tablero")
+        self.colores = []
+        self.player_sprites_list = pygame.sprite.Group()
+        self.all_sprites_list = pygame.sprite.Group()
+
+        self.player = Player()
+        
 
     def process_events(self):
         """
@@ -75,25 +104,51 @@ class Game(object):
         for event in pygame.event.get():  # Bucle que recibe eventos.
             if event.type == pygame.QUIT:  # Condicional para cerrar la ventana al presionar la (x).
                 return False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    self.player.movement(-90, 0)
+                elif event.key == pygame.K_RIGHT:
+                    self.player.movement(90, 0)
+                elif event.key == pygame.K_UP:
+                    self.player.movement(0, -90)
+                elif event.key == pygame.K_DOWN:
+                    self.player.movement(0, 90)
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT:
+                    self.player.movement(0, 0)
+                elif event.key == pygame.K_RIGHT:
+                    self.player.movement(0, 0)
+                elif event.key == pygame.K_UP:
+                    self.player.movement(0, 0)
+                elif event.key == pygame.K_DOWN:
+                    self.player.movement(0, 0)
         return True
 
     def run_logic(self):
         """
         En este metodo se ejecuta toda la logica del programa.
         """
-        self.mouse_pos = pygame.mouse.get_pos()
-        # print(mouse_pos)
+        for i in range(60):
+            valor = randint(1,6)
+            self.colores.append(valor)
+        self.all_sprites_list.add(self.player)
+        self.all_sprites_list.update()
+
+    #def print_squares(self,screen):
+    #    """
+    #    Dibuja las casillas en ventana
+    #    """
 
     def display_frame(self, screen):
         """
         Dibujar todo lo visible en la pantalla.
         """
-        while self.fill_controller == True:  # Ciclo para que dibuje los cuadrados solo una vez.
-            screen.fill(WHITE)
-            for i in range(0, 900, 90):
-                for j in range(0, 540, 90):  # Ciclo for clasico para dibujar una matriz.
-                    self.square = Squares(i, j, screen).DrawSquare()
-            self.fill_controller = False
+        screen.fill(WHITE)
+        k = 0
+        for i in range(0, 900, 90):
+            for j in range(0, 540, 90):  # Ciclo for clasico para dibujar una matriz.
+                self.square = Squares(i, j, screen, self.colores[k]).DrawSquare()
+                k+=1
 
         #Imprimir numeros de las casillas
         n_square = 1
@@ -115,7 +170,9 @@ class Game(object):
                     n_square += 1
             pos_S -= 90
 
-            pygame.display.flip()  # Refresca la ventana
+        self.all_sprites_list.draw(screen)
+
+        pygame.display.flip()  # Refresca la ventana
 
 def main():
     pygame.init()
