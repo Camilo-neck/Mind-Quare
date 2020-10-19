@@ -1,6 +1,8 @@
 from random import randint
+import random
 import pygame
 import os
+import time
 from pygame.constants import NOEVENT
 
 # Definir Colores
@@ -12,7 +14,10 @@ GREEN = [0, 255, 0]
 PURPLE = [127, 96, 252, 92]
 ORANGE = [255, 136, 22, 100]
 
-screen_size = [900, 540] #ancho y largo de la ventana
+screen_size = [900, 580] #ancho y largo de la ventana
+roll = False
+count = 0
+dice_image = 'Resources\Images\Dice1.png'
 
 class Squares(pygame.sprite.Sprite):
     """
@@ -59,6 +64,95 @@ class Squares(pygame.sprite.Sprite):
         elif self.color == 3 or self.color == 6:
             self.Trivia_NONE()
 
+class Dices(object):
+    def __init__(self, screen):
+        self.screen = screen
+        self.dices_size = [30, 30]
+        self.count = count
+        self.dice1_value = 0
+        self.dice2_value = 0
+        
+
+    def dice1(self,image):
+        self.image = pygame.image.load(image).convert()
+        self.image = pygame.transform.smoothscale(self.image, self.dices_size)
+        self.screen.blit(self.image,(15, 545))
+
+    def dice2(self,image):
+        self.image = pygame.image.load(image).convert()
+        self.image = pygame.transform.smoothscale(self.image, self.dices_size)
+        self.screen.blit(self.image,(48, 545))
+    
+    def roll_dice1(self, dice_image,roll):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE] and roll == False:
+            roll = True
+        elif roll == True and keys[pygame.K_SPACE]:
+            roll = False
+        if roll == True:
+            self.count += 1
+            num = random.randrange(1, 7)
+            if num == 1:
+                dice_image = 'Resources\Images\Dice1.png'
+                self.dice1_value = num
+            elif num == 2:
+                dice_image = 'Resources\Images\Dice2.png'
+                self.dice1_value = num
+            elif num == 3:
+                dice_image = 'Resources\Images\Dice3.png'
+                self.dice1_value = num
+            elif num == 4:
+                dice_image = 'Resources\Images\Dice4.png'
+                self.dice1_value = num
+            elif num == 5:
+                dice_image = 'Resources\Images\Dice5.png'
+                self.dice1_value = num
+            else:
+                dice_image = 'Resources\Images\Dice6.png'
+                self.dice1_value = num
+        time.sleep(0.1)
+        self.dice1(
+            dice_image
+            )
+        #print(self.dice1_value)
+        return self.dice1_value
+
+    def roll_dice2(self, dice_image,roll):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE] and roll == False:
+            roll = True
+        elif roll == True and keys[pygame.K_SPACE]:
+            roll = False
+        if roll == True:
+            self.count += 1
+            num = random.randrange(1, 7)
+            if num == 1:
+                dice_image = 'Resources\Images\Dice1.png'
+                self.dice1_value = num
+            elif num == 2:
+                dice_image = 'Resources\Images\Dice2.png'
+                self.dice1_value = num
+            elif num == 3:
+                dice_image = 'Resources\Images\Dice3.png'
+                self.dice1_value = num
+            elif num == 4:
+                dice_image = 'Resources\Images\Dice4.png'
+                self.dice1_value = num
+            elif num == 5:
+                dice_image = 'Resources\Images\Dice5.png'
+                self.dice1_value = num
+            else:
+                dice_image = 'Resources\Images\Dice6.png'
+                self.dice1_value = num
+        time.sleep(0.1)
+        self.dice2(
+            dice_image
+            )
+        #print(self.dice1_value)
+        return self.dice1_value
+
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -66,7 +160,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.smoothscale(self.image, (70, 70))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        print(self.rect)
+        #print(self.rect)
         self.speed_x = 0
         self.speed_y = 0
 
@@ -138,7 +232,7 @@ class Game(object):
         """
         Dibujar todo lo visible en la pantalla.
         """
-        screen.fill(WHITE)
+        screen.fill(BLACK)
         k = 0
         for i in range(0, 900, 90):
             for j in range(0, 540, 90):  # Ciclo for clasico para dibujar una matriz.
@@ -165,7 +259,10 @@ class Game(object):
                     n_square += 1
             pos_S -= 90
 
+
         self.all_sprites_list.draw(screen)
+        Dices(screen).roll_dice1(dice_image, roll)
+        Dices(screen).roll_dice2(dice_image, roll)
 
         pygame.display.flip()  # Refresca la ventana
 
