@@ -4,36 +4,23 @@ import os #system('cls')->limpiar la consola , getcwd-> obtener la ruta actual
 from random import randint #generar numeros aleatorios
 from random import shuffle
 
-cant_jugadores=2
-cant_preguntas=20
-turnos=[]
-jugador=[]
-for i in range(0,cant_jugadores): #inicializar lista jugador
-    jugador.append([])
-
-#ingresar aqui las respuestas deseadas
-respuestas_matematicas    =['A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'] #FALTAN
-respuestas_historia       =['A','C','A','A','B','C','A','C','B','B','A','A','B','B','C','A','B','D','B','A']
-respuestas_geografia      =['B','C','A','C','A','D','B','A','B','A','B','A','D','C','A','B','B','C','A','B']
-respuestas_ciencia        =['A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'] #FALTAN
-respuestas_entretenimiento=['A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'] #FALTAN
 
 #creamos la clase player la cual tendra los datos del jugador
 class player:
     def __init__(self,
-                 nombre,
-                 casilla,
-                 preguntas_M,
-                 preguntas_H,
-                 preguntas_G,
-                 preguntas_C,
-                 preguntas_E,
-                 respuestas_M,
-                 respuestas_H,
-                 respuestas_G,
-                 respuestas_C,
-                 respuestas_E,
-                 categorias_j):
+                nombre,
+                casilla,
+                preguntas_M,
+                preguntas_H,
+                preguntas_G,
+                preguntas_C,
+                preguntas_E,
+                respuestas_M,
+                respuestas_H,
+                respuestas_G,
+                respuestas_C,
+                respuestas_E,
+                categorias_j):
 
         self.nombre = nombre
         self.casilla = casilla
@@ -53,7 +40,7 @@ class player:
         self.categorias_j = categorias_j
 
 #esta funcion sirve para inicializar los jugadores
-def crear_jugadores(cant_jugadores,cant_preguntas):
+def crear_jugadores(cant_jugadores,cant_preguntas,jugador):
     for i in range(0,cant_jugadores):
         name = input("Ingrese su nombre: ")
         square = 0
@@ -91,7 +78,7 @@ def lista_aleatoria(cant): #crear lista de numeros aleatorios en la que no se re
     shuffle(lista)
     return lista
 
-def crear_orden_preguntas(cant_preguntas,cant_jugadores): #crear un orden especifico de las preguntas para cada jugador y cada categoria especifica
+def crear_orden_preguntas(cant_preguntas,cant_jugadores,jugador): #crear un orden especifico de las preguntas para cada jugador y cada categoria especifica
     for i in range(0,cant_jugadores):
         jugador[i].preguntas_M = lista_aleatoria(cant_preguntas)
         jugador[i].preguntas_H = lista_aleatoria(cant_preguntas)
@@ -99,11 +86,11 @@ def crear_orden_preguntas(cant_preguntas,cant_jugadores): #crear un orden especi
         jugador[i].preguntas_C = lista_aleatoria(cant_preguntas)
         jugador[i].preguntas_E = lista_aleatoria(cant_preguntas)
 
-def crear_orden_categorias(cant_jugadores):
+def crear_orden_categorias(cant_jugadores,jugador):
     for i in range(0,cant_jugadores):
             jugador[i].categorias_j = lista_aleatoria(5)
 
-def obtener_numero_pregunta(num_c,turno,n_ronda):
+def obtener_numero_pregunta(num_c,turno,n_ronda,jugador):
     if num_c == 0:
         return jugador[turno].preguntas_M[n_ronda]
     elif num_c == 1:
@@ -146,7 +133,15 @@ def imprimir_pregunta(num_c,num_p): #funcion para imprimir las preguntas, esta l
 
     archivo.close() #se cierra el archivo
 
-def revisar_respuesta(num_c,num_p,rta): #funcion para revisar la validez de la respuesta intruducida
+def revisar_respuesta(
+    num_c,
+    num_p,
+    rta,
+    respuestas_matematicas,
+    respuestas_historia,
+    respuestas_geografia,
+    respuestas_ciencia,
+    respuestas_entretenimiento): #funcion para revisar la validez de la respuesta intruducida
     if num_c==0:
         respuestas=respuestas_matematicas
     elif num_c==1:
@@ -162,18 +157,22 @@ def revisar_respuesta(num_c,num_p,rta): #funcion para revisar la validez de la r
         print("\nCORRECTO")
     else:
         print("\nINCORRECTO")
-def main():
 
-    crear_jugadores(cant_jugadores,cant_preguntas)
-    turnos = lista_aleatoria(cant_jugadores)
-    crear_orden_preguntas(cant_preguntas,cant_jugadores)
-    crear_orden_categorias(cant_jugadores)
-
+def ronda_time(
+    cant_preguntas,
+    cant_jugadores,
+    turnos, 
+    jugador,
+    respuestas_matematicas,
+    respuestas_historia,
+    respuestas_geografia,
+    respuestas_ciencia,
+    respuestas_entretenimiento):
     for ronda in range(0,cant_preguntas*5):
         for iterator in range(0, cant_jugadores):
             temp = 30
             num_c = jugador[turnos[iterator]].categorias_j[ronda]
-            num_p = obtener_numero_pregunta(num_c, turnos[iterator], ronda)
+            num_p = obtener_numero_pregunta(num_c, turnos[iterator], ronda,jugador)
             while temp + 1 > 0:
                 sleep(1)
                 os.system('cls')
@@ -184,13 +183,46 @@ def main():
                     rta = (chr(ord(msvcrt.getch()))).upper()  # conversion de la entrada a ascii -> chr -> mayuscula (esto porque getch agrega un 'b' a cualquier entrada)
                     print("\nEscogio la opcion:", rta)
                     sleep(2.5)
-                    revisar_respuesta(num_c, num_p, rta)
+                    revisar_respuesta(num_c, num_p, rta,respuestas_matematicas,respuestas_historia,respuestas_geografia,respuestas_ciencia,respuestas_entretenimiento)
                     break
                 else:
                     print("\n", temp)
                 temp -= 1
             if temp < 0:
                 print("\nTiempo agotado")
+
+def main():
+
+    cant_jugadores=2
+    cant_preguntas=20
+    turnos=[]
+    jugador=[]
+    for i in range(0,cant_jugadores): #inicializar lista jugador
+        jugador.append([])
+
+    #ingresar aqui las respuestas deseadas
+    respuestas_matematicas    =['A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'] #FALTAN
+    respuestas_historia       =['A','C','A','A','B','C','A','C','B','B','A','A','B','B','C','A','B','D','B','A']
+    respuestas_geografia      =['B','C','A','C','A','D','B','A','B','A','B','A','D','C','A','B','B','C','A','B']
+    respuestas_ciencia        =['A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'] #FALTAN
+    respuestas_entretenimiento=['A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'] #FALTAN
+
+    crear_jugadores(cant_jugadores,cant_preguntas,jugador)
+    turnos = lista_aleatoria(cant_jugadores)
+    crear_orden_preguntas(cant_preguntas,cant_jugadores,jugador)
+    crear_orden_categorias(cant_jugadores,jugador)
+
+    ronda_time(
+        cant_preguntas,
+        cant_jugadores,
+        turnos,
+        jugador,
+        respuestas_matematicas,
+        respuestas_historia,
+        respuestas_geografia,
+        respuestas_ciencia,
+        respuestas_entretenimiento)
+    
 
 if __name__ == '__main__':
     main()

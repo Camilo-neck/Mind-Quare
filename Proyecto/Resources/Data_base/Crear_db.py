@@ -15,7 +15,9 @@ miCursor = miConexion.cursor()
 #    '''
 #)
 
-#miCursor.execute('INSERT INTO USUARIOS VALUES(NULL,"Carlos","Cruz",1001184562,"carlos@gmail.com","carlos1234")')
+#miCursor.execute(
+# 'INSERT INTO USUARIOS VALUES(NULL,"Carlos","Cruz",1001184562,"carlos@gmail.com","carlos1234")'
+# )
 
 miConexion.commit()
 miConexion.close()
