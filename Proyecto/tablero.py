@@ -17,7 +17,9 @@ ORANGE = [255, 136, 22, 100]
 screen_size = [900, 580] #ancho y largo de la ventana
 roll = False
 count = 0
-dice_image = 'Resources\Images\Dice1.png'
+
+IMAGE1 = 'Resources\Images\Dice1.png'
+IMAGE2 = 'Resources\Images\Dice1.png'
 
 class Squares(pygame.sprite.Sprite):
     """
@@ -71,19 +73,17 @@ class Dices(object):
         self.count = count
         self.dice1_value = 0
         self.dice2_value = 0
-        
 
-    def dice1(self,image):
+    def print_dice(self,image,num):
         self.image = pygame.image.load(image).convert()
         self.image = pygame.transform.smoothscale(self.image, self.dices_size)
-        self.screen.blit(self.image,(15, 545))
-
-    def dice2(self,image):
-        self.image = pygame.image.load(image).convert()
-        self.image = pygame.transform.smoothscale(self.image, self.dices_size)
-        self.screen.blit(self.image,(48, 545))
+        if num==1:
+            self.screen.blit(self.image,(15, 545))
+        else:
+            self.screen.blit(self.image, (48, 545))
+        time.sleep(0.1)
     
-    def roll_dice1(self, dice_image,roll):
+    def roll_dice(self,roll,imagen):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE] and roll == False:
             roll = True
@@ -93,63 +93,28 @@ class Dices(object):
             self.count += 1
             num = random.randrange(1, 7)
             if num == 1:
-                dice_image = 'Resources\Images\Dice1.png'
+                IMAGE = 'Resources\Images\Dice1.png'
                 self.dice1_value = num
             elif num == 2:
-                dice_image = 'Resources\Images\Dice2.png'
+                IMAGE = 'Resources\Images\Dice2.png'
                 self.dice1_value = num
             elif num == 3:
-                dice_image = 'Resources\Images\Dice3.png'
+                IMAGE = 'Resources\Images\Dice3.png'
                 self.dice1_value = num
             elif num == 4:
-                dice_image = 'Resources\Images\Dice4.png'
+                IMAGE = 'Resources\Images\Dice4.png'
                 self.dice1_value = num
             elif num == 5:
-                dice_image = 'Resources\Images\Dice5.png'
+                IMAGE = 'Resources\Images\Dice5.png'
                 self.dice1_value = num
             else:
-                dice_image = 'Resources\Images\Dice6.png'
+                IMAGE = 'Resources\Images\Dice6.png'
                 self.dice1_value = num
-        time.sleep(0.1)
-        self.dice1(
-            dice_image
-            )
-        #print(self.dice1_value)
-        return self.dice1_value
 
-    def roll_dice2(self, dice_image,roll):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE] and roll == False:
-            roll = True
-        elif roll == True and keys[pygame.K_SPACE]:
-            roll = False
-        if roll == True:
-            self.count += 1
-            num = random.randrange(1, 7)
-            if num == 1:
-                dice_image = 'Resources\Images\Dice1.png'
-                self.dice1_value = num
-            elif num == 2:
-                dice_image = 'Resources\Images\Dice2.png'
-                self.dice1_value = num
-            elif num == 3:
-                dice_image = 'Resources\Images\Dice3.png'
-                self.dice1_value = num
-            elif num == 4:
-                dice_image = 'Resources\Images\Dice4.png'
-                self.dice1_value = num
-            elif num == 5:
-                dice_image = 'Resources\Images\Dice5.png'
-                self.dice1_value = num
-            else:
-                dice_image = 'Resources\Images\Dice6.png'
-                self.dice1_value = num
-        time.sleep(0.1)
-        self.dice2(
-            dice_image
-            )
-        #print(self.dice1_value)
-        return self.dice1_value
+            return IMAGE, self.dice1_value
+        return imagen, self.dice1_value
+
+
 
 
 
@@ -261,8 +226,22 @@ class Game(object):
 
 
         self.all_sprites_list.draw(screen)
-        Dices(screen).roll_dice1(dice_image, roll)
-        Dices(screen).roll_dice2(dice_image, roll)
+
+        global IMAGE1
+        global IMAGE2
+
+        DADO1 = Dices(screen)
+        IMAGE1 = DADO1.roll_dice(roll,IMAGE1)[0]
+        VALUE1 = DADO1.roll_dice(roll,IMAGE1)[1]
+        print(VALUE1)
+        DADO1.print_dice(IMAGE1, 1)
+
+        DADO2 = Dices(screen)
+        IMAGE2 = DADO2.roll_dice(roll,IMAGE2)[0]
+        VALUE2 = DADO1.roll_dice(roll,IMAGE1)[1]
+        print(VALUE2)
+        DADO2.print_dice(IMAGE2, 2)
+
 
         pygame.display.flip()  # Refresca la ventana
 
