@@ -233,13 +233,11 @@ class Game(object):
         DADO1 = Dices(screen)
         IMAGE1 = DADO1.roll_dice(roll,IMAGE1)[0]
         VALUE1 = DADO1.roll_dice(roll,IMAGE1)[1]
-        print(VALUE1)
         DADO1.print_dice(IMAGE1, 1)
 
         DADO2 = Dices(screen)
         IMAGE2 = DADO2.roll_dice(roll,IMAGE2)[0]
         VALUE2 = DADO1.roll_dice(roll,IMAGE1)[1]
-        print(VALUE2)
         DADO2.print_dice(IMAGE2, 2)
 
 
