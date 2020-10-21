@@ -7,19 +7,13 @@ from random import shuffle #desordenar listas
 #creamos la clase player la cual tendra los datos del jugador
 class player:
     def __init__(self,
-                nombre,
-                casilla,
-                preguntas_M,
-                preguntas_H,
-                preguntas_G,
-                preguntas_C,
-                preguntas_E,
-                respuestas_M,
-                respuestas_H,
-                respuestas_G,
-                respuestas_C,
-                respuestas_E,
-                categorias_j):
+                 nombre,
+                 casilla,
+                 preguntas_M,
+                 preguntas_H,
+                 preguntas_G,
+                 preguntas_C,
+                 preguntas_E):
 
         self.nombre = nombre
         self.casilla = casilla
@@ -30,24 +24,19 @@ class player:
         self.preguntas_C = preguntas_C
         self.preguntas_E = preguntas_E
 
-        self.respuestas_M = respuestas_M
-        self.respuestas_H = respuestas_H
-        self.respuestas_G = respuestas_G
-        self.respuestas_C = respuestas_C
-        self.respuestas_E = respuestas_E
-
-        self.categorias_j = categorias_j
+class Square:
+    def __init__(self,categoria,tipo):
+        self.categoria = categoria
+        self.tipo = tipo
 
 def imprimir_titulo():
     Title = open((os.getcwd() + "\Resources\Title\Titulo.txt"), 'r')
     with Title as f:
-        lineas = f.readlines()[0:4]
+        lineas = f.readlines()[:]
     for i in range(0,10):
         print()
-    print("\t\t\t"+(lineas[0]).strip())
-    print("\t\t\t"+(lineas[1]).strip())
-    print("\t\t\t"+(lineas[2]).strip())
-    print("\t\t\t"+(lineas[3]).strip())
+    for i in range(0,len(lineas)):
+        print("\t\t\t"+(lineas[i]).strip())
 
 def pantalla():
     B = 1
@@ -55,7 +44,7 @@ def pantalla():
         if B==1:
             os.system('cls')
             imprimir_titulo()
-            print("\n\n\t\t\t\t\tPresione cualquier tecla para jugar o I para instrucciones.")
+            print("\n\n\t\t\t\tPresione cualquier tecla para jugar o I para instrucciones.")
             sleep(0.7)
             B=0
         else:
@@ -65,49 +54,36 @@ def pantalla():
             sleep(0.7)
         if msvcrt.kbhit():
             break
-    opciones = (chr(ord(msvcrt.getch()))).upper() 
+    opciones = (chr(ord(msvcrt.getch()))).upper()
     if opciones == 'I':
         return 1
 
 def Instrucciones():
     archivo = open((os.getcwd() + "\Resources\Instrucciones\Instrucciones.txt"), 'r')
     with archivo as f:
-        data = f.readlines()[:] 
+        data = f.readlines()[:]
     while True:
         os.system('cls')
-        print("\n\t\t\t\t\t\t\t"+data[0])
-        print("\n\t\t\t\t"+data[1].strip())
-        print("\n\t\t\t\t"+data[2].strip())
-        print("\n\t\t\t\t"+data[3].strip())
-        print("\n\t\t\t\t"+data[4].strip())
-        print("\n\t\t\t\t"+data[5].strip())
-        print("\n\t\t\t\t"+data[6].strip())
-        print("\n\t\t\t\t"+data[7].strip())
-        print("\n\t\t\t\t"+data[8].strip())
-        print("\n\t\t\t\t"+data[9].strip())
-        print("\n\t\t\t\t"+data[10].strip())
-        print("\n\n\n\t\t\t\t"+data[11])
+        print("\n\t\t\t\t\t" + data[0].strip())
+        for i in range(1,len(data)-2):
+            print("\n\t\t"+data[i].strip())
+        print("\n\n\n\t\t" + data[len(data)-1])
         sleep(5)
-        
+
         if msvcrt.kbhit():
             break
 
 #esta funcion sirve para inicializar los jugadores
 def crear_jugadores(jugador,cant_jugadores,cant_preguntas):
     for i in range(0,cant_jugadores):
-        name = input("Ingrese su nombre: ")
+        print("Ingrese el nombre del jugador", i+1,end='')
+        name = input(": ")
         square = 1
         questions_M = []
         questions_H = []
         questions_G = []
         questions_C = []
         questions_E = []
-        answers_M = []
-        answers_H = []
-        answers_G = []
-        answers_C = []
-        answers_E = []
-        categories_j = []
 
         for j in range(0,(cant_preguntas)): #JUAN: NO SE SI ESTO ES NECESARIO"
             questions_M.append(None)
@@ -115,14 +91,14 @@ def crear_jugadores(jugador,cant_jugadores,cant_preguntas):
             questions_G.append(None)
             questions_C.append(None)
             questions_E.append(None)
-            answers_M.append(None)
-            answers_H.append(None)
-            answers_G.append(None)
-            answers_C.append(None)
-            answers_E.append(None)
-            categories_j.append(None)
 
-        jugador[i] = player(name,square,questions_M,questions_H,questions_G,questions_C,questions_E,answers_M,answers_H,answers_G,answers_C,answers_E,categories_j)
+        jugador[i] = player(name,square,questions_M,questions_H,questions_G,questions_C,questions_E)
+
+def crear_casillas(Casilla):
+    for i in range(0,60):
+        type = randint(0,2)
+        category = randint(0,4)
+        Casilla[i] = Square(category,type)
 
 def lista_aleatoria(cant): #crear lista de numeros aleatorios en la que no se repitan numeros
     lista=[]
@@ -138,10 +114,6 @@ def crear_orden_preguntas(jugador,cant_preguntas,cant_jugadores): #crear un orde
         jugador[i].preguntas_G = lista_aleatoria(cant_preguntas)
         jugador[i].preguntas_C = lista_aleatoria(cant_preguntas)
         jugador[i].preguntas_E = lista_aleatoria(cant_preguntas)
-
-def crear_orden_categorias(jugador,cant_jugadores):
-    for i in range(0,cant_jugadores):
-            jugador[i].categorias_j = lista_aleatoria(5)
 
 def obtener_numero_pregunta(jugador,num_c,turno,n_ronda):
     if num_c == 0:
@@ -186,59 +158,48 @@ def imprimir_pregunta(num_c,num_p): #funcion para imprimir las preguntas, esta l
 
     archivo.close() #se cierra el archivo
 
-def correcto(jugador,turno,dados,casillas,iterator):
+def sin_cambios(jugador,turno):#Funcion para aquellos casos en los que no ocurren cambios de la poscicion del jugador
+    print('\n',jugador[turno].nombre, "se queda en la casilla",jugador[turno].casilla)
 
-    if casillas[jugador[turno].casilla] == 0:
-        print("\nCORRECTO (0)")
+def correcto(jugador,turno,dados,tipo_casilla):
+    print("\nCORRECTO")
+
+    if tipo_casilla == 0:
         print(jugador[turno].nombre, "avanzo", dados, "casillas")
         jugador[turno].casilla += dados
 
-    elif casillas[jugador[turno].casilla] == 1:
-        print("\nCORRECTO (1)")
+    elif tipo_casilla == 1:
         dados*=2
-        print(jugador[turno].nombre, "avanzo", dados, "casillas (doble)")
+        print(jugador[turno].nombre, "avanzo", dados, "casillas")
         jugador[turno].casilla += dados
     else:
-        print("\nCORRECTO (2)")
         print(jugador[turno].nombre, "avanzo", 1, "casilla")
         jugador[turno].casilla += 1
 
-def incorrecto(jugador,turno,dados,casillas,iterator):
-    if casillas[jugador[turno].casilla] == 0:
-        print("\nINCORRECTO (0)")
+def incorrecto(jugador,turno,dados,tipo_casilla,temp=1):
 
-        print(jugador[turno].nombre, "retrocedio", dados, "casillas")
+    if temp > 0:
+        print("\nINCORRECTO")
+    else:
+        print("\nTIEMPO AGOTADO")
+
+    if tipo_casilla == 0 or tipo_casilla == 2:
         jugador[turno].casilla -= dados
-
-        if jugador[turno].casilla <= 0:
-            jugador[turno].casilla = 1
-
-    elif casillas[jugador[turno].casilla] == 1:
-
-        print("\nINCORRECTO (1)")
-        dados*=2
-        print(jugador[turno].nombre, "retrocedio", dados, "casillas (doble)")
-        jugador[turno].casilla -= dados
-
-        if jugador[turno].casilla <= 0:
-            jugador[turno].casilla = 1
 
     else:
-
-        print("\nINCORRECTO (2)")
-        print(jugador[turno].nombre, "retrocedio", dados, "casillas")
+        dados*=2
         jugador[turno].casilla -= dados
 
-        if jugador[turno].casilla <= 0:
-            jugador[turno].casilla = 1
+    if jugador[turno].casilla == 1:
+        sin_cambios(jugador,turno)
 
+    elif jugador[turno].casilla <= 0:
+        jugador[turno].casilla = 1
+        print(jugador[turno].nombre, "retrocedio hasta la casilla 1")
+    else:
+        print(jugador[turno].nombre, "retrocedio", dados, "casillas")
 
-
-def sin_cambios(jugador,turno,iterator):#Funcion para aquellos casos en los que no ocurren cambios de la poscicion del jugador
-    print(jugador[turno].nombre, "se queda en la casilla",jugador[turno].casilla)
-
-
-def revisar_respuesta(jugador,num_c,num_p,rta,turno,iterator,dados,casillas,RM,RH,RG,RC,RE): #funcion para revisar la validez de la respuesta intruducida
+def revisar_respuesta(jugador,num_c,num_p,rta,turno,dados,tipo_casilla,RM,RH,RG,RC,RE): #funcion para revisar la validez de la respuesta intruducida
     if num_c==0:
         respuestas=RM
     elif num_c==1:
@@ -251,11 +212,9 @@ def revisar_respuesta(jugador,num_c,num_p,rta,turno,iterator,dados,casillas,RM,R
         respuestas=RE
 
     if rta==respuestas[num_p]:
-        correcto(jugador,turno,dados,casillas,iterator)
-    elif rta!=respuestas[num_p] and jugador[turno].casilla > 1:
-        incorrecto(jugador,turno,dados,casillas,iterator)
+        correcto(jugador,turno,dados,tipo_casilla)
     else:
-        sin_cambios(jugador,turno, iterator)
+        incorrecto(jugador,turno,dados,tipo_casilla)
 
 def lanzar_dados():
 
@@ -272,7 +231,7 @@ def lanzar_dados():
     sleep(2)
     return dados
 
-def imprimir_info(jugador,ronda,turno,tipo_casilla):
+def imprimir_info(jugador,ronda,turno,tipo_casilla,categoria):
 
     print("ronda", ronda, "\n")
     print("Turno de", jugador[turno].nombre)
@@ -283,26 +242,31 @@ def imprimir_info(jugador,ronda,turno,tipo_casilla):
         print("Tipo casilla: Trivia Double")
     else:
         print("Tipo casilla: Trivia back or advance 1")
+    if categoria == 0:
+        print("Categoria: Matematicas")
+    elif categoria == 1:
+        print("Categoria: Historia")
+    elif categoria == 2:
+        print("Categoria: Geografia")
+    elif categoria == 3:
+        print("Categoria: Ciencia")
+    else:
+        print("Categoria: Entretenimiento")
 
 def main():
     jugador = []
-    casillas = []
+    Casilla = []
     cant_preguntas = 20
 
-    for i in range(60): #crear lista con los tipos de cada casilla
-        tipo = randint(0,2)
-        casillas.append(tipo)
-
     # ingresar aqui las respuestas deseadas
-    RM = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A','A', 'A']  # FALTAN
-    RH = ['A', 'C', 'A', 'A', 'B', 'C', 'A', 'C', 'B', 'B', 'A', 'A', 'B', 'B', 'C', 'A', 'B', 'D','B', 'A']
-    RG = ['B', 'C', 'A', 'C', 'A', 'D', 'B', 'A', 'B', 'A', 'B', 'A', 'D', 'C', 'A', 'B', 'B', 'C','A', 'B']
-    RC = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A','A']  # FALTAN
-    RE = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A','A', 'A', 'A']  # FALTAN
+    RM = ['A', 'C', 'D', 'B', 'C', 'A', 'D', 'B', 'A', 'C', 'C', 'D', 'A', 'B', 'C', 'C', 'A', 'C','A','A']
+    RH = ['A', 'C', 'A', 'A', 'B', 'C', 'A', 'C', 'B', 'B', 'A', 'A', 'B', 'B', 'C', 'A', 'B', 'D','B','A']
+    RG = ['B', 'C', 'A', 'C', 'A', 'D', 'B', 'A', 'B', 'A', 'B', 'A', 'D', 'C', 'A', 'B', 'B', 'C','A','B']
+    RC = ['C', 'B', 'A', 'B', 'A', 'B', 'C', 'D', 'B', 'C', 'B', 'A', 'B', 'C', 'C', 'A', 'B', 'B','A','D']
+    RE = ['B', 'D', 'A', 'C', 'B', 'B', 'A', 'C', 'B', 'B', 'B', 'B', 'A', 'D', 'B', 'B', 'B', 'B','B','C']
 
-    pantalla()
-    hola = pantalla()
-    if hola != None:
+    opc = pantalla()
+    if opc != None:
         Instrucciones()
     os.system('cls')
 
@@ -311,7 +275,7 @@ def main():
             cant_jugadores = int(input("Ingrese la cantidad de jugadores:"))
             os.system('cls')
             break
-        except ValueError:
+        except:
             os.system('cls')
             print("Ingrese una variable de tipo entera\n")
 
@@ -319,10 +283,14 @@ def main():
     for i in range(0, cant_jugadores):  # inicializar lista jugador
         jugador.append([])
 
+    for i in range(0, 60):  # inicializar lista casilla
+        Casilla.append(None)
+
     crear_jugadores(jugador,cant_jugadores,cant_preguntas)
     turnos = lista_aleatoria(cant_jugadores)
     crear_orden_preguntas(jugador,cant_preguntas,cant_jugadores)
-    crear_orden_categorias(jugador,cant_jugadores)
+
+    crear_casillas(Casilla)
 
     ronda=0
     running=True
@@ -330,36 +298,38 @@ def main():
     while running==True:
         for iterator in range(0, cant_jugadores):
             temp = 30
-            num_c = jugador[turnos[iterator]].categorias_j[ronda]
+            num_c = Casilla[jugador[turnos[iterator]].casilla].categoria
             num_p = obtener_numero_pregunta(jugador,num_c, turnos[iterator], ronda)
 
             os.system('cls')
-            imprimir_info(jugador,ronda,turnos[iterator],casillas[jugador[turnos[iterator]].casilla])
+            imprimir_info(jugador,ronda,turnos[iterator],Casilla[jugador[turnos[iterator]].casilla].tipo,Casilla[jugador[turnos[iterator]].casilla].categoria)
             sleep(3)
             dados = lanzar_dados()
 
+            if Casilla[jugador[turnos[iterator]].casilla].tipo == 1:
+                temp = 15
+
             while temp + 1 > 0: #controla la pregunta
+
                 sleep(1)
                 os.system('cls')
 
-                imprimir_info(jugador,ronda,turnos[iterator],casillas[jugador[turnos[iterator]].casilla])
+                imprimir_info(jugador,ronda,turnos[iterator],Casilla[jugador[turnos[iterator]].casilla].tipo,Casilla[jugador[turnos[iterator]].casilla].categoria)
                 imprimir_pregunta(num_c, num_p)
 
                 if msvcrt.kbhit():
                     rta = (chr(ord(msvcrt.getch()))).upper()  # conversion de la entrada a ascii -> chr -> mayuscula (esto porque getch agrega un 'b' a cualquier entrada)
                     print("\nEscogio la opcion:", rta)
                     sleep(2.5)
-
-                    revisar_respuesta(jugador,num_c, num_p, rta, turnos[iterator],iterator, dados,casillas,RM,RH,RG,RC,RE)
-
+                    revisar_respuesta(jugador,num_c, num_p, rta, turnos[iterator], dados,Casilla[jugador[turnos[iterator]].casilla].tipo,RM,RH,RG,RC,RE)
                     sleep(5)
                     break
                 else:
                     print("\n", temp)
                 temp -= 1
-            if temp < 0:
-                print("\nTiempo agotado")
-                sin_cambios(jugador,turnos[iterator], iterator)
+            if temp <= 0:
+                incorrecto(jugador,turnos[iterator],dados,Casilla[jugador[turnos[iterator]].casilla].tipo,temp)
+                sleep(5)
             if jugador[turnos[iterator]].casilla>=60: #cuando un juador llegue a n casilla gana y se termina el programa
                 running=False
                 os.system('cls')
