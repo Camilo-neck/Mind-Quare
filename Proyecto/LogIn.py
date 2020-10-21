@@ -14,7 +14,7 @@ class Aplicacion:
         self.y = self.sh // 4
         self.root.title("LogIn")
         self.root.iconbitmap("Resources\Images\GameLogo.ico")
-        self.root.geometry(f"450x430+{self.x}+{self.y}")
+        self.root.geometry(f"450x430+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
         self.root.resizable(width=False, height=False)
         self.root.config(bg="#F0F1F2")
 

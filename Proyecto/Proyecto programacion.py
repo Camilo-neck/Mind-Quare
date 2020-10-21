@@ -7,13 +7,13 @@ from random import shuffle #desordenar listas
 #creamos la clase player la cual tendra los datos del jugador
 class player:
     def __init__(self,
-                 nombre,
-                 casilla,
-                 preguntas_M,
-                 preguntas_H,
-                 preguntas_G,
-                 preguntas_C,
-                 preguntas_E):
+                nombre,
+                casilla,
+                preguntas_M,
+                preguntas_H,
+                preguntas_G,
+                preguntas_C,
+                preguntas_E):
 
         self.nombre = nombre
         self.casilla = casilla
@@ -275,7 +275,7 @@ def main():
             cant_jugadores = int(input("Ingrese la cantidad de jugadores:"))
             os.system('cls')
             break
-        except:
+        except ValueError:
             os.system('cls')
             print("Ingrese una variable de tipo entera\n")
 
