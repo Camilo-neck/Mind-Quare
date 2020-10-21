@@ -8,9 +8,13 @@ class Aplicacion:
     def __init__(self):
         # ----------CARACTERISTECAS DE VENTANA-------------------
         self.root = Tk()
+        self.sw = self.root.winfo_screenwidth()
+        self.sh = self.root.winfo_screenheight()
+        self.x = self.sw // 3
+        self.y = self.sh // 4
         self.root.title("LogIn")
         self.root.iconbitmap("Resources\Images\GameLogo.ico")
-        self.root.geometry("450x430")
+        self.root.geometry(f"450x430+{self.x}+{self.y}")
         self.root.resizable(width=False, height=False)
         self.root.config(bg="#F0F1F2")
 
@@ -39,19 +43,6 @@ class Aplicacion:
         self.Bienvenida.place(x=2, y=205)
 
         # ------------------LOG IN-----------------------------
-        #self.idLabel = Label(
-        #    self.root,
-        #    text="Introduzca su ID",
-        #    bg="#F0F1F2",
-        #    fg="black",
-        #    font=("Times New Roman", 10),
-        #)
-        # self.idLabel.place(x=35, y=270)
-        # self.idvar = StringVar()
-        # self.idEntry = Entry(self.root, textvariable=self.idvar, width=5)
-        # self.idEntry.focus()
-        # self.idEntry.place(x=150, y=270)
-
         self.emailLabel = Label(
             self.root,
             text="Introduzca su E-mail:",
@@ -81,16 +72,16 @@ class Aplicacion:
 
         # ------------------BOTÓN LOG IN--------------------
 
-        self.bLogIn = ttk.Button(self.root, text="SIGN UP", command=self.signUp)
+        self.bLogIn = Button(self.root, text="SIGN UP", background='blue',command=self.signUp)
         self.bLogIn.place(x=60, y=380)
 
         # ------------------BOTÓN SING UP--------------------
 
-        self.bSign = ttk.Button(self.root, text="LOG IN", command=self.logIn)
+        self.bSign = Button(self.root, text="LOG IN", command=self.logIn)
         self.bSign.place(x=300, y=380)
 
         # -------------------BOTÓN DE SALIR------------------------
-        self.bSalir = ttk.Button(self.root, text="salir", command=self.root.destroy)
+        self.bSalir = Button(self.root, text="salir", command=self.root.destroy)
         self.bSalir.pack(side=BOTTOM)
 
         self.conexion_db()
@@ -132,9 +123,13 @@ class ventanaRegistro:
     def __init__(self):
         # ---------------INTERFAZ REGISTRO---------------
         self.registro = Tk()
+        self.sw = self.registro.winfo_screenwidth()
+        self.sh = self.registro.winfo_screenheight()
+        self.x = self.sw // 3
+        self.y = self.sh // 4
         self.registro.title("Registro")
         self.registro.iconbitmap("Resources\Images\GameLogo.ico")
-        self.registro.geometry("450x430")
+        self.registro.geometry(f"450x430+{self.x}+{self.y}")
         self.registro.resizable(width=False, height=False)
         self.registro.config(bg="#F0F1F2")
 
@@ -194,13 +189,13 @@ class ventanaRegistro:
         # tercerFrame = Frame(registro)
         # tercerFrame.pack()
 
-        self.bVolver = ttk.Button(self.registro, text="Volver", command=self.volver)
+        self.bVolver = Button(self.registro, text="Volver", command=self.volver)
         self.bVolver.place(x=60, y=380)
 
-        self.bsalir = ttk.Button(self.registro, text="Salir", command=self.registro.destroy)
+        self.bsalir = Button(self.registro, text="Salir", command=self.registro.destroy)
         self.bsalir.pack(side=BOTTOM)
 
-        self.bRegistro = ttk.Button(self.registro, text="Registrarse", command=self.registrar)
+        self.bRegistro = Button(self.registro, text="Registrarse", command=self.registrar)
         self.bRegistro.place(x=300, y=380)
 
         self.conexion_db()

@@ -72,7 +72,6 @@ class Dices(object):
         self.dices_size = [30, 30]
         self.count = count
         self.dice1_value = 0
-        self.dice2_value = 0
 
     def print_dice(self,image,num):
         self.image = pygame.image.load(image).convert()
@@ -91,7 +90,7 @@ class Dices(object):
             roll = False
         if roll == True:
             self.count += 1
-            num = random.randrange(1, 7)
+            num = random.randint(1, 6)
             if num == 1:
                 IMAGE = 'Resources\Images\Dice1.png'
                 self.dice1_value = num
