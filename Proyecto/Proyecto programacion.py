@@ -7,19 +7,19 @@ from random import shuffle #desordenar listas
 #creamos la clase player la cual tendra los datos del jugador
 class player:
     def __init__(self,
-                 nombre,
-                 casilla,
-                 preguntas_M,
-                 preguntas_H,
-                 preguntas_G,
-                 preguntas_C,
-                 preguntas_E,
-                 respuestas_M,
-                 respuestas_H,
-                 respuestas_G,
-                 respuestas_C,
-                 respuestas_E,
-                 categorias_j):
+                nombre,
+                casilla,
+                preguntas_M,
+                preguntas_H,
+                preguntas_G,
+                preguntas_C,
+                preguntas_E,
+                respuestas_M,
+                respuestas_H,
+                respuestas_G,
+                respuestas_C,
+                respuestas_E,
+                categorias_j):
 
         self.nombre = nombre
         self.casilla = casilla
@@ -55,7 +55,7 @@ def pantalla():
         if B==1:
             os.system('cls')
             imprimir_titulo()
-            print("\n\t\t\t\t\t"+"Presione cualquier tecla para continuar")
+            print("\n\n\t\t\t\t\tPresione cualquier tecla para jugar o I para instrucciones.")
             sleep(0.7)
             B=0
         else:
@@ -63,6 +63,32 @@ def pantalla():
             imprimir_titulo()
             B=1
             sleep(0.7)
+        if msvcrt.kbhit():
+            break
+    opciones = (chr(ord(msvcrt.getch()))).upper() 
+    if opciones == 'I':
+        return 1
+
+def Instrucciones():
+    archivo = open((os.getcwd() + "\Resources\Instrucciones\Instrucciones.txt"), 'r')
+    with archivo as f:
+        data = f.readlines()[:] 
+    while True:
+        os.system('cls')
+        print("\n\t\t\t\t\t\t\t"+data[0])
+        print("\n\t\t\t\t"+data[1].strip())
+        print("\n\t\t\t\t"+data[2].strip())
+        print("\n\t\t\t\t"+data[3].strip())
+        print("\n\t\t\t\t"+data[4].strip())
+        print("\n\t\t\t\t"+data[5].strip())
+        print("\n\t\t\t\t"+data[6].strip())
+        print("\n\t\t\t\t"+data[7].strip())
+        print("\n\t\t\t\t"+data[8].strip())
+        print("\n\t\t\t\t"+data[9].strip())
+        print("\n\t\t\t\t"+data[10].strip())
+        print("\n\n\n\t\t\t\t"+data[11])
+        sleep(5)
+        
         if msvcrt.kbhit():
             break
 
@@ -252,11 +278,11 @@ def imprimir_info(jugador,ronda,turno,tipo_casilla):
     print("Turno de", jugador[turno].nombre)
     print("Casilla actual:", jugador[turno].casilla)
     if tipo_casilla == 0:
-        print("Tipo casilla: Normal")
+        print("Tipo casilla: Trivia Normal")
     elif tipo_casilla == 1:
-        print("Tipo casilla: Doble")
+        print("Tipo casilla: Trivia Double")
     else:
-        print("Tipo casilla: Solo Atras o avanza 1")
+        print("Tipo casilla: Trivia back or advance 1")
 
 def main():
     jugador = []
@@ -275,6 +301,9 @@ def main():
     RE = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A','A', 'A', 'A']  # FALTAN
 
     pantalla()
+    hola = pantalla()
+    if hola != None:
+        Instrucciones()
     os.system('cls')
 
     while True: #bucle para recibir solo enteros y no otro tipo de variable
@@ -282,7 +311,7 @@ def main():
             cant_jugadores = int(input("Ingrese la cantidad de jugadores:"))
             os.system('cls')
             break
-        except:
+        except ValueError:
             os.system('cls')
             print("Ingrese una variable de tipo entera\n")
 
