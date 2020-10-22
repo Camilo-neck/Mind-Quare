@@ -118,27 +118,29 @@ class Dices(object):
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, image,plus_pos, size):
         super().__init__()
-        self.image = pygame.image.load(('Resources\Images\player.png')).convert()
-        self.image = pygame.transform.smoothscale(self.image, (70, 70))
+        self.image = pygame.image.load(image).convert()
+        self.image = pygame.transform.smoothscale(self.image, size)
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        #print(self.rect)
-        self.speed_x = 0
+        self.speed_x = 20+plus_pos
         self.speed_y = 0
+        self.score = 0
+        self.points = 0
 
     def movement(self, x, y):
         """
         Movimiento de la fichas
         """
-        for i in range(0,x,10):
-            self.speed_x += i
+        self.speed_x += x
         self.speed_y += y
+        self.points += 0.5
 
     def update(self):
         self.rect.x = self.speed_x
         self.rect.y = 460 + self.speed_y
+        self.score = int(self.points)
 
 
 class Game(object):
@@ -147,12 +149,14 @@ class Game(object):
         Metodo que inicializa la clase.
         """
         self.fuente = pygame.font.SysFont('Verdana', 11)
+        self.fuente2 = pygame.font.SysFont('Verdana', 15)
         pygame.display.set_caption("Tablero")
         self.colores = []
         self.player_sprites_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
 
-        self.player = Player()
+        self.player1 = Player('Resources\Images\player.png',-20,(70,70))
+        self.player2 = Player('Resources\Images\player2.png',20,(30,60))
 
     def process_events(self):
         """
@@ -163,22 +167,38 @@ class Game(object):
                 return False
             if event.type == pygame.KEYDOWN: # Condicional que recibe el evento cuando se presiona una tecla.
                 if event.key == pygame.K_LEFT:
-                    self.player.movement(-90, 0)
+                    self.player1.movement(-90, 0)
                 elif event.key == pygame.K_RIGHT:
-                    self.player.movement(90, 0)
+                    self.player1.movement(90, 0)
                 elif event.key == pygame.K_UP:
-                    self.player.movement(0, -90)
+                    self.player1.movement(0, -90)
                 elif event.key == pygame.K_DOWN:
-                    self.player.movement(0, 90)
+                    self.player1.movement(0, 90)
+                elif event.key == pygame.K_a:
+                    self.player2.movement(-90, 0)
+                elif event.key == pygame.K_d:
+                    self.player2.movement(90,0)
+                elif event.key == pygame.K_w:
+                    self.player2.movement(0,-90)
+                elif event.key == pygame.K_s:
+                    self.player2.movement(0,90)
             if event.type == pygame.KEYUP: # Condicional que recibe el evento cuando se suelta una tecla.
                 if event.key == pygame.K_LEFT:
-                    self.player.movement(0, 0)
+                    self.player1.movement(0, 0)
                 elif event.key == pygame.K_RIGHT:
-                    self.player.movement(0, 0)
+                    self.player1.movement(0, 0)
                 elif event.key == pygame.K_UP:
-                    self.player.movement(0, 0)
+                    self.player1.movement(0, 0)
                 elif event.key == pygame.K_DOWN:
-                    self.player.movement(0, 0)
+                    self.player1.movement(0, 0)
+                elif event.key == pygame.K_a:
+                    self.player2.movement(0, 0)
+                elif event.key == pygame.K_d:
+                    self.player2.movement(0,0)
+                elif event.key == pygame.K_w:
+                    self.player2.movement(0,0)
+                elif event.key == pygame.K_s:
+                    self.player2.movement(0,0)
         return True
 
     def run_logic(self):
@@ -189,7 +209,8 @@ class Game(object):
             valor = randint(1,6)
             self.colores.append(valor)
 
-        self.all_sprites_list.add(self.player)
+        self.all_sprites_list.add(self.player1)
+        self.all_sprites_list.add(self.player2)
         self.all_sprites_list.update()
 
     def display_frame(self, screen):
@@ -238,6 +259,12 @@ class Game(object):
         IMAGE2 = DADO2.roll_dice(roll,IMAGE2)[0]
         VALUE2 = DADO1.roll_dice(roll,IMAGE1)[1]
         DADO2.print_dice(IMAGE2, 2)
+
+        score_p1 = self.fuente2.render(f'Jugador 1: {self.player1.score}',1, WHITE)
+        screen.blit(score_p1,(150,screen_size[1]-30))
+
+        score_p2 = self.fuente2.render(f'Jugador 2: {self.player2.score}',1, WHITE)
+        screen.blit(score_p2,(300,screen_size[1]-30))
 
         
         pygame.display.flip()  # Refresca la ventana

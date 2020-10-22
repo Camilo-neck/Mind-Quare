@@ -378,7 +378,7 @@ def main():
             if temp <= 0: #Si el temporizador llega a cero se tomara como respuesta incorrecto por parte de el jugador actual
                 incorrecto(jugador,Turno_actual,dados,Tipo_casilla_actual,temp)
                 sleep(5)
-            if jugador[Turno_actual].casilla>=1: #cuando un juador llegue a n casilla gana y se termina el programa (running=false)
+            if jugador[Turno_actual].casilla>=60: #cuando un juador llegue a n casilla gana y se termina el programa (running=false)
                 running=False
                 os.system('cls')
                 # Se imprime la pantalla final de juego terminado mostrando al ganador
