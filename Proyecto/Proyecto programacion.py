@@ -26,7 +26,7 @@ class player:
         self.preguntas_C = preguntas_C
         self.preguntas_E = preguntas_E
 
- #Creamos la clase Square que contiene los datos de las casillas
+#Creamos la clase Square que contiene los datos de las casillas
 class Square:
     def __init__(self,categoria,tipo):
         self.categoria = categoria
@@ -337,16 +337,18 @@ def main():
             if salir==True:
                 break
             temp = 30
-            num_c = Casilla[jugador[turnos[iterator]].casilla].categoria #num_c ->numero de categoria actual
-            num_p = obtener_numero_pregunta(jugador,num_c, turnos[iterator], ronda) #num_p ->numero de la pregunta actual
+            Turno_actual = turnos[iterator]#Turno_actual -> Representa el turno actual de la partida. 
+            Tipo_casilla_actual = Casilla[jugador[Turno_actual].casilla].tipo#Tipo_casilla_actual -> Representa el tipo de la casilla en la que se encuentra el jugador.
+            num_c = Casilla[jugador[Turno_actual].casilla].categoria #num_c ->numero de categoria actual.
+            num_p = obtener_numero_pregunta(jugador,num_c, Turno_actual, ronda) #num_p ->numero de la pregunta actual.
             os.system('cls')
 
-            imprimir_info(jugador,ronda_T,turnos[iterator],Casilla[jugador[turnos[iterator]].casilla].tipo,Casilla[jugador[turnos[iterator]].casilla].categoria)
+            imprimir_info(jugador,ronda_T,Turno_actual,Tipo_casilla_actual,num_c)
             sleep(3)
 
             dados = lanzar_dados()
 
-            if Casilla[jugador[turnos[iterator]].casilla].tipo == 1: #Si el tipo de casilla es Trivia Double el tiempo para responder sera la mitad
+            if Tipo_casilla_actual == 1: #Si el tipo de casilla es Trivia Double el tiempo para responder sera la mitad
                 temp = 15
 
             while temp + 1 > 0: #Bucle que controla la pregunta, espera una entrada del usuario y controla el temporizador (temp)
@@ -354,7 +356,7 @@ def main():
                 sleep(1) #cada segundo el temporizador disminuye en 1
                 os.system('cls')
 
-                imprimir_info(jugador,ronda_T,turnos[iterator],Casilla[jugador[turnos[iterator]].casilla].tipo,Casilla[jugador[turnos[iterator]].casilla].categoria)
+                imprimir_info(jugador,ronda_T,Turno_actual,Tipo_casilla_actual,num_c)
                 imprimir_pregunta(num_c, num_p)
 
                 if msvcrt.kbhit(): # Condicion que revisa si se presiono una tecla, en tal caso se guarda en la variable rta
@@ -362,7 +364,7 @@ def main():
                     print(Fore.WHITE + pos(5,22) + "Escogio la opcion:", rta)
                     sleep(2.5)
                     #se revisa la respuesta (rta) del jugador
-                    revisar_respuesta(jugador,num_c, num_p, rta, turnos[iterator], dados,Casilla[jugador[turnos[iterator]].casilla].tipo,RM,RH,RG,RC,RE)
+                    revisar_respuesta(jugador,num_c, num_p, rta, Turno_actual, dados,Tipo_casilla_actual,RM,RH,RG,RC,RE)
                     sleep(5)
                     break
                 else: #Aqui se controla el color del temporizador el cual depende de su valor
@@ -374,15 +376,15 @@ def main():
                         print(Fore.RED + pos(5, 19) + str(temp))
                 temp -= 1
             if temp <= 0: #Si el temporizador llega a cero se tomara como respuesta incorrecto por parte de el jugador actual
-                incorrecto(jugador,turnos[iterator],dados,Casilla[jugador[turnos[iterator]].casilla].tipo,temp)
+                incorrecto(jugador,Turno_actual,dados,Tipo_casilla_actual,temp)
                 sleep(5)
-            if jugador[turnos[iterator]].casilla>=10: #cuando un juador llegue a n casilla gana y se termina el programa (running=false)
+            if jugador[Turno_actual].casilla>=1: #cuando un juador llegue a n casilla gana y se termina el programa (running=false)
                 running=False
                 os.system('cls')
                 # Se imprime la pantalla final de juego terminado mostrando al ganador
                 print(Fore.GREEN + pos(42, 14) + "JUEGO TERMINADO")
                 sleep(1.5)
-                print(Fore.GREEN + pos(41,15) +"EL GANADOR ES",(jugador[turnos[iterator]].nombre).upper())
+                print(Fore.GREEN + pos(41,15) +"EL GANADOR ES",(jugador[Turno_actual].nombre).upper())
                 sleep(1.5)
                 while True:
                     print(Fore.WHITE + pos(25,17) + "Presione V para volver a jugar o cualquier tecla para salir")  # si se ingresa V comenzara una nueva partida
