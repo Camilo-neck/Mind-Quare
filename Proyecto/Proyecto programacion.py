@@ -1,3 +1,5 @@
+# -*- coding: 850 -*-
+# -*- coding: utf-8 -*-
 import msvcrt #kbhit->esperar tecla , getch->leer tecla
 from time import sleep #sleep->simular temporizador haciendo que el programa espere 1 segundo entre cada bucle
 import os #system('cls')->limpiar la consola , getcwd-> obtener la ruta actual
@@ -9,13 +11,13 @@ from colorama import * #colores y posicion de texto
 #creamos la clase player la cual tendra los datos del jugador
 class player:
     def __init__(self,
-                 nombre,
-                 casilla,
-                 preguntas_M,
-                 preguntas_H,
-                 preguntas_G,
-                 preguntas_C,
-                 preguntas_E):
+                nombre,
+                casilla,
+                preguntas_M,
+                preguntas_H,
+                preguntas_G,
+                preguntas_C,
+                preguntas_E):
 
         self.nombre = nombre
         self.casilla = casilla

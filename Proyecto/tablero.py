@@ -15,7 +15,7 @@ PURPLE = [127, 96, 252, 92]
 ORANGE = [255, 136, 22, 100]
 
 screen_size = [900, 580] #ancho y largo de la ventana
-roll = False
+roll = False #Determina si giran los dados.
 count = 0
 
 IMAGE1 = 'Resources\Images\Dice1.png'
@@ -132,7 +132,8 @@ class Player(pygame.sprite.Sprite):
         """
         Movimiento de la fichas
         """
-        self.speed_x += x
+        for i in range(0,x,10):
+            self.speed_x += i
         self.speed_y += y
 
     def update(self):
@@ -152,7 +153,6 @@ class Game(object):
         self.all_sprites_list = pygame.sprite.Group()
 
         self.player = Player()
-        
 
     def process_events(self):
         """
@@ -161,7 +161,7 @@ class Game(object):
         for event in pygame.event.get():  # Bucle que recibe eventos.
             if event.type == pygame.QUIT:  # Condicional para cerrar la ventana al presionar la (x).
                 return False
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN: # Condicional que recibe el evento cuando se presiona una tecla.
                 if event.key == pygame.K_LEFT:
                     self.player.movement(-90, 0)
                 elif event.key == pygame.K_RIGHT:
@@ -170,7 +170,7 @@ class Game(object):
                     self.player.movement(0, -90)
                 elif event.key == pygame.K_DOWN:
                     self.player.movement(0, 90)
-            if event.type == pygame.KEYUP:
+            if event.type == pygame.KEYUP: # Condicional que recibe el evento cuando se suelta una tecla.
                 if event.key == pygame.K_LEFT:
                     self.player.movement(0, 0)
                 elif event.key == pygame.K_RIGHT:
@@ -239,7 +239,7 @@ class Game(object):
         VALUE2 = DADO1.roll_dice(roll,IMAGE1)[1]
         DADO2.print_dice(IMAGE2, 2)
 
-
+        
         pygame.display.flip()  # Refresca la ventana
 
 def main():
