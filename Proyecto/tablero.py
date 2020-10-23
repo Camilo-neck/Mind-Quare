@@ -128,6 +128,8 @@ class Player(pygame.sprite.Sprite):
         self.speed_y = 0
         self.score = 0
         self.points = 0
+        self.casilla = 1
+        self.move_casilla = 1
 
     def movement(self, x, y):
         """
@@ -136,11 +138,13 @@ class Player(pygame.sprite.Sprite):
         self.speed_x += x
         self.speed_y += y
         self.points += 0.5
+        #self.move_casilla += 1
 
     def update(self):
         self.rect.x = self.speed_x
         self.rect.y = 460 + self.speed_y
         self.score = int(self.points)
+        #self.casilla = self.move_casilla
 
 
 class Game(object):
@@ -154,9 +158,9 @@ class Game(object):
         self.colores = []
         self.player_sprites_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
-
-        self.player1 = Player('Resources\Images\player.png',-20,(70,70))
+        self.player1 = Player('Resources\Images\player1.png',-10,(30,60))
         self.player2 = Player('Resources\Images\player2.png',20,(30,60))
+        
 
     def process_events(self):
         """
