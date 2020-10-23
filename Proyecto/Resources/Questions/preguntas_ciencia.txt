@@ -1,95 +1,95 @@
 ﻿¿Cómo se llama el componente mínimo que forma a los seres vivos?
 Tejido
 Particula
-Celula      *
+Celula      
 Corazon
 El proceso por el que una célula se divide para formar dos células hijas se llama:
 Segregacion
-Mitosis     *
+Mitosis     
 Meiosis
 Fotosintesis
 La información genética en las células se localiza:
-Nucleo     *
+Nucleo     
 Membrana
 Citoplasma
 Ribosoma
 ¿Con qué respira una ballena?
 Por la piel
-Pulmones     *
+Pulmones     
 aletas
 Branquias
 La fuerza física que la tierra ejerce sobre los cuerpos hacia su centro es la:
-Gravedad     *
+Gravedad     
 Normal
 Rozamiento
 Tension
 ¿Cómo se llama la teoría que considera que todos los organismos descendemos del mismo ancestro?
 Creacionismo
-Darwinismo      *
+Darwinismo      
 Gradualismo
 Existencialismo
 El proceso mediante el cual se generan moléculas orgánicas a partir de sustancias inorgánicas usando como fuente de energía el sol es:
 Catabolismo
 Anabolismo
-Fotosintesis     *
+Fotosintesis     
 Germinacion
 La  columna más a la derecha de la tabla periódica esta compuesta por:
 Haluros
 Metales
 Minerales
-Gases Nobles     *
+Gases Nobles     
 La velocidad a la que viaja la luz es
 300,000 m/s
-300,000 km/s      *
+300,000 km/s      
 30,000 m/s
 30,000 km/s
 ¿Cómo se llaman las partículas subatómicas con carga eléctrica negativa?
 Neutrones
 Protones
-Electrones      *
+Electrones      
 Ninguna de las anteriores
 El sol es:
 Un planeta
-Una estrella     *
+Una estrella     
 Estrella y satelite
 Un satelite
 ¿Que invento Alfred Nobel, el que da nombre a los famosos premios?
-Dinamita     *
+Dinamita     
 Penicilina
 Bomba atomica
 Telefono
 El teorema que dice que "en todo triángulo rectángulo, el cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos" es el:
 Teorema de Arquimedes
-Teorema de Pitagoras     *
+Teorema de Pitagoras     
 Teorema de Tales
 Ninguno de los anteriores
 Para el pan y para la cerveza se utilizan para fermentar:
 Microbios
 Bacterias
-Levaduras    *
+Levaduras    
 Sales
 ¿Cuál es la principal función de los globulos rojos?
 Combatir enfermedades
 Coagular la sangre
-Llevar oxigeno      *
+Llevar oxigeno      
 Pigmentar la piel
 ¿Qué tipo de radiación te produce quemaduras?
-Ultravioleta       *
+Ultravioleta       
 Rayos X
 Rayos Gamma
 Infrarroja
 ¿Cuantos planetas hay en el sistema solar?
 9
-8        *
+8        
 6
 5
 ¿Que particulas son mas pequeñas que los atomos?
 Aniones
-Electrones      *
+Electrones      
 Fotones
 Todas las anteriores
 Cual es el tercer planeta en el sistema solar:
-Tierra      *
+Tierra      
 Mercurio
 Urano
 Marte
@@ -97,4 +97,4 @@ Como se llama la galaxia en la que se encuentra el sistema solar:
 Andromeda I
 Centaurus A
 Enana de Acuario
-Via Lactea          *
+Via Lactea          
