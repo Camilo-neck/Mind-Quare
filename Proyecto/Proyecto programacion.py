@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import msvcrt #kbhit->esperar tecla , getch->leer tecla
 from time import sleep #sleep->simular temporizador haciendo que el programa espere 1 segundo entre cada bucle
-import os #system('cls')->limpiar la consola , getcwd-> obtener la ruta actual, tamaño de la consola
+import os #system('cls')->limpiar la consola , getcwd-> obtener la ruta actual, tama�o de la consola
 from random import randint,shuffle #randint->generar numeros aleatorios, shuffle->desordenar listas
 from colorama import * #colores y posicion de texto
 
@@ -142,24 +142,33 @@ def obtener_numero_pregunta(jugador,num_c,turno,n_ronda):
 #funcion para imprimir las preguntas, esta lee un archivo que las incluye y las imprime dependiendo de el numero de pregunta y de categoria
 def imprimir_pregunta(num_c,num_p):
 
-    # se obtiene la ruta del archivo y este se abre
+    # se obtiene la ruta del archivo y este se abre (Guardar los archivos con la codificacion utf-8, y pasar como parametro(encoding='utf-8'))
     if num_c==0:
-        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_matematicas.txt"), 'r')
+        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_matematicas.txt"), 'r',encoding='utf-8')
     elif num_c==1:
-        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_historia.txt"), 'r')
+        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_historia.txt"), 'r',encoding='utf-8')
     elif num_c == 2:
-        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_geografia.txt"), 'r')
+        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_geografia.txt"), 'r',encoding='utf-8')
     elif num_c == 3:
-        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_ciencia.txt"), 'r')
+        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_ciencia.txt"), 'r',encoding='utf-8')
     else:
-        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_entretenimiento.txt"), 'r')
+        archivo = open((os.getcwd() + "\Resources\Questions\preguntas_entretenimiento.txt"), 'r',encoding='utf-8')
 
     # se crea una lista en base a el indice de la pregunta
     with archivo as f:
         data = f.readlines()[((num_p*5)):(num_p*5)+5]
 
     # se imprime la pregunta linea a linea basado en la lista
-    print(Fore.WHITE + pos(5,12) + data[0].strip())
+
+    # Debido a que hay enunciados muy largos si este supero cierta longitud se hara un salto de linea cuando encuentre un espacio despues de ese limite dado
+    if len(data[0]) > 90:
+        for i in range(90, len(data[0]) - 1):
+            if data[0][i] == ' ':
+                print(Fore.WHITE + pos(5,12) + data[0][:i] + '\n' + 5 * ' ' + data[0][i + 1:].strip())
+                break
+    else:
+        print(Fore.WHITE + pos(5,12) + data[0].strip())
+
     print(Fore.WHITE + pos(5,14) + "A) " + data[1].strip())
     print(Fore.WHITE + pos(5,15) + "B) " + data[2].strip())
     print(Fore.WHITE + pos(5,16) + "C) " + data[3].strip())
@@ -278,7 +287,7 @@ def imprimir_info(jugador,ronda,turno,tipo_casilla,categoria):
         print(Fore.MAGENTA + pos(5,9) +"Categoria: Entretenimiento")
 
 def main():
-    os.system('mode con: cols=100 lines=35') #Ajustar tamaño de consola
+    os.system('mode con: cols=100 lines=35') #Ajustar tama�o de consola
     init(autoreset=True) #inicializar colorama
     jugador = []
     Casilla = []
@@ -337,8 +346,8 @@ def main():
             if salir==True:
                 break
             temp = 30
-            Turno_actual = turnos[iterator]#Turno_actual -> Representa el turno actual de la partida. 
-            Tipo_casilla_actual = Casilla[jugador[Turno_actual].casilla].tipo#Tipo_casilla_actual -> Representa el tipo de la casilla en la que se encuentra el jugador.
+            Turno_actual = turnos[iterator]#Turno_actual -> Representa el turno actual de la partida.
+            Tipo_casilla_actual= Casilla[jugador[Turno_actual].casilla].tipo#Tipo_casilla_actual -> Representa el tipo de la casilla en la que se encuentra el jugador.
             num_c = Casilla[jugador[Turno_actual].casilla].categoria #num_c ->numero de categoria actual.
             num_p = obtener_numero_pregunta(jugador,num_c, Turno_actual, ronda) #num_p ->numero de la pregunta actual.
             os.system('cls')
@@ -351,7 +360,7 @@ def main():
             if Tipo_casilla_actual == 1: #Si el tipo de casilla es Trivia Double el tiempo para responder sera la mitad
                 temp = 15
 
-            while temp + 1 > 0: #Bucle que controla la pregunta, espera una entrada del usuario y controla el temporizador (temp)
+            while temp + 1> 0: #Bucle que controla la pregunta, espera una entrada del usuario y controla el temporizador (temp)
 
                 sleep(1) #cada segundo el temporizador disminuye en 1
                 os.system('cls')
@@ -360,6 +369,7 @@ def main():
                 imprimir_pregunta(num_c, num_p)
 
                 if msvcrt.kbhit(): # Condicion que revisa si se presiono una tecla, en tal caso se guarda en la variable rta
+                    temp = 30
                     rta = (chr(ord(msvcrt.getch()))).upper()  # conversion de la entrada a ascii -> chr -> mayuscula (esto porque getch agrega un 'b' a cualquier entrada)
                     print(Fore.WHITE + pos(5,22) + "Escogio la opcion:", rta)
                     sleep(2.5)
