@@ -1,11 +1,19 @@
-from random import randint
-import random
-import pygame
-import os
-import time
-from pygame.constants import NOEVENT
+"""
+MIND QUARE - Juego interactivo de preguntas con tablero.
+Tablero del juego programado con pygame(Edicion Beta).
+Desarrollado por:
+    -Camilo Andres Cuello
+    -Juan Andres Orozco
+    -Santiago Ospina
+Universidad Nacional de Colombia.
+"""
+from random import randint #Se importa la funcion randint de random
+import random #Se importa las demas funciones de random
+import pygame #Se importa libreria pygame para la interfaz y las funciones del juego
+import os #Libreria para utilzar funciones del OS (Unused)
+import time #Libreria para hacer manejar tiempos y retrasos en funciones
 
-# Definir Colores
+# Definir Colores en RGB
 BLACK = [0, 0, 0]
 WHITE = [255, 255, 255]
 RED = [255, 0, 0]
@@ -18,9 +26,11 @@ screen_size = [900, 580] #ancho y largo de la ventana
 roll = False #Determina si giran los dados.
 count = 0
 
+#Se declaran las imagenes de los dados.
 IMAGE1 = 'Resources\Images\Dice1.png'
 IMAGE2 = 'Resources\Images\Dice1.png'
 
+#Se crea la clase de las casillas como objetos, generando metodos para diferenciar sus funciones.
 class Squares(pygame.sprite.Sprite):
     """
     Esta clase trae todas las casillas como metodos a llamar
@@ -66,7 +76,11 @@ class Squares(pygame.sprite.Sprite):
         elif self.color == 3 or self.color == 6:
             self.Trivia_NONE()
 
+#Se crea la clase de los dados.
 class Dices(object):
+    """
+    Esta clase contiene las caracteristicas y metodos de los dados.
+    """
     def __init__(self, screen):
         self.screen = screen
         self.dices_size = [30, 30]
@@ -74,20 +88,31 @@ class Dices(object):
         self.dice1_value = 0
 
     def print_dice(self,image,num):
-        self.image = pygame.image.load(image).convert()
-        self.image = pygame.transform.smoothscale(self.image, self.dices_size)
+        """
+        Metodo que carga la imagen del dado desde su directorio, la escala y la imprime.
+        """
+        self.image = pygame.image.load(image).convert()#Carga la imagen
+        self.image = pygame.transform.smoothscale(self.image, self.dices_size)#Escala la imagen
+        #Si el parametro *num* es 1, imprime el dado en la primera posicion, sino en la segunda.
         if num==1:
             self.screen.blit(self.image,(15, 545))
         else:
             self.screen.blit(self.image, (48, 545))
-        time.sleep(0.1)
-    
+        time.sleep(0.1)#Sleep para no hacer iteraciones tan aceleradas.
+
     def roll_dice(self,roll,imagen):
-        keys = pygame.key.get_pressed()
+        """
+        Metodo que al detectar que se preciona SPACE, comienza a generar numeros random, el cual permite retornar:
+            -Imagen caracteristica del numero del dado.
+            -Valor entero del dado, es decir los espacios que se movera el jugador
+        """
+        keys = pygame.key.get_pressed()#Guarda en una variable que se presiona SPACE
+        #Si se presiona y no esta girando, lo pone a girar; pero si esta girando y se presiona, lo detiene
         if keys[pygame.K_SPACE] and roll == False:
             roll = True
         elif roll == True and keys[pygame.K_SPACE]:
             roll = False
+        #Mientras la variable roll sea True, se mantendra retornando valores random.
         if roll == True:
             self.count += 1
             num = random.randint(1, 6)
@@ -114,11 +139,14 @@ class Dices(object):
         return imagen, self.dice1_value
 
 
-
-
-
 class Player(pygame.sprite.Sprite):
+    """
+    Clase del jugador
+    """
     def __init__(self, image,plus_pos, size):
+        """
+        Caracteristicas principales del jugador.
+        """
         super().__init__()
         self.image = pygame.image.load(image).convert()
         self.image = pygame.transform.smoothscale(self.image, size)
@@ -141,6 +169,9 @@ class Player(pygame.sprite.Sprite):
         #self.move_casilla += 1
 
     def update(self):
+        """
+        Actualiza la posicion de el objeto.
+        """
         self.rect.x = self.speed_x
         self.rect.y = 460 + self.speed_y
         self.score = int(self.points)
@@ -148,19 +179,26 @@ class Player(pygame.sprite.Sprite):
 
 
 class Game(object):
+    """
+    Clase que ejecuta el juego.
+    """
     def __init__(self):
         """
         Metodo que inicializa la clase.
         """
+        #Se declaran las fuentes que se utilizaran
         self.fuente = pygame.font.SysFont('Verdana', 11)
         self.fuente2 = pygame.font.SysFont('Verdana', 15)
+        #Se coloca el titulo de la ventana
         pygame.display.set_caption("Tablero")
+        #Lista que guarda el identificador de la casilla
         self.colores = []
+        #Se crean grupos para añadirles a los jugadores como Sprites(objetos que colisionan.)
         self.player_sprites_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
+        #Se crean los jugadores
         self.player1 = Player('Resources\Images\player1.png',-10,(30,60))
         self.player2 = Player('Resources\Images\player2.png',20,(30,60))
-        
 
     def process_events(self):
         """
@@ -209,12 +247,15 @@ class Game(object):
         """
         En este metodo se ejecuta toda la logica del programa.
         """
+        #Se llena la lista de las casillas
         for i in range(60):
             valor = randint(1,6)
             self.colores.append(valor)
 
+        #Se añaden los jugadores a los grupos de sprites.
         self.all_sprites_list.add(self.player1)
         self.all_sprites_list.add(self.player2)
+        #Se ejecuta la funcion de atualizar en los dos jugadores.
         self.all_sprites_list.update()
 
     def display_frame(self, screen):
@@ -248,12 +289,13 @@ class Game(object):
                     n_square += 1
             pos_S -= 90
 
-
+        #Se dibujan los dos jugadores desde su lista de Sprites
         self.all_sprites_list.draw(screen)
 
         global IMAGE1
         global IMAGE2
 
+        #Se crean los dados y luego se imprimen en la pantalla.
         DADO1 = Dices(screen)
         IMAGE1 = DADO1.roll_dice(roll,IMAGE1)[0]
         VALUE1 = DADO1.roll_dice(roll,IMAGE1)[1]
@@ -264,30 +306,35 @@ class Game(object):
         VALUE2 = DADO1.roll_dice(roll,IMAGE1)[1]
         DADO2.print_dice(IMAGE2, 2)
 
+        #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
         score_p1 = self.fuente2.render(f'Jugador 1: {self.player1.score}',1, WHITE)
         screen.blit(score_p1,(150,screen_size[1]-30))
 
         score_p2 = self.fuente2.render(f'Jugador 2: {self.player2.score}',1, WHITE)
         screen.blit(score_p2,(300,screen_size[1]-30))
 
-        
         pygame.display.flip()  # Refresca la ventana
 
 def main():
+    """
+    Funcion principal que ejecuta mediante un bucle infinito el juego.
+    """
+    #Se inicializa la ventana de pygame
     pygame.init()
-    
+
     screen = pygame.display.set_mode(screen_size)  # Medidas
     running = True
     clock = pygame.time.Clock()  # Controla las fps
     game = Game()
 
+    #Bucle infinito que corre el juego.
     while running:
         running = game.process_events()
         game.run_logic()
         game.display_frame(screen)
         clock.tick(60) # 60fps
-    
     pygame.quit()
 
+#Condicional que verifica si se ejecuta desde el archivo, o se esta importando para llamar al main().
 if __name__ == '__main__':
     main()

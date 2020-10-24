@@ -1,19 +1,32 @@
-from tkinter import *
-from tkinter import ttk
-from tkinter import messagebox
-from tkinter import filedialog
-import sqlite3
-import tablero
+"""
+MIND QUARE - Juego interactivo de preguntas con tablero.
+Registro y acceso al juego programado con Tkinter(Edicion Beta).
+Desarrollado por:
+    -Camilo Andres Cuello
+    -Juan Andres Orozco
+    -Santiago Ospina
+Universidad Nacional de Colombia.
+"""
+from tkinter import * #Se importan todos los elementos de Tkinter
+from tkinter import ttk #Se importa el metodo ttk de Tkinter
+from tkinter import messagebox #Se importa el metodo ttk de Tkinter
+from tkinter import filedialog #Se importa el metodo ttk de Tkinter
+import sqlite3 #Se importa la libreria para maneja la base de datos
+import tablero #Se importa el archivo del tablero.
 class Aplicacion:
+    """
+    Clase que inicaliza y crea la ventana de inicio de sesion.
+    """
     def __init__(self):
         # ----------CARACTERISTECAS DE VENTANA-------------------
         self.root = Tk()
+        #Obtener medidas de pantalla para centrar ventana.
         self.sw = self.root.winfo_screenwidth()
         self.sh = self.root.winfo_screenheight()
         self.x = self.sw // 3
         self.y = self.sh // 4
         self.root.title("LogIn")
-        self.root.iconbitmap("Resources\Images\GameLogo.ico")
+        self.root.iconbitmap("Resources\Images\GameLogo.ico")# Se carga el icono
         self.root.geometry(f"450x430+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
         self.root.resizable(width=False, height=False)
         self.root.config(bg="#F0F1F2")
@@ -43,6 +56,7 @@ class Aplicacion:
         self.Bienvenida.place(x=2, y=205)
 
         # ------------------LOG IN-----------------------------
+        #Creacion de label y entry para el correo
         self.emailLabel = Label(
             self.root,
             text="Introduzca su E-mail:",
@@ -56,6 +70,7 @@ class Aplicacion:
         self.emailEntry.place(x=150, y=300)
         self.emailEntry.focus()
 
+        #Creacion de label y entry para la constraseña
         self.passLabel = Label(
             self.root,
             text="Introduzca su password:",
@@ -84,19 +99,28 @@ class Aplicacion:
         self.bSalir = Button(self.root, text="salir", command=self.root.destroy)
         self.bSalir.pack(side=BOTTOM)
 
+        #Se llama metodo que inicializa la base de datos.
         self.conexion_db()
 
         # --------------MAINLOOP-------------------------
         self.root.mainloop()
-    
+
     # ---------------METODOS ----------------------
 
     # ---------------CONEXION DATABASE---------------------------
     def conexion_db(self):
+        """
+        Metodo que crea una conexion a la base de datos y un corsor con el que realizamos las funciones.
+        """
         self.miConexion = sqlite3.connect("Resources\Data_base\Ingreso Datos.db")
         self.miCursor = self.miConexion.cursor()
 
     def logIn(self):
+        """
+        Metodo que revisa si el correo y la constraseña son correctos.
+        """
+
+        #Busca en la base de datos si el correo y la constraseña se encuentran a la vez en un mismo usuario.
         self.miCursor.execute(
             "SELECT * FROM USUARIOS WHERE EMAIL='"
             + self.emailvar.get()
@@ -104,22 +128,42 @@ class Aplicacion:
             + self.passvar.get()
             + "'"
         )
+
+        #Se guarda toda la informaicion obtenida como lista en una variable
         self.datosUsuario = self.miCursor.fetchall()
+        #Ejecuta las funciones previas en la base de datos.
         self.miConexion.commit()
+
+        #Si la lista obtenida no es vacia(Coincidieron los datos), cierra esta ventana, y se dirige al tablero.
         if self.datosUsuario != []:
             self.root.destroy()
             #funciones()
             tablero.main()
+        #En cambio si es vacia(No coincidieron los datos), muestra un aviso de que la informacion esta equivocada
         else:
             messagebox.showwarning(
                 "Denegado", "El correo o la constraseña esta equivocado."
             )
 
     def signUp(self):
+        """
+        Metodo que nos dirige a la ventana de registro.
+        """
         self.root.destroy()
         ventanaRegistro()
 
 class ventanaRegistro:
+    """
+    Clase en la que se realiza el registro del jugador.
+    Casos de fallo en email:
+        -Menos de un punto.
+        -Menos de una arroba.
+        -Un punto en el final o al comienzo del email.
+        -Una arroba en el final o al comienzo del email.
+    Casos de fallo en contraseña:
+        -Menor a 8 caracteres.
+        -Que contenga un espacio.
+    """
     def __init__(self):
         # ---------------INTERFAZ REGISTRO---------------
         self.registro = Tk()
@@ -144,6 +188,7 @@ class ventanaRegistro:
         self.segundoFrame = Frame(self.registro)
         self.segundoFrame.pack()
 
+        #Creacion de label y entry para el Nombre
         self.nombreLabel = Label(self.segundoFrame, text="Nombre:", font=("Times New Roman", 12))
         self.nombreLabel.grid(row=0, column=0, pady=18, padx=10)
 
@@ -152,6 +197,7 @@ class ventanaRegistro:
         self.nombreEntry.grid(row=0, column=1, pady=18, padx=10)
         self.nombreEntry.focus()
 
+        #Creacion de label y entry para el apellido
         self.apellidoLabel = Label(
             self.segundoFrame, text="Apellido:", font=("Times New Roman", 12)
         )
@@ -161,6 +207,7 @@ class ventanaRegistro:
         self.apellidoEntry = Entry(self.segundoFrame, textvariable=self.apellidoVar, width=40)
         self.apellidoEntry.grid(row=1, column=1, pady=18, padx=10)
 
+        #Creacion de label y entry para el DNI
         self.DNILabel = Label(self.segundoFrame, text="DNI:", font=("Times New Roman", 12))
         self.DNILabel.grid(row=2, column=0, pady=18, padx=10)
 
@@ -168,6 +215,7 @@ class ventanaRegistro:
         self.DNIEntry = Entry(self.segundoFrame, textvariable=self.DNIVar, width=40)
         self.DNIEntry.grid(row=2, column=1, pady=18, padx=10)
 
+        #Creacion de label y entry para el correo
         self.emailLabel = Label(self.segundoFrame, text="E-mail:", font=("Times New Roman", 12))
         self.emailLabel.grid(row=3, column=0, pady=18, padx=10)
 
@@ -175,6 +223,7 @@ class ventanaRegistro:
         self.emailEntry = Entry(self.segundoFrame, textvariable=self.emailVar, width=40)
         self.emailEntry.grid(row=3, column=1, pady=18, padx=10)
 
+        #Creacion de label y entry para la constraseña 
         self.passLabel = Label(
             self.segundoFrame, text="Constraseña:", font=("Times New Roman", 12)
         )
@@ -202,25 +251,38 @@ class ventanaRegistro:
 
         self.registro.mainloop()
     # ---------------Metodos----------------------
-    
+
     def conexion_db(self):
+        """
+        Metodo que conecta al la base de datos.
+        """
         self.miConexion = sqlite3.connect("Resources\Data_base\Ingreso Datos.db")
         self.miCursor = self.miConexion.cursor()
 
     def volver(self):
+        """
+        Metodo que nos devuelve a la ventana de login.
+        """
         self.registro.destroy()
         main()
 
     def registrar(self):
+        """
+        Metodo que realiza el registro del usuario
+        """
+        #Obtiene todos los datos ingresados y los giarda en su respectiva varia.
         colectaNombre = str(self.nombreVar.get())
         colectaApellido = str(self.apellidoVar.get())
         colectaDNI = str(self.DNIVar.get())
         colectaEmail = str(self.emailVar.get())
         colectaPass = str(self.passVar.get())
+        #Se crean contadores para las arrobas y puntos.
         arrobas = colectaEmail.count("@")
         puntos = colectaEmail.count(".")
+        #Banderas para verificar si el correo y la constraseña son validos.
         validadorE = False
         validadorP = False
+        #Si todos los campos estan vacios va a ir a revisar si el correo y la contraseña son validos.
         if (
             colectaNombre != ""
             or colectaApellido != ""
@@ -228,6 +290,7 @@ class ventanaRegistro:
             or colectaEmail != ""
             or colectaPass != ""
         ):
+            #Revisa casos de fallo en email (Descritos en Docstring).
             if (
                 arrobas != 1
                 or colectaEmail.rfind("@") == len(colectaEmail) - 1
@@ -236,21 +299,29 @@ class ventanaRegistro:
                 or colectaEmail.rfind(".") == len(colectaEmail) - 1
                 or colectaEmail.find(".") == 0
             ):
+                #Si no es valido muestra un aviso
                 messagebox.showwarning("Error", "E-mail inválido.")
             else:
+                #Sino valida la bandera de correo
                 validadorE = True
 
             contador = 0
+            #Recorre la constraseña para encontrar espacios
             for i in colectaPass:
+                #Revisa casos de fallo de contraseña(Descritos en Docstring)
                 if len(colectaPass) < 8 or i == " ":
                     contador += 1
+            #Si se cumple alguno de los casos muestra aviso.
             if contador != 0:
                 messagebox.showwarning("Error", "Constraseña Inválida.")
             else:
+                #Sino valida la bandera de constraseña
                 validadorP = True
         else:
             messagebox.showwarning("Error", "Por Favor Ingresar todos los datos.")
+        #Si las dos banderas son validas y los espacios estan llenos, procede a guardar los atos
         if validadorE and validadorP:
+            #Inserta todos los datos obtenidos en la base de datos.
             self.miCursor.execute(
                 "INSERT INTO USUARIOS VALUES('"
                 + colectaDNI
@@ -264,18 +335,19 @@ class ventanaRegistro:
                 + colectaPass
                 + "')"
             )
-            self.miCursor.execute(
-                "SELECT DNI FROM USUARIOS WHERE DNI=" + colectaDNI
-            )
             self.datoId = self.miCursor.fetchall()
             self.miConexion.commit()
+            #Informa que se realizo el registro.
             messagebox.showinfo("Success", "Registro Satisfactorio.")
             self.volver()
 
 
 def main():
+    """
+    Funcion principale que abre la aplicacion.
+    """
     Aplicacion()
 
-
+#Condicional que revisa si se esta ejecutando desde el archivo se ha importado para poder ejecutar el main. 
 if __name__ == "__main__":
     main()
