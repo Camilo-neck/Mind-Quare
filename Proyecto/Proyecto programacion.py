@@ -1,5 +1,12 @@
-# -*- coding: 850 -*-
-# -*- coding: utf-8 -*-
+"""
+MIND QUARE - Juego interactivo de preguntas con tablero.
+Edicion de consola, en la que se desarrola todo el proceso logico y funcional.
+Desarrollado por:
+    -Camilo Andres Cuello
+    -Juan Andres Orozco
+    -Santiago Ospina
+Universidad Nacional de Colombia.
+"""
 import msvcrt #kbhit->esperar tecla , getch->leer tecla
 from time import sleep #sleep->simular temporizador haciendo que el programa espere 1 segundo entre cada bucle
 import os #system('cls')->limpiar la consola , getcwd-> obtener la ruta actual, tama�o de la consola

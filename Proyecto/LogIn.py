@@ -267,8 +267,7 @@ class ventanaRegistro:
         """
         #Obtiene todos los datos ingresados y los giarda en su respectiva varia.
         colectaNombre = str(self.nombreVar.get())
-        colectaApellido = str(self.apellidoVar.get())
-        colectaDNI = str(self.DNIVar.get())
+        colectaNick = str(self.NICKVar.get())
         colectaEmail = str(self.emailVar.get())
         colectaPass = str(self.passVar.get())
         #Se crean contadores para las arrobas y puntos.
@@ -280,8 +279,7 @@ class ventanaRegistro:
         #Si todos los campos estan vacios va a ir a revisar si el correo y la contraseña son validos.
         if (
             colectaNombre != ""
-            or colectaApellido != ""
-            or colectaDNI != ""
+            or colectaNick != ""
             or colectaEmail != ""
             or colectaPass != ""
         ):
@@ -319,21 +317,15 @@ class ventanaRegistro:
             #Inserta todos los datos obtenidos en la base de datos.
             self.miCursor.execute(
                 "INSERT INTO USUARIOS VALUES('"
-                + colectaDNI
+                + colectaNick
                 + "','"
                 + colectaNombre
-                + "','"
-                + colectaApellido
                 + "','"
                 + colectaEmail
                 + "','"
                 + colectaPass
                 + "')"
             )
-            self.miCursor.execute(
-                "SELECT NICK FROM USUARIOS WHERE NICK=" + colectaDNI
-            )
-            self.datoId = self.miCursor.fetchall()
             self.miConexion.commit()
             #Informa que se realizo el registro.
             messagebox.showinfo("Success", "Registro Satisfactorio.")

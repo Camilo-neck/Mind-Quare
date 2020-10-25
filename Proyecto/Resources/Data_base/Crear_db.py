@@ -6,12 +6,11 @@ miCursor = miConexion.cursor()
 
 #miCursor.execute(
 #    '''CREATE TABLE USUARIOS(
-#        DNI INTEGER PRIMARY KEY,
+#        NICK VARCHAR(15) PRIMARY KEY,
 #        NOMBRE VARCHAR(50) NOT NULL,
-#        APELLIDO VARCHAR(50) NOT NULL,
 #        EMAIL VARCHAR(60) UNIQUE,
 #        PASSWORD VARCHAR(20)
-#    )    
+#    )
 #    '''
 #)
 
