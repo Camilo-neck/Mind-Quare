@@ -57,32 +57,27 @@ class Aplicacion:
         self.Bienvenida.place(x=150, y=205)
         '''
         # ------------------LOG IN-----------------------------
-        #Creacion de label y entry para el correo
-        #self.emailLabel = Label(
-        #    self.root,
-        #    text="Introduzca su E-mail:",
-        #    fg="black",
-        #    font=("Times New Roman", 10),
-        #)
-        self.emailCanva = Canvas(self.root, width=720, height=405, bg='blue')
-        self.emailCanva.place(x=0, y=0)
-        self.emailCanva.create_image(0,0, image = self.imagenPrincipal, anchor='nw')
-        self.emailCanva.create_text(130,290, text='Introduzca su E-mail:', font=('Cascadia Mono SemiBold', 10), fill='white')
-        #self.emailLabel.place(x=95, y=280)
+
+        #Se crea lienzo.
+        self.loginCanva = Canvas(self.root, width=720, height=405, bg='blue')
+        self.loginCanva.place(x=0, y=0)
+
+        #Se aplica imagen de fondo.
+        self.loginCanva.create_image(0,0, image = self.imagenPrincipal, anchor='nw')
+
+        #Se imprime el texto del e-mail
+        self.loginCanva.create_text(130,290, text='Introduzca su E-mail:', font=('Cascadia Mono SemiBold', 10), fill='white')
+
+        #Se crea el entry del email y la variable que recibe lo ingresado
         self.emailvar = StringVar()
         self.emailEntry = Entry(self.root, textvariable=self.emailvar, width=40)
         self.emailEntry.place(x=218, y=280)
         self.emailEntry.focus()
 
-        #Creacion de label y entry para la constraseña
-        """self.passLabel = Label(
-            self.root,
-            text="Introduzca su password:",
-            fg="black",
-            font=("Times New Roman", 10),
-        )
-        self.passLabel.place(x=75, y=310)"""
-        self.emailCanva.create_text(150,320, text='Introduzca su Constraseña:', font=('Cascadia Mono SemiBold', 10), fill='white')
+        #Se imprime textro de constraseña.
+        self.loginCanva.create_text(150,320, text='Introduzca su Constraseña:', font=('Cascadia Mono SemiBold', 10), fill='white')
+
+        #Se crea el el entry de la constraseña y la variable que recibe lo ingresado.
         self.passvar = StringVar()
         self.passlEntry = Entry(
             self.root, textvariable=self.passvar, show="*", width=40
@@ -197,16 +192,7 @@ class ventanaRegistro:
         self.nombreEntry = Entry(self.segundoFrame, textvariable=self.nombreVar, width=40)
         self.nombreEntry.grid(row=0, column=1, pady=18, padx=10)
         self.nombreEntry.focus()
-        '''
-        self.apellidoLabel = Label(
-            self.segundoFrame, text="Apellido:", font=("Times New Roman", 12)
-        )
-        self.apellidoLabel.grid(row=1, column=0, pady=18, padx=10)
 
-        self.apellidoVar = StringVar()
-        self.apellidoEntry = Entry(self.segundoFrame, textvariable=self.apellidoVar, width=40)
-        self.apellidoEntry.grid(row=1, column=1, pady=18, padx=10)
-        '''
         #Creacion de label y entry para el Nickname
         self.NICKLabel = Label(self.segundoFrame, text="Nickname:", font=("Times New Roman", 12))
         self.NICKLabel.grid(row=2, column=0, pady=18, padx=10)
