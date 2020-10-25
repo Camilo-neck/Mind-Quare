@@ -27,7 +27,7 @@ class Aplicacion:
         self.x = self.sw // 3
         self.y = self.sh // 4
         self.root.title("MindQuare")
-        self.root.iconbitmap("Resources\Images\GameLogo.ico")# Se carga el icono
+        self.root.iconbitmap("Resources\Images\Logo_Mindquare.ico")# Se carga el icono
         self.root.geometry(f"550x405+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
         self.root.resizable(width=False, height=False)
         self.root.config(bg="white")
@@ -173,7 +173,7 @@ class ventanaRegistro:
         self.x = self.sw // 3
         self.y = self.sh // 4
         self.registro.title("Registro")
-        self.registro.iconbitmap("Resources\Images\GameLogo.ico")
+        self.registro.iconbitmap("Resources\Images\Logo_Mindquare.ico")
         self.registro.geometry(f"450x430+{self.x}+{self.y}")
         self.registro.resizable(width=False, height=False)
         self.registro.config(bg="#F0F1F2")
