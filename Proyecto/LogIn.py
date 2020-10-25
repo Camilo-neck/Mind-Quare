@@ -28,13 +28,13 @@ class Aplicacion:
         self.y = self.sh // 4
         self.root.title("MindQuare")
         self.root.iconbitmap("Resources\Images\GameLogo.ico")# Se carga el icono
-        self.root.geometry(f"720x405+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
+        self.root.geometry(f"550x405+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
         self.root.resizable(width=False, height=False)
         self.root.config(bg="white")
 
         # -----------IMAGEN INTERFAZ------------------------
 
-        self.imagenPrincipal = PhotoImage(file="Resources\Images\GameLogo.png")
+        self.imagenPrincipal = PhotoImage(file="Resources\Images\GameLogoR.png")
         self.imagenLogo = Label(
             self.root,
             image=self.imagenPrincipal,
@@ -64,40 +64,39 @@ class Aplicacion:
             fg="black",
             font=("Times New Roman", 10),
         )
-        self.emailLabel.place(x=195, y=250)
+        self.emailLabel.place(x=95, y=280)
         self.emailvar = StringVar()
         self.emailEntry = Entry(self.root, textvariable=self.emailvar, width=40)
-        self.emailEntry.place(x=315, y=250)
+        self.emailEntry.place(x=215, y=280)
         self.emailEntry.focus()
 
         #Creacion de label y entry para la constraseña
         self.passLabel = Label(
             self.root,
             text="Introduzca su password:",
-            bg="#C0C0C0",
             fg="black",
             font=("Times New Roman", 10),
         )
-        self.passLabel.place(x=175, y=290)
+        self.passLabel.place(x=75, y=310)
         self.passvar = StringVar()
         self.passlEntry = Entry(
             self.root, textvariable=self.passvar, show="*", width=40
         )
-        self.passlEntry.place(x=315, y=290)
+        self.passlEntry.place(x=215, y=310)
 
         # ------------------BOTÓN SING UP--------------------
 
-        self.bLogIn = Button(self.root, text="SIGN UP", background='#FFE052',command=self.signUp)
-        self.bLogIn.place(x=240, y=325)
+        self.bLogIn = Button(self.root, text="SIGN UP", background='#43046D',foreground='#FFFFFF',command=self.signUp)
+        self.bLogIn.place(x=140, y=355)
 
         # ------------------BOTÓN LOG IN---------------------
 
-        self.bSign = Button(self.root, text="LOG IN", background= '#FFE052' ,command=self.logIn)
-        self.bSign.place(x=420, y=325)
+        self.bSign = Button(self.root, text="LOG IN", background= '#43046D',foreground='#FFFFFF' ,command=self.logIn)
+        self.bSign.place(x=330, y=355)
 
         # -------------------BOTÓN DE SALIR------------------------
-        self.bSalir = Button(self.root, text="salir", background= '#FFE052' ,command=self.root.destroy)
-        self.bSalir.place(x=340,y=360)
+        self.bSalir = Button(self.root, text="SALIR", background= '#43046D',foreground='#FFFFFF' ,command=self.root.destroy)
+        self.bSalir.place(x=250,y=355)
 
         #Se llama metodo que inicializa la base de datos.
         self.conexion_db()
