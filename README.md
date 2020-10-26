@@ -12,6 +12,7 @@ Universidad Nacional de Colombia.
 
 Este proyecto tiene como propósito principal la creación de un videojuego en base a el lenguaje de programación Python:snake: además del uso de los conceptos y métodos aprendidos en el curso programacion de computadores del primer semestre, su temática será la de un juego de preguntas divididas por categorías donde los participantes deberán ir avanzando por un tablero lanzando los dados, dependiendo de la casilla en la que el jugador se sitúe habrá un efecto sobre la partida del mismo. 
 
+<<<<<<< HEAD
 En este avanze se encuentra lo siguiente:
 -Demo de consola "Proyecto programacion.py" que incluye la logica y funcionamiento del juego en la consola cmd.
 -interfaz del tablero "tablero.py" un prototipo de la interfaz que tendra MindQuare en su version final
@@ -29,6 +30,10 @@ Interfaz:
 -sqlite3
 
 Instrucciones:
+=======
+INSTRUCCIONES DEL JUEGO
+
+>>>>>>> e2712005d24bf88f27f6494df84cc1b53ce284a2
 Este es en demo en consola de MindQuare, cuyas reglas son:
 1) Se debe ingresar la cantidad de jugadores (debe ser un numero entero).
 2) Se debe ingresar el nombre de los respectivos jugadores.

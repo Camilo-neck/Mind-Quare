@@ -1,7 +1,7 @@
 from PIL import Image
 
 image = Image.open('GameLogo.png')
-new_image = image.resize((720, 405))
+new_image = image.resize((550, 405))
 new_image.save('GameLogoR.png')
 
 print(image.size) # Output: (1200, 776)

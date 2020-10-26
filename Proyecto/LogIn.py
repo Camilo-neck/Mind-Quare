@@ -27,7 +27,7 @@ class Aplicacion:
         self.x = self.sw // 3
         self.y = self.sh // 4
         self.root.title("MindQuare")
-        self.root.iconbitmap("Resources\Images\GameLogo.ico")# Se carga el icono
+        self.root.iconbitmap("Resources\Images\Logo_Mindquare.ico")# Se carga el icono
         self.root.geometry(f"550x405+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
         self.root.resizable(width=False, height=False)
         self.root.config(bg="white")
@@ -35,15 +35,15 @@ class Aplicacion:
         # -----------IMAGEN INTERFAZ------------------------
 
         self.imagenPrincipal = PhotoImage(file="Resources\Images\GameLogoR.png")
-        self.imagenLogo = Label(
-            self.root,
-            image=self.imagenPrincipal,
-            width=720,
-            height=405,
-            justify="center",
-        )
-        self.imagenLogo.config(bg="white")
-        self.imagenLogo.pack()
+        #self.imagenLogo = Label(
+        #    self.root,
+        #    image=self.imagenPrincipal,
+        #    width=720,
+        #    height=405,
+        #    justify="center",
+        #)
+        #self.imagenLogo.config(bg="white")
+        #self.imagenLogo.pack()
 
         # ------------------FRASE BIENVENIDA--------------------
         '''
@@ -57,32 +57,32 @@ class Aplicacion:
         self.Bienvenida.place(x=150, y=205)
         '''
         # ------------------LOG IN-----------------------------
-        #Creacion de label y entry para el correo
-        self.emailLabel = Label(
-            self.root,
-            text="Introduzca su E-mail:",
-            fg="black",
-            font=("Times New Roman", 10),
-        )
-        self.emailLabel.place(x=95, y=280)
+
+        #Se crea lienzo.
+        self.loginCanva = Canvas(self.root, width=720, height=405, bg='blue')
+        self.loginCanva.place(x=0, y=0)
+
+        #Se aplica imagen de fondo.
+        self.loginCanva.create_image(0,0, image = self.imagenPrincipal, anchor='nw')
+
+        #Se imprime el texto del e-mail
+        self.loginCanva.create_text(130,290, text='Introduzca su E-mail:', font=('Cascadia Mono SemiBold', 10), fill='white')
+
+        #Se crea el entry del email y la variable que recibe lo ingresado
         self.emailvar = StringVar()
         self.emailEntry = Entry(self.root, textvariable=self.emailvar, width=40)
-        self.emailEntry.place(x=215, y=280)
+        self.emailEntry.place(x=218, y=280)
         self.emailEntry.focus()
 
-        #Creacion de label y entry para la constraseña
-        self.passLabel = Label(
-            self.root,
-            text="Introduzca su password:",
-            fg="black",
-            font=("Times New Roman", 10),
-        )
-        self.passLabel.place(x=75, y=310)
+        #Se imprime textro de constraseña.
+        self.loginCanva.create_text(150,320, text='Introduzca su Constraseña:', font=('Cascadia Mono SemiBold', 10), fill='white')
+
+        #Se crea el el entry de la constraseña y la variable que recibe lo ingresado.
         self.passvar = StringVar()
         self.passlEntry = Entry(
             self.root, textvariable=self.passvar, show="*", width=40
         )
-        self.passlEntry.place(x=215, y=310)
+        self.passlEntry.place(x=255, y=310)
 
         # ------------------BOTÓN SING UP--------------------
 
@@ -168,7 +168,7 @@ class ventanaRegistro:
         self.x = self.sw // 3
         self.y = self.sh // 4
         self.registro.title("Registro")
-        self.registro.iconbitmap("Resources\Images\GameLogo.ico")
+        self.registro.iconbitmap("Resources\Images\Logo_Mindquare.ico")
         self.registro.geometry(f"450x430+{self.x}+{self.y}")
         self.registro.resizable(width=False, height=False)
         self.registro.config(bg="#F0F1F2")
@@ -192,16 +192,7 @@ class ventanaRegistro:
         self.nombreEntry = Entry(self.segundoFrame, textvariable=self.nombreVar, width=40)
         self.nombreEntry.grid(row=0, column=1, pady=18, padx=10)
         self.nombreEntry.focus()
-        '''
-        self.apellidoLabel = Label(
-            self.segundoFrame, text="Apellido:", font=("Times New Roman", 12)
-        )
-        self.apellidoLabel.grid(row=1, column=0, pady=18, padx=10)
 
-        self.apellidoVar = StringVar()
-        self.apellidoEntry = Entry(self.segundoFrame, textvariable=self.apellidoVar, width=40)
-        self.apellidoEntry.grid(row=1, column=1, pady=18, padx=10)
-        '''
         #Creacion de label y entry para el Nickname
         self.NICKLabel = Label(self.segundoFrame, text="Nickname:", font=("Times New Roman", 12))
         self.NICKLabel.grid(row=2, column=0, pady=18, padx=10)
