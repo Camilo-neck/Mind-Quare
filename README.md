@@ -15,8 +15,8 @@ En este avance se encuentra lo siguiente:
 -interfaz del tablero "tablero.py" un prototipo de la interfaz que tendra MindQuare en su version final.
 -Login "LogIn.py" un prototipo junto con una base de datos en la que se puede registrar e iniciar sesion para acceder al juego.
 
-Para el correcto funcionamiento de MindQuare se requieren la instalacion las siguientes librerias que no se encuentran instaladas por defecto:
-(Se requiere de sistema operativo windows puesto que se incluyen funciones especificas de la consola cmd)
+Para el correcto funcionamiento de MindQuare se requieren la instalacion las siguientes librerias que no se encuentran instaladas por defecto:📋
+_(Se requiere de sistema operativo windows puesto que se incluyen funciones especificas de la consola cmd)_
 
 Demo de consola:
 -colorama
