@@ -21,6 +21,7 @@ BLUE = [31, 151, 255, 100]
 GREEN = [0, 255, 0]
 PURPLE = [127, 96, 252, 92]
 ORANGE = [255, 136, 22, 100]
+DARK_GREEN = [0,59,44]
 
 screen_size = [900, 580] #ancho y largo de la ventana
 roll = False #Determina si giran los dados.
@@ -49,21 +50,21 @@ class Squares(pygame.sprite.Sprite):
         Casillas que contienen preguntas y adelantan al jugador.
         """
         pygame.draw.rect(self.screen, BLUE, [self.square_pos, self.square_size])
-        pygame.draw.rect(self.screen, BLACK, [self.square_pos, self.square_size], 1)
+        pygame.draw.rect(self.screen, WHITE, [self.square_pos, self.square_size], 1)
 
     def Trivia_DOWN(self):
         """
         Casillas que contienen preguntas que al ser incorrectas devuelven al jugador.
         """
-        pygame.draw.rect(self.screen, ORANGE, [self.square_pos, self.square_size])
-        pygame.draw.rect(self.screen, BLACK, [self.square_pos, self.square_size], 1)
+        pygame.draw.rect(self.screen, GREEN, [self.square_pos, self.square_size])
+        pygame.draw.rect(self.screen, WHITE, [self.square_pos, self.square_size], 1)
 
     def Trivia_NONE(self):
         """
         Casillas que no generan ninguna accion, es decir que son estaticas.
         """
-        pygame.draw.rect(self.screen, GREEN, [self.square_pos, self.square_size])
-        pygame.draw.rect(self.screen, BLACK, [self.square_pos, self.square_size], 1)
+        pygame.draw.rect(self.screen, DARK_GREEN, [self.square_pos, self.square_size])
+        pygame.draw.rect(self.screen, WHITE, [self.square_pos, self.square_size], 1)
 
     def DrawSquare(self):
         """
