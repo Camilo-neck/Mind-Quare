@@ -1,6 +1,6 @@
-﻿# MIND QUARE 
- Juego interactivo de preguntas con tablero.
-
+﻿# Proyecto
+ Mind Quare V.1.0 - Juego interactivo de preguntas con tablero.
+ Grupo #1
 Desarrollado por:
     -Camilo Andres Cuello
     -Juan Andres Orozco
@@ -8,7 +8,7 @@ Desarrollado por:
 
 Universidad Nacional de Colombia.
 
-Este proyecto tiene como propósito principal la creación de un videojuego en base a el lenguaje de programación Python :snake: además del uso de los conceptos y métodos aprendidos en el curso programacion de computadores del primer semestre, su temática será la de un juego de preguntas divididas por categorías donde los participantes deberán ir avanzando por un tablero lanzando los dados, dependiendo de la casilla en la que el jugador se sitúe habrá un efecto sobre la partida del mismo. 
+Objetivo: Videojuego en base a el lenguaje de programación Python :snake:, su temática será la de un juego de preguntas divididas por categorías donde los participantes deberán ir avanzando por un tablero lanzando los dados, dependiendo de la casilla en la que el jugador se sitúe habrá un efecto sobre la partida del mismo. 
 
 En este avance se encuentra lo siguiente:
 -Demo de consola "Proyecto programacion.py" que incluye la logica y funcionamiento del juego en la consola cmd.
@@ -19,12 +19,14 @@ Para el correcto funcionamiento de MindQuare se requieren la instalacion las sig
 _(Se requiere de sistema operativo windows puesto que se incluyen funciones especificas de la consola cmd)_
 
 Demo de consola:
--colorama
+-colorama : 
+pip install colorama
 
 Interfaces:
--pygame
--tkinter
--sqlite3
+-pygame : 
+pip install pygame==2.0.0.dev18 
+-tkinter : 
+pip install tk
 
 INSTRUCCIONES DEL JUEGO
 
