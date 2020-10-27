@@ -41,4 +41,4 @@ Este es en demo en consola de MindQuare, cuyas reglas son:
    - Trivia Normal, avanza o retrocede normalmente.
    - Trivia Double, avanza o retrocede el doble.
    - Trivia back or advance 1, retrocede o avanza solo 1.
-6) Gana el jugador que llegue a la casilla numero 60.
+6) Gana el primer jugador que llegue a la casilla numero 60.
