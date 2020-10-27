@@ -1,5 +1,5 @@
-﻿# Proyecto
- Mind Quare V.1.0 - Juego interactivo de preguntas con tablero.
+﻿# Mind Quare V.1.0 
+ Juego interactivo de preguntas con tablero.
  Grupo #1
 Desarrollado por:
     -Camilo Andres Cuello
@@ -41,4 +41,4 @@ Este es en demo en consola de MindQuare, cuyas reglas son:
    - Trivia Normal, avanza o retrocede normalmente.
    - Trivia Double, avanza o retrocede el doble.
    - Trivia back or advance 1, retrocede o avanza solo 1.
-6) Gana el jugador que llegue a la casilla numero 60.
+6) Gana el primer jugador que llegue a la casilla numero 60.
