@@ -50,21 +50,21 @@ class Squares(pygame.sprite.Sprite):
         Casillas que contienen preguntas y adelantan al jugador.
         """
         pygame.draw.rect(self.screen, BLUE, [self.square_pos, self.square_size])
-        pygame.draw.rect(self.screen, WHITE, [self.square_pos, self.square_size], 1)
+        pygame.draw.rect(self.screen, PURPLE, [self.square_pos, self.square_size], 2)
 
     def Trivia_DOWN(self):
         """
         Casillas que contienen preguntas que al ser incorrectas devuelven al jugador.
         """
-        pygame.draw.rect(self.screen, GREEN, [self.square_pos, self.square_size])
-        pygame.draw.rect(self.screen, WHITE, [self.square_pos, self.square_size], 1)
+        pygame.draw.rect(self.screen, ORANGE, [self.square_pos, self.square_size])
+        pygame.draw.rect(self.screen, WHITE, [self.square_pos, self.square_size], 2)
 
     def Trivia_NONE(self):
         """
         Casillas que no generan ninguna accion, es decir que son estaticas.
         """
-        pygame.draw.rect(self.screen, DARK_GREEN, [self.square_pos, self.square_size])
-        pygame.draw.rect(self.screen, WHITE, [self.square_pos, self.square_size], 1)
+        pygame.draw.rect(self.screen, GREEN, [self.square_pos, self.square_size])
+        pygame.draw.rect(self.screen, RED, [self.square_pos, self.square_size], 2)
 
     def DrawSquare(self):
         """
