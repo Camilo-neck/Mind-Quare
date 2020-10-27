@@ -1,5 +1,5 @@
-﻿# Proyecto
- Mind Quare V.1.0 - Juego interactivo de preguntas con tablero.
+﻿# Mind Quare V.1.0 
+ Juego interactivo de preguntas con tablero.
  Grupo #1
 Desarrollado por:
     -Camilo Andres Cuello
