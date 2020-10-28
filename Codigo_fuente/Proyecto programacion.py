@@ -15,6 +15,16 @@ from colorama import * #colores y posicion de texto
 
 #creamos la clase player la cual tendra los datos del jugador
 class player:
+    """
+    Clase de jugador que almacena toda la informacion del mismo.
+    :param string nombre: Nombre del jugador.
+    :param int casilla: Posicion actual del jugador. 
+    :param list preguntas_M: Lista con el orden de las preguntas de matematicas
+    :param list preguntas_H: Lista con el orden de las preguntas de historia
+    :param list preguntas_G: Lista con el orden de las preguntas de geografia
+    :param list preguntas_C: Lista con el orden de las preguntas de ciencia
+    :param list preguntas_E: Lista con el orden de las preguntas de entretenimiento
+    """
     def __init__(self,
                 nombre,
                 casilla,
@@ -35,16 +45,28 @@ class player:
 
 #Creamos la clase Square que contiene los datos de las casillas
 class Square:
+    """
+    Clase que contiene caracteristicas de la casilla.
+    :param int categoria: Categoria de la pregunta que saldra
+    :param int tipo: Tipo de la casilla especifica para reconocer el efecto de la misma sobre el jugador
+    """
     def __init__(self,categoria,tipo):
         self.categoria = categoria
         self.tipo = tipo
 
-#funcion para ubicar el cursor en la consola (solo funciona en conjunto con Fore de colorama)
 def pos(x,y):
+    """
+    Ubicar el cursor en la consola.
+    :param int x: Posicion x
+    :param int y: Posicion y
+    :return: string
+    """
     return f'\x1b[{str(y)};{str(x)}H'
 
-#funcion para imprimir el titulo del juego (MIND QUARE)
 def imprimir_titulo():
+    """
+    Imprime un titulo desde un archivo.(Mind Quare)
+    """
     Title = open((os.getcwd() + "\Resources\Title\Titulo.txt"), 'r')
     with Title as f:
         lineas = f.readlines()[:]
@@ -54,8 +76,10 @@ def imprimir_titulo():
     print(Fore.CYAN + pos(14,14) + (lineas[2]).strip())
     print(Fore.GREEN + pos(14,15) + (lineas[3]).strip())
 
-#funcion para mostrar las instrucciones en pantalla y esperar una tecla para continuar
 def Instrucciones():
+    """
+    Imprime las instrucciones del juego desde un archivo.
+    """
     archivo = open((os.getcwd() + "\Resources\Instrucciones\Instrucciones.txt"), 'r')
     with archivo as f:
         data = f.readlines()[:]
@@ -72,8 +96,10 @@ def Instrucciones():
         if msvcrt.kbhit():
             break
 
-#funcion para mostrar el titulo,mostrar las instrucciones(dado el caso), esperar una tecla y mostrar string parpadeante
 def pantalla():
+    """
+    Mostrar el titulo,mostrar las instrucciones(dado el caso), esperar una tecla y mostrar string parpadeante
+    """
     B = 1
     while True: #mostrar string parpadeante intercalando B entre 0 y 1 cada n segundos
         if B==1:
@@ -93,8 +119,12 @@ def pantalla():
     if opciones == 'I': #si la tecla ingresada es una i entonces se dirige a instrucciones
         Instrucciones()
 
-#esta funcion sirve para craar una lista en la que en cada indice se encuentra una clase player hasta la cantidad de jugadores
 def crear_jugadores(jugador,cant_jugadores):
+    """
+    Crea una lista en la que en cada indice se encuentra una clase player hasta la cantidad de jugadores.
+    :param list jugador: Lista vacia en que agregaran los jugadores.
+    :param int cant_jugadores: Cantidad de jugadores que se participaran.
+    """
     y=13
     for i in range(0,cant_jugadores):
         print(Fore.WHITE + pos(28,y) + "Ingrese el nombre del jugador", i+1, ": ",end='')
@@ -109,23 +139,34 @@ def crear_jugadores(jugador,cant_jugadores):
 
         jugador[i] = player(name,square,questions_M,questions_H,questions_G,questions_C,questions_E)
 
-#funcion para asignarle los atributos de tipo y categoria a cada casilla y crear una lista de 60 casillas
 def crear_casillas(Casilla):
+    """
+    Asignar los atributos de tipo y categoria a cada casilla y crear una lista de 60 casillas.
+    :param list Casilla: Lista vacia en que se agregaran los tipos de casilla.
+    """
     for i in range(0,60):
         type = randint(0,2)
         category = randint(0,4)
         Casilla[i] = Square(category,type)
 
-#funcion para crear lista de numeros aleatorios en la que no se repitan numeros
 def lista_aleatoria(cant):
+    """
+    Crear lista de numeros aleatorios en la que no se repitan numeros.
+    :param int cant: Determina la cantidad de elementos deseados en la lista.
+    """
     lista=[]
     for i in range(0,cant):
         lista.append(i)
     shuffle(lista)
     return lista
 
-#funcion para crear un orden especifico y aleatorio de las preguntas de cada categoria para cada jugador
 def crear_orden_preguntas(jugador,cant_preguntas,cant_jugadores):
+    """
+    Crear un orden especifico y aleatorio de las preguntas de cada categoria para cada jugador.
+    :param list jugador: Lista de jugadores en base a la clase player
+    :param int cant_preguntas: Cantidad de preguntas en cada categoria
+    :param int cant_jugadores: Cantidad de jugadores que participaran
+    """
     for i in range(0,cant_jugadores):
         jugador[i].preguntas_M = lista_aleatoria(cant_preguntas)
         jugador[i].preguntas_H = lista_aleatoria(cant_preguntas)
@@ -133,8 +174,15 @@ def crear_orden_preguntas(jugador,cant_preguntas,cant_jugadores):
         jugador[i].preguntas_C = lista_aleatoria(cant_preguntas)
         jugador[i].preguntas_E = lista_aleatoria(cant_preguntas)
 
-#funcion que retorna el numero de la pregunta que corresponde a una categoria en especifico y a el jugador actual
 def obtener_numero_pregunta(jugador,num_c,turno,n_ronda):
+    """
+    Retorna el numero de la pregunta que corresponde a una categoria en especifico y a el jugador actual.
+    :param list jugador: Lista de jugadores en base a la clase player
+    :param int num_c: Numero de la categoria
+    :param int turno: El turno del usuario que debe jugar
+    :param int n_ronda: Numero de la ronda que se ejecuta.
+    :return: int
+    """
     if num_c == 0:
         return jugador[turno].preguntas_M[n_ronda]
     elif num_c == 1:
@@ -146,8 +194,12 @@ def obtener_numero_pregunta(jugador,num_c,turno,n_ronda):
     elif num_c == 4:
         return jugador[turno].preguntas_E[n_ronda]
 
-#funcion para imprimir las preguntas, esta lee un archivo que las incluye y las imprime dependiendo de el numero de pregunta y de categoria
 def imprimir_pregunta(num_c,num_p):
+    """
+    Imprimir las preguntas, leer un archivo que las incluye y las imprime dependiendo de el numero de pregunta y de categoria.
+    :param int num_c: Numero de la categoria a leer
+    :param int num_p: Numero de pregunta a leer
+    """
 
     # se obtiene la ruta del archivo y este se abre (Guardar los archivos con la codificacion utf-8, y pasar como parametro(encoding='utf-8'))
     if num_c==0:
@@ -183,8 +235,12 @@ def imprimir_pregunta(num_c,num_p):
 
     archivo.close() #se cierra el archivo
 
-#Funcion para aquellos casos en los que no ocurren cambios de la poscicion del jugador
 def sin_cambios(jugador,turno):
+    """
+    Funcion para aquellos casos en los que no ocurren cambios de la poscicion del jugador.
+    :param list jugador: Lista del jugador en base a la clase player
+    :param int turno: Turno del usuario que debe jugar
+    """
     print('\n',jugador[turno].nombre, "se queda en la casilla",jugador[turno].casilla)
 
 '''
@@ -198,8 +254,14 @@ Tipos de casillas y su funcion para correcto e incorrecto:
         Incorrecto -> Retrocede lo indicado por los dados
 '''
 
-#Funcion que sirve para afectar positivamente al jugador dependiendo de el tipo de casilla en la que se encuentra
 def correcto(jugador,turno,dados,tipo_casilla):
+    """
+    Afectar positivamente al jugador dependiendo de el tipo de casilla en la que se encuentra.
+    :param list jugador: Lista del jugador en base a la clase player
+    :param int turno: Turno del usuario que debe jugar
+    :param int dados: Valor retornado por los dados
+    :param int tipo_casilla: Tipo de la casilla que afectara al jugador
+    """
     print(Fore.GREEN + pos(5,19) + "CORRECTO")
 
     if tipo_casilla == 0:
@@ -214,8 +276,15 @@ def correcto(jugador,turno,dados,tipo_casilla):
         print(Fore.WHITE + pos(5,21) + jugador[turno].nombre, "avanzo", 1, "casilla")
         jugador[turno].casilla += 1
 
-#Funcion que sirve para afectar negativamente al jugador dependiendo de el tipo de casilla en la que se encuentra
 def incorrecto(jugador,turno,dados,tipo_casilla,temp=1):
+    """
+    Afectar negativamente al jugador dependiendo de el tipo de casilla en la que se encuentra.
+    :param list jugador: Lista del jugador en base a la clase player
+    :param int turno: Turno del usuario que debe jugar
+    :param int dados: Valor retornado por los dados
+    :param int tipo_casilla: Tipo de la casilla que afectara al jugador
+    :param int temp: Temporizador del turno
+    """
     if temp > 0:
         print(Fore.RED + pos(5,19) +"INCORRECTO")
     else:
@@ -237,8 +306,22 @@ def incorrecto(jugador,turno,dados,tipo_casilla,temp=1):
     else:
         print(Fore.WHITE + pos(5,21) + jugador[turno].nombre, "retrocedio", dados, "casillas")
 
-#funcion para revisar la validez de la respuesta intruducida
 def revisar_respuesta(jugador,num_c,num_p,rta,turno,dados,tipo_casilla,RM,RH,RG,RC,RE):
+    """
+    Revisar la validez de la respuesta intruducida.
+    :param list jugador: Lista del jugador en base a la clase player
+    :param int num_c: Numero de la categoria
+    :param int num_p: Numero de la pregunta a revisar
+    :param string rta: Respuesta ingresada por el usuario
+    :param int turno: Turno del usuario que debe jugar
+    :param int dados: Valor que retornan los dados
+    :param int tipo_casilla: Tipo de la casilla actual
+    :param list RM: Lista de respuestas de matematicas
+    :param list RH: Lista de respuestas de historia
+    :param list RG: Lista de respuestas de geografia
+    :param list RC: Lista de respuestas de ciencia
+    :param list RE: Lista de respuestas de entretenimiento
+    """
     #Se declara la lista respuesta segun el parametro de su categoria (se hace en base a la lista de respuestas de cada categoria, las cuales de pasan como parametro)
     if num_c==0:
         respuestas=RM
@@ -256,8 +339,11 @@ def revisar_respuesta(jugador,num_c,num_p,rta,turno,dados,tipo_casilla,RM,RH,RG,
     else:
         incorrecto(jugador,turno,dados,tipo_casilla)
 
-#funcion para simular el lanzamiento de 2 dados la cual da 2 numeros aleatorios entre 1 y 6 inclusive, esto tambien lo muestra en pantalla
 def lanzar_dados():
+    """
+    Simular el lanzamiento de 2 dados la cual da 2 numeros aleatorios entre 1 y 6 inclusive, esto tambien lo muestra en pantalla.
+    :return: int
+    """
     print(Fore.WHITE + pos(5,11) + "Lanzando dados...")
     sleep(1.5)
     d1 = randint(1, 6)
@@ -271,8 +357,15 @@ def lanzar_dados():
     sleep(2)
     return dados
 
-#funcion para imprimir la informacion del jugador actual
 def imprimir_info(jugador,ronda,turno,tipo_casilla,categoria):
+    """
+    Imprimir la informacion del jugador actual
+    :param list jugador: List de jugadores en base a clase player
+    :param int ronda: Numero de la ronda actual
+    :param int turno: Turno del usuario que debe jugar
+    :param tipo_casilla: Tipo de la callsilla en la que esta el jugador
+    :param int categoria: Categoria de la pregunta
+    """
     print(Fore.WHITE + pos(5,5) + "RONDA", ronda+1, "\n")
     print(Fore.WHITE + pos(5,6) + "Turno de", jugador[turno].nombre)
     print(Fore.WHITE + pos(5,7) +"Casilla actual:", jugador[turno].casilla)
@@ -294,6 +387,9 @@ def imprimir_info(jugador,ronda,turno,tipo_casilla,categoria):
         print(Fore.MAGENTA + pos(5,9) +"Categoria: Entretenimiento")
 
 def main():
+    """
+    Funcion principal del programa
+    """
     os.system('mode con: cols=100 lines=35') #Ajustar tama�o de consola
     init(autoreset=True) #inicializar colorama
     jugador = []
