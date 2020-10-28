@@ -38,7 +38,11 @@ class Squares(pygame.sprite.Sprite):
     """
     def __init__(self, x_pos, y_pos, screen, color):
         """
-        Caracteristicas de todas las casillas
+        Caracteristicas de todas las casillas.
+        :param int x_pos: Posicion x de la casilla
+        :param int y_pos: Posicion y de la casilla
+        :param class screen: Superficie se ubican elementos
+        :param list color: Lista con el tipo de las casillas
         """
         self.square_size = [90, 90]
         self.square_pos = [x_pos, y_pos]
@@ -79,10 +83,11 @@ class Squares(pygame.sprite.Sprite):
 
 #Se crea la clase de los dados.
 class Dices(object):
-    """
-    Esta clase contiene las caracteristicas y metodos de los dados.
-    """
     def __init__(self, screen):
+        """
+        Esta clase contiene las caracteristicas y metodos de los dados.
+        :param class screen: Superficie donde se ubican elementos
+        """
         self.screen = screen
         self.dices_size = [30, 30]
         self.count = count
@@ -91,6 +96,8 @@ class Dices(object):
     def print_dice(self,image,num):
         """
         Metodo que carga la imagen del dado desde su directorio, la escala y la imprime.
+        :param string image: Direccion de la imagen
+        :param int num: Identificador de dado
         """
         self.image = pygame.image.load(image).convert()#Carga la imagen
         self.image = pygame.transform.smoothscale(self.image, self.dices_size)#Escala la imagen
@@ -103,9 +110,11 @@ class Dices(object):
 
     def roll_dice(self,roll,imagen):
         """
-        Metodo que al detectar que se preciona SPACE, comienza a generar numeros random, el cual permite retornar:
-            -Imagen caracteristica del numero del dado.
-            -Valor entero del dado, es decir los espacios que se movera el jugador
+        Metodo que al detectar que se preciona SPACE, comienza a generar numeros random.
+        :param bool roll: Bandera para empezar a girar el dado
+        :param string imagen: direccion de la imagen
+        :return: string imagen
+        :return: int self.dice1_value
         """
         keys = pygame.key.get_pressed()#Guarda en una variable que se presiona SPACE
         #Si se presiona y no esta girando, lo pone a girar; pero si esta girando y se presiona, lo detiene
@@ -139,14 +148,13 @@ class Dices(object):
             return IMAGE, self.dice1_value
         return imagen, self.dice1_value
 
-
 class Player(pygame.sprite.Sprite):
-    """
-    Clase del jugador
-    """
     def __init__(self, image,plus_pos, size):
         """
-        Caracteristicas principales del jugador.
+        Clase del jugador.
+        :param string image: Direccion de imagen
+        :param int plus_pos: Desplazamiento adicional en x
+        :param list size: Lista con medidas x-y de la imagen
         """
         super().__init__()
         self.image = pygame.image.load(image).convert()
@@ -163,6 +171,8 @@ class Player(pygame.sprite.Sprite):
     def movement(self, x, y):
         """
         Movimiento de la fichas
+        :param int x: Cantidad de pixeles en el movimiento en x
+        :param int y: Cantidad de pixeles en el movimiento en y
         """
         self.speed_x += x
         self.speed_y += y
@@ -180,12 +190,9 @@ class Player(pygame.sprite.Sprite):
 
 
 class Game(object):
-    """
-    Clase que ejecuta el juego.
-    """
     def __init__(self):
         """
-        Metodo que inicializa la clase.
+        Clase que ejecuta el juego.
         """
         #Se declaran las fuentes que se utilizaran
         self.fuente = pygame.font.SysFont('Verdana', 11)
@@ -262,6 +269,7 @@ class Game(object):
     def display_frame(self, screen):
         """
         Dibujar todo lo visible en la pantalla.
+        :param class screen: Superficie donde se ubican elementos
         """
         screen.fill(BLACK)
         k = 0
@@ -324,6 +332,7 @@ def main():
     pygame.init()
 
     screen = pygame.display.set_mode(screen_size)  # Medidas
+    print(type(screen))
     running = True
     clock = pygame.time.Clock()  # Controla las fps
     game = Game()

@@ -15,16 +15,6 @@ from colorama import * #colores y posicion de texto
 
 #creamos la clase player la cual tendra los datos del jugador
 class player:
-    """
-    Clase de jugador que almacena toda la informacion del mismo.
-    :param string nombre: Nombre del jugador.
-    :param int casilla: Posicion actual del jugador. 
-    :param list preguntas_M: Lista con el orden de las preguntas de matematicas
-    :param list preguntas_H: Lista con el orden de las preguntas de historia
-    :param list preguntas_G: Lista con el orden de las preguntas de geografia
-    :param list preguntas_C: Lista con el orden de las preguntas de ciencia
-    :param list preguntas_E: Lista con el orden de las preguntas de entretenimiento
-    """
     def __init__(self,
                 nombre,
                 casilla,
@@ -33,6 +23,16 @@ class player:
                 preguntas_G,
                 preguntas_C,
                 preguntas_E):
+        """
+        Clase de jugador que almacena toda la informacion del mismo.
+        :param string nombre: Nombre del jugador.
+        :param int casilla: Posicion actual del jugador. 
+        :param list preguntas_M: Lista con el orden de las preguntas de matematicas
+        :param list preguntas_H: Lista con el orden de las preguntas de historia
+        :param list preguntas_G: Lista con el orden de las preguntas de geografia
+        :param list preguntas_C: Lista con el orden de las preguntas de ciencia
+        :param list preguntas_E: Lista con el orden de las preguntas de entretenimiento
+        """
 
         self.nombre = nombre
         self.casilla = casilla
@@ -45,12 +45,12 @@ class player:
 
 #Creamos la clase Square que contiene los datos de las casillas
 class Square:
-    """
-    Clase que contiene caracteristicas de la casilla.
-    :param int categoria: Categoria de la pregunta que saldra
-    :param int tipo: Tipo de la casilla especifica para reconocer el efecto de la misma sobre el jugador
-    """
     def __init__(self,categoria,tipo):
+        """
+        Clase que contiene caracteristicas de la casilla.
+        :param int categoria: Categoria de la pregunta que saldra
+        :param int tipo: Tipo de la casilla especifica para reconocer el efecto de la misma sobre el jugador
+        """
         self.categoria = categoria
         self.tipo = tipo
 
@@ -153,6 +153,7 @@ def lista_aleatoria(cant):
     """
     Crear lista de numeros aleatorios en la que no se repitan numeros.
     :param int cant: Determina la cantidad de elementos deseados en la lista.
+    :return: list lista
     """
     lista=[]
     for i in range(0,cant):
@@ -181,7 +182,7 @@ def obtener_numero_pregunta(jugador,num_c,turno,n_ronda):
     :param int num_c: Numero de la categoria
     :param int turno: El turno del usuario que debe jugar
     :param int n_ronda: Numero de la ronda que se ejecuta.
-    :return: int
+    :return: int jugador[turno].preguntas_M[n_ronda]
     """
     if num_c == 0:
         return jugador[turno].preguntas_M[n_ronda]
@@ -342,7 +343,7 @@ def revisar_respuesta(jugador,num_c,num_p,rta,turno,dados,tipo_casilla,RM,RH,RG,
 def lanzar_dados():
     """
     Simular el lanzamiento de 2 dados la cual da 2 numeros aleatorios entre 1 y 6 inclusive, esto tambien lo muestra en pantalla.
-    :return: int
+    :return: int dados
     """
     print(Fore.WHITE + pos(5,11) + "Lanzando dados...")
     sleep(1.5)
