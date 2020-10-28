@@ -86,16 +86,16 @@ class Aplicacion:
 
         # ------------------BOTÓN SING UP--------------------
 
-        self.bLogIn = Button(self.root, text="SIGN UP", background='#43046D',foreground='#FFFFFF',command=self.signUp)
+        self.bLogIn = Button(self.root, text="SIGN UP", background='#43046D',foreground='#FFFFFF', activebackground='red',command=self.signUp)
         self.bLogIn.place(x=140, y=355)
 
         # ------------------BOTÓN LOG IN---------------------
 
-        self.bSign = Button(self.root, text="LOG IN", background= '#43046D',foreground='#FFFFFF' ,command=self.logIn)
+        self.bSign = Button(self.root, text="LOG IN", background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.logIn)
         self.bSign.place(x=330, y=355)
 
         # -------------------BOTÓN DE SALIR------------------------
-        self.bSalir = Button(self.root, text="SALIR", background= '#43046D',foreground='#FFFFFF' ,command=self.root.destroy)
+        self.bSalir = Button(self.root, text="SALIR", background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.root.destroy)
         self.bSalir.place(x=250,y=355)
 
         #Se llama metodo que inicializa la base de datos.
@@ -169,69 +169,57 @@ class ventanaRegistro:
         self.y = self.sh // 4
         self.registro.title("Registro")
         self.registro.iconbitmap("Resources\Images\Logo_Mindquare.ico")
-        self.registro.geometry(f"450x430+{self.x}+{self.y}")
+        self.registro.geometry(f"430x450+{self.x}+{self.y}")
         self.registro.resizable(width=False, height=False)
         self.registro.config(bg="#F0F1F2")
+        self.imagenPrincipal = PhotoImage(file="Resources\Images\FondoRegistro2.png")
+        self.registroCanva = Canvas(self.registro, width=430, height=450, bg='blue')
+        self.registroCanva.place(x=0, y=0)
+
+        #---------------FONDO-----------------------------
+        self.registroCanva.create_image(0,0, image = self.imagenPrincipal, anchor='nw')
         
-        # ---------------TÍTULO---------------------------
-        self.primerFrame = Frame(self.registro)
-        self.primerFrame.pack()
-
-        self.titulo = Label(self.primerFrame, text="REGISTRO", font=("Times New Roman", 30))
-        self.titulo.pack()
-
         # ---------------LABELS / ENTRYS -----------------------
-        self.segundoFrame = Frame(self.registro)
-        self.segundoFrame.pack()
 
         #Creacion de label y entry para el Nombre
-        self.nombreLabel = Label(self.segundoFrame, text="Nombre:", font=("Times New Roman", 12))
-        self.nombreLabel.grid(row=0, column=0, pady=18, padx=10)
+        self.registroCanva.create_text(95,210, text='Nombre:', font=('Cascadia Mono SemiBold', 12), fill='white')
 
         self.nombreVar = StringVar()
-        self.nombreEntry = Entry(self.segundoFrame, textvariable=self.nombreVar, width=40)
-        self.nombreEntry.grid(row=0, column=1, pady=18, padx=10)
+        self.nombreEntry = Entry(self.registro, textvariable=self.nombreVar, width=38)
+        self.nombreEntry.place(x=135, y= 205)
         self.nombreEntry.focus()
-
-        #Creacion de label y entry para el Nickname
-        self.NICKLabel = Label(self.segundoFrame, text="Nickname:", font=("Times New Roman", 12))
-        self.NICKLabel.grid(row=2, column=0, pady=18, padx=10)
-
+#
+        ##Creacion de label y entry para el Nickname
+        self.registroCanva.create_text(100,260, text='NickName:', font=('Cascadia Mono SemiBold', 12), fill='white')
+#
         self.NICKVar = StringVar()
-        self.NICKEntry = Entry(self.segundoFrame, textvariable=self.NICKVar, width=40)
-        self.NICKEntry.grid(row=2, column=1, pady=18, padx=10)
-
-        #Creacion de label y entry para el email
-        self.emailLabel = Label(self.segundoFrame, text="E-mail:", font=("Times New Roman", 12))
-        self.emailLabel.grid(row=3, column=0, pady=18, padx=10)
-
+        self.NICKEntry = Entry(self.registro, textvariable=self.NICKVar, width=35)
+        self.NICKEntry.place(x=150, y=255)
+#
+        ##Creacion de label y entry para el email
+        self.registroCanva.create_text(90,310, text='Email:', font=('Cascadia Mono SemiBold', 12), fill='white')
+#
         self.emailVar = StringVar()
-        self.emailEntry = Entry(self.segundoFrame, textvariable=self.emailVar, width=40)
-        self.emailEntry.grid(row=3, column=1, pady=18, padx=10)
-
-        #Creacion de label y entry para la constraseña
-        self.passLabel = Label(
-            self.segundoFrame, text="Constraseña:", font=("Times New Roman", 12)
-        )
-        self.passLabel.grid(row=4, column=0, pady=18, padx=10)
-
+        self.emailEntry = Entry(self.registro, textvariable=self.emailVar, width=39)
+        self.emailEntry.place(x=125, y=305)
+#
+        ##Creacion de label y entry para la constraseña
+        self.registroCanva.create_text(115,360, text='Constraseña:', font=('Cascadia Mono SemiBold', 12), fill='white')
+#
         self.passVar = StringVar()
-        self.passEntry = Entry(self.segundoFrame, textvariable=self.passVar, width=40, show="*")
-        self.passEntry.grid(row=4, column=1, pady=18, padx=10)
+        self.passEntry = Entry(self.registro, textvariable=self.passVar, width=30, show="*")
+        self.passEntry.place(x=180, y=350)
 
         # --------------------BOTONES----------------------
 
-        # tercerFrame = Frame(registro)
-        # tercerFrame.pack()
+        self.bVolver = Button(self.registro, text="Volver",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.volver)
+        self.bVolver.place(x=80, y=390)
 
-        self.bVolver = Button(self.registro, text="Volver", command=self.volver)
-        self.bVolver.place(x=60, y=380)
+        self.bsalir = Button(self.registro, text="Salir",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registro.destroy)
+        self.bsalir.place(x=190, y=390)
 
-        self.bsalir = Button(self.registro, text="Salir", command=self.registro.destroy)
-        self.bsalir.pack(side=BOTTOM)
-
-        self.bRegistro = Button(self.registro, text="Registrarse", command=self.registrar)
-        self.bRegistro.place(x=300, y=380)
+        self.bRegistro = Button(self.registro, text="Registrarse",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registrar)
+        self.bRegistro.place(x=280, y=390)
 
         self.conexion_db()
 
@@ -250,7 +238,7 @@ class ventanaRegistro:
         Metodo que nos devuelve a la ventana de login.
         """
         self.registro.destroy()
-        main()
+        Aplicacion()
 
     def registrar(self):
         """
