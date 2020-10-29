@@ -199,6 +199,9 @@ class Game(object):
         self.fuente2 = pygame.font.SysFont('Verdana', 15)
         #Se coloca el titulo de la ventana
         pygame.display.set_caption("Tablero")
+        #Se carga y coloca el icono
+        self.icon = pygame.image.load('Resources/Images/Logo_Mindquare.ico')
+        pygame.display.set_icon(self.icon)
         #Lista que guarda el identificador de la casilla
         self.colores = []
         #Se crean grupos para añadirles a los jugadores como Sprites(objetos que colisionan.)
@@ -332,7 +335,6 @@ def main():
     pygame.init()
 
     screen = pygame.display.set_mode(screen_size)  # Medidas
-    print(type(screen))
     running = True
     clock = pygame.time.Clock()  # Controla las fps
     game = Game()
