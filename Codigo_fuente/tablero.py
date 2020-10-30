@@ -13,6 +13,7 @@ import pygame #Se importa libreria pygame para la interfaz y las funciones del j
 import os #Libreria para utilzar funciones del OS (Unused)
 import time #Libreria para hacer manejar tiempos y retrasos en funciones
 
+pos_doble = False
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
 WHITE = [255, 255, 255]
@@ -149,7 +150,7 @@ class Dices(object):
         return imagen, self.dice1_value
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image,plus_pos, size):
+    def __init__(self, image,plus_pos, size,n_square):
         """
         Clase del jugador.
         :param string image: Direccion de imagen
@@ -157,16 +158,17 @@ class Player(pygame.sprite.Sprite):
         :param list size: Lista con medidas x-y de la imagen
         """
         super().__init__()
-        self.image = pygame.image.load(image).convert()
+        self.image = pygame.image.load(image)
         self.image = pygame.transform.smoothscale(self.image, size)
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.speed_x = 20+plus_pos
-        self.speed_y = 0
+        self.speed_y = 20
         self.score = 0
         self.points = 0
         self.casilla = 1
         self.move_casilla = 1
+        self.n_square = n_square
 
     def movement(self, x, y):
         """
@@ -208,33 +210,63 @@ class Game(object):
         self.player_sprites_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
         #Se crean los jugadores
-        self.player1 = Player('Resources\Images\player1.png',-10,(30,60))
-        self.player2 = Player('Resources\Images\player2.png',20,(30,60))
+        self.player1 = Player('Resources\Images\player1.png',4,[50,50],0)
+        self.player2 = Player('Resources\Images\player2.png',4,[50,50],0)
 
     def process_events(self):
         """
         Este metodo recibe y procesa los eventos en la ventana.
         """
+        global pos_doble
+
+        if (self.player1.n_square == self.player2.n_square): same_square = True
+        else: same_square = False
+
+        if same_square==True and pos_doble==False:  # revisar si las posiciones y la casilla de los jugadores es igual (a medias)
+            self.player1.speed_x += 20
+            self.player2.speed_x -= 20
+            pos_doble = True
+
+        elif same_square == False and pos_doble == True:
+            self.player1.speed_x -= 20
+            self.player2.speed_x += 20
+            pos_doble = False
+
+
+
         for event in pygame.event.get():  # Bucle que recibe eventos.
+
             if event.type == pygame.QUIT:  # Condicional para cerrar la ventana al presionar la (x).
                 return False
             if event.type == pygame.KEYDOWN: # Condicional que recibe el evento cuando se presiona una tecla.
                 if event.key == pygame.K_LEFT:
                     self.player1.movement(-90, 0)
+                    self.player1.n_square-=1
+
                 elif event.key == pygame.K_RIGHT:
                     self.player1.movement(90, 0)
+                    self.player1.n_square +=1
+
                 elif event.key == pygame.K_UP:
                     self.player1.movement(0, -90)
                 elif event.key == pygame.K_DOWN:
                     self.player1.movement(0, 90)
+
+
                 elif event.key == pygame.K_a:
                     self.player2.movement(-90, 0)
+                    self.player2.n_square -=1
+
                 elif event.key == pygame.K_d:
                     self.player2.movement(90,0)
+                    self.player2.n_square +=1
+
                 elif event.key == pygame.K_w:
                     self.player2.movement(0,-90)
                 elif event.key == pygame.K_s:
                     self.player2.movement(0,90)
+
+
             if event.type == pygame.KEYUP: # Condicional que recibe el evento cuando se suelta una tecla.
                 if event.key == pygame.K_LEFT:
                     self.player1.movement(0, 0)
@@ -244,6 +276,7 @@ class Game(object):
                     self.player1.movement(0, 0)
                 elif event.key == pygame.K_DOWN:
                     self.player1.movement(0, 0)
+
                 elif event.key == pygame.K_a:
                     self.player2.movement(0, 0)
                 elif event.key == pygame.K_d:
