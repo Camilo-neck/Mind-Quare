@@ -118,6 +118,7 @@ class Dices(object):
         """
         keys = pygame.key.get_pressed()#Guarda en una variable que se presiona SPACE
         #Si se presiona y no esta girando, lo pone a girar; pero si esta girando y se presiona, lo detiene
+
         if keys[pygame.K_SPACE] and roll == False:
             roll = True
         elif roll == True and keys[pygame.K_SPACE]:
@@ -196,6 +197,7 @@ class Game(object):
         Clase que ejecuta el juego.
         """
         #Se declaran las fuentes que se utilizaran
+
         self.fuente = pygame.font.SysFont('Verdana', 11)
         self.fuente2 = pygame.font.SysFont('Verdana', 15)
         #Se coloca el titulo de la ventana
@@ -218,6 +220,7 @@ class Game(object):
         """
         global numero_p1
         global numero_p2
+
         for event in pygame.event.get():  # Bucle que recibe eventos.
 
             if event.type == pygame.QUIT:  # Condicional para cerrar la ventana al presionar la (x).
@@ -278,24 +281,21 @@ class Game(object):
 
         self.player1.n_square = casilla[numero_p1-1].num
         self.player2.n_square = casilla[numero_p2-1].num
+
         #print(self.player1.n_square)
         #print(self.player2.n_square)
         #print()
         return True
 
-    def run_logic(self):
-        """
-        En este metodo se ejecuta toda la logica del programa.
-        """
-        #Se llena la lista de las casillas
+    def adjust_players_on_square(self): # acomoda las fichas si estan en la misma casilla
 
         global pos_doble
+        if (self.player1.n_square == self.player2.n_square):
+            same_square = True
+        else:
+            same_square = False
 
-        #acomodar fichas si estan en la misma casilla
-        if (self.player1.n_square == self.player2.n_square): same_square = True
-        else: same_square = False
-
-        if same_square==True and pos_doble==False:  # revisar si las posiciones y la casilla de los jugadores es igual (a medias)
+        if same_square == True and pos_doble == False:  # revisar si las posiciones y la casilla de los jugadores es igual (a medias)
             self.player1.speed_x += 20
             self.player2.speed_x -= 20
             pos_doble = True
@@ -305,7 +305,12 @@ class Game(object):
             self.player2.speed_x += 20
             pos_doble = False
 
+    def run_logic(self):
+        """
+        En este metodo se ejecuta toda la logica del programa.
+        """
 
+        self.adjust_players_on_square()
         #Se añaden los jugadores a los grupos de sprites.
         self.all_sprites_list.add(self.player1)
         self.all_sprites_list.add(self.player2)
@@ -320,11 +325,12 @@ class Game(object):
         """
         screen.fill(BLACK)
 
-        num=0
-        for i in range(0, 900, 90):
-            for j in range(0, 540, 90):  # Ciclo for clasico para dibujar una matriz.
+        num=-1
+        for i in range(0,900,90):
+            for j in range(0,540,90):  # Ciclo for clasico para dibujar una matriz.
                 self.square = casilla[num].DrawSquare(screen,i, j,casilla[num].tipo)
                 num += 1
+
 
         #Imprimir numeros de las casillas
         n_square = 1
@@ -351,17 +357,29 @@ class Game(object):
 
         global IMAGE1
         global IMAGE2
+        global roll
 
         #Se crean los dados y luego se imprimen en la pantalla.
         DADO1 = Dices()
-        IMAGE1 = DADO1.roll_dice(roll,IMAGE1)[0]
-        VALUE1 = DADO1.roll_dice(roll,IMAGE1)[1]
-        DADO1.print_dice(screen,IMAGE1, 1)
-
         DADO2 = Dices()
-        IMAGE2 = DADO2.roll_dice(roll,IMAGE2)[0]
-        VALUE2 = DADO1.roll_dice(roll,IMAGE1)[1]
-        DADO2.print_dice(screen,IMAGE2, 2)
+
+        DADO1.roll_dice(roll, IMAGE1)
+        DADO1.print_dice(screen, IMAGE1, 1)
+        DADO2.roll_dice(roll, IMAGE2)
+        DADO2.print_dice(screen, IMAGE2, 2)
+
+        while roll == True:
+            datos_dado1 = DADO1.roll_dice(roll, IMAGE1)
+            DADO1.print_dice(screen, IMAGE1, 1)
+            datos_dado2 = DADO2.roll_dice(roll, IMAGE2)
+            DADO2.print_dice(screen, IMAGE2, 2)
+
+            IMAGE1 = datos_dado1[0]
+            VALUE1 = datos_dado1[1]
+
+            IMAGE2 = datos_dado2[0]
+            VALUE2 = datos_dado2[1]
+
 
         #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
         score_p1 = self.fuente2.render(f'Jugador 1: {self.player1.score}',1, WHITE)
@@ -392,8 +410,6 @@ def crear_num_casillas():
             n_square += 10
     return casillas
 
-
-
 def crear_elementos_casillas(casilla,n_casillas):
     """
     Se crea una lista de casillas como objetos
@@ -403,6 +419,9 @@ def crear_elementos_casillas(casilla,n_casillas):
         num = n_casillas[i]
         tipo = randint(1, 3)
         casilla[i] = Squares(num,tipo)
+        print(casilla[i].tipo,end=' ')
+    print()
+
 
 def main():
     """
