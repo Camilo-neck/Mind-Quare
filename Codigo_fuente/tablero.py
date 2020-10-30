@@ -14,6 +14,9 @@ import os #Libreria para utilzar funciones del OS (Unused)
 import time #Libreria para hacer manejar tiempos y retrasos en funciones
 
 pos_doble = False
+numero_p1 = 1
+numero_p2 = 1
+
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
 WHITE = [255, 255, 255]
@@ -37,12 +40,14 @@ class Squares():
     """
     Esta clase trae todas las casillas como metodos a llamar
     """
-    def __init__(self):
+    def __init__(self,num,tipo):
         """
         Caracteristicas de todas las casillas.
         """
         self.square_size = [90, 90]
         self.color = []
+        self.num = num
+        self.tipo = tipo
 
     def Trivia_UP(self):
         """
@@ -62,7 +67,7 @@ class Squares():
         """
         pass
 
-    def DrawSquare(self, screen, x_pos, y_pos, casilla):
+    def DrawSquare(self, screen, x_pos, y_pos, tipo):
         """
         Metodo que activa un color de casilla aleatoriamente.
         :param class screen: Superficie se ubican elementos
@@ -70,11 +75,11 @@ class Squares():
         :param int y_pos: Posicion y de la casilla
         :param int color: valor del tipo de las casillas
         """
-        if casilla == 1 or casilla == 4:
+        if tipo == 1:
             self.color = BLUE
-        elif casilla == 2 or casilla == 5:
+        elif tipo == 2:
             self.color = ORANGE
-        elif casilla == 3 or casilla == 6:
+        elif tipo == 3:
             self.color = GREEN
         pygame.draw.rect(screen, self.color, [[x_pos,y_pos], self.square_size])
         pygame.draw.rect(screen, BLACK, [[x_pos,y_pos], self.square_size], 2)
@@ -207,11 +212,12 @@ class Game(object):
         self.player1 = Player('Resources\Images\player1.png',4,[50,50],0)
         self.player2 = Player('Resources\Images\player2.png',4,[50,50],0)
 
-    def process_events(self):
+    def process_events(self,casilla):
         """
         Este metodo recibe y procesa los eventos en la ventana.
         """
-
+        global numero_p1
+        global numero_p2
         for event in pygame.event.get():  # Bucle que recibe eventos.
 
             if event.type == pygame.QUIT:  # Condicional para cerrar la ventana al presionar la (x).
@@ -219,30 +225,36 @@ class Game(object):
             if event.type == pygame.KEYDOWN: # Condicional que recibe el evento cuando se presiona una tecla.
                 if event.key == pygame.K_LEFT:
                     self.player1.movement(-90, 0, 1)
-                    self.player1.n_square-=1
+                    numero_p1-=1
 
                 elif event.key == pygame.K_RIGHT:
                     self.player1.movement(90, 0, 1)
-                    self.player1.n_square +=1
+                    numero_p1 +=1
 
                 elif event.key == pygame.K_UP:
                     self.player1.movement(0, -90, 1)
+                    numero_p1 += 10
+
                 elif event.key == pygame.K_DOWN:
                     self.player1.movement(0, 90, 1)
+                    numero_p1 -= 10
 
 
                 elif event.key == pygame.K_a:
                     self.player2.movement(-90, 0, 1)
-                    self.player2.n_square -=1
+                    numero_p2 -= 1
 
                 elif event.key == pygame.K_d:
                     self.player2.movement(90,0, 1)
-                    self.player2.n_square +=1
+                    numero_p2 += 1
 
                 elif event.key == pygame.K_w:
                     self.player2.movement(0,-90, 1)
+                    numero_p2 += 10
+
                 elif event.key == pygame.K_s:
                     self.player2.movement(0,90, 1)
+                    numero_p2 -= 10
 
 
             if event.type == pygame.KEYUP: # Condicional que recibe el evento cuando se suelta una tecla.
@@ -263,6 +275,12 @@ class Game(object):
                     self.player2.movement(0,0,0)
                 elif event.key == pygame.K_s:
                     self.player2.movement(0,0,0)
+
+        self.player1.n_square = casilla[numero_p1-1].num
+        self.player2.n_square = casilla[numero_p2-1].num
+        #print(self.player1.n_square)
+        #print(self.player2.n_square)
+        #print()
         return True
 
     def run_logic(self):
@@ -288,28 +306,25 @@ class Game(object):
             pos_doble = False
 
 
-        for i in range(60):
-            valor = randint(1,6)
-            self.tipo_casilla.append(valor)
-
-
         #Se añaden los jugadores a los grupos de sprites.
         self.all_sprites_list.add(self.player1)
         self.all_sprites_list.add(self.player2)
         #Se ejecuta la funcion de atualizar en los dos jugadores.
         self.all_sprites_list.update()
 
-    def display_frame(self, screen):
+    def display_frame(self, screen,casilla):
         """
         Dibujar todo lo visible en la pantalla.
         :param class screen: Superficie donde se ubican elementos
+        :param list casilla: lista con objetos de la clase casilla
         """
         screen.fill(BLACK)
-        k = 0
+
+        num=0
         for i in range(0, 900, 90):
             for j in range(0, 540, 90):  # Ciclo for clasico para dibujar una matriz.
-                self.square = Squares().DrawSquare(screen,i, j,self.tipo_casilla[k])
-                k+=1
+                self.square = casilla[num].DrawSquare(screen,i, j,casilla[num].tipo)
+                num += 1
 
         #Imprimir numeros de las casillas
         n_square = 1
@@ -357,11 +372,10 @@ class Game(object):
 
         pygame.display.flip()  # Refresca la ventana
 
-def crear_lista_casillas():
+def crear_num_casillas():
     """
     Se crea una lista con el orden de las casillas
     """
-
     n_square = 1
     casillas = []
 
@@ -378,14 +392,17 @@ def crear_lista_casillas():
             n_square += 10
     return casillas
 
-def crear_elementos_casillas(casillas):
+
+
+def crear_elementos_casillas(casilla,n_casillas):
     """
     Se crea una lista de casillas como objetos
     :param list casillas: Lista de listas vacias a llenar
     """
-    for casilla in range(60):
-        casillas[casilla] = Squares()
-    return casillas
+    for i in range(60):
+        num = n_casillas[i]
+        tipo = randint(1, 3)
+        casilla[i] = Squares(num,tipo)
 
 def main():
     """
@@ -393,14 +410,14 @@ def main():
     """
     #Se inicializa la ventana de pygame
     pygame.init()
+    casilla = []
 
-
-    casillas = []
+    #inicializar lista casilla
     for i in range(60):
-        casillas.append([])
-    crear_lista_casillas()
-    crear_elementos_casillas(casillas)
+        casilla.append(None)
 
+    n_casillas = crear_num_casillas()
+    crear_elementos_casillas(casilla,n_casillas)
 
     screen = pygame.display.set_mode(screen_size)  # Medidas
     running = True
@@ -409,9 +426,9 @@ def main():
 
     #Bucle infinito que corre el juego.
     while running:
-        running = game.process_events()
+        running = game.process_events(casilla)
         game.run_logic()
-        game.display_frame(screen)
+        game.display_frame(screen,casilla)
         clock.tick(60) # 60fps
     pygame.quit()
 
