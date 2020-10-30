@@ -212,13 +212,13 @@ class ventanaRegistro:
 
         # --------------------BOTONES----------------------
 
-        self.bVolver = Button(self.registro, text="Volver",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.volver)
+        self.bVolver = Button(self.registro, text="VOLVER",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.volver)
         self.bVolver.place(x=80, y=390)
 
-        self.bsalir = Button(self.registro, text="Salir",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registro.destroy)
+        self.bsalir = Button(self.registro, text="SALIR",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registro.destroy)
         self.bsalir.place(x=190, y=390)
 
-        self.bRegistro = Button(self.registro, text="Registrarse",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registrar)
+        self.bRegistro = Button(self.registro, text="REGISTRAR",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registrar)
         self.bRegistro.place(x=280, y=390)
 
         self.conexion_db()

@@ -223,36 +223,36 @@ class Game(object):
             if event.type == pygame.QUIT:  # Condicional para cerrar la ventana al presionar la (x).
                 return False
             if event.type == pygame.KEYDOWN: # Condicional que recibe el evento cuando se presiona una tecla.
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT and self.player1.rect.x > 113:
                     self.player1.movement(-90, 0, 1)
                     numero_p1-=1
 
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_RIGHT and self.player1.rect.x < 834:
                     self.player1.movement(90, 0, 1)
                     numero_p1 +=1
 
-                elif event.key == pygame.K_UP:
+                elif event.key == pygame.K_UP and self.player1.rect.y > 32:
                     self.player1.movement(0, -90, 1)
                     numero_p1 += 10
 
-                elif event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN and self.player1.rect.y < 400: 
                     self.player1.movement(0, 90, 1)
                     numero_p1 -= 10
 
 
-                elif event.key == pygame.K_a:
+                elif event.key == pygame.K_a and self.player2.rect.x > 113:
                     self.player2.movement(-90, 0, 1)
                     numero_p2 -= 1
 
-                elif event.key == pygame.K_d:
+                elif event.key == pygame.K_d and self.player2.rect.x < 814:
                     self.player2.movement(90,0, 1)
                     numero_p2 += 1
 
-                elif event.key == pygame.K_w:
+                elif event.key == pygame.K_w and self.player2.rect.y > 32:
                     self.player2.movement(0,-90, 1)
                     numero_p2 += 10
 
-                elif event.key == pygame.K_s:
+                elif event.key == pygame.K_s and self.player2.rect.y < 400:
                     self.player2.movement(0,90, 1)
                     numero_p2 -= 10
 
