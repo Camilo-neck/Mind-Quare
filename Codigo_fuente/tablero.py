@@ -325,9 +325,9 @@ class Game(object):
         """
         screen.fill(BLACK)
 
-        num=-1
-        for i in range(0,900,90):
-            for j in range(0,540,90):  # Ciclo for clasico para dibujar una matriz.
+        num=0
+        for j in range(0,540,90):
+            for i in range(0,900,90):  # Ciclo for clasico para dibujar una matriz.
                 self.square = casilla[num].DrawSquare(screen,i, j,casilla[num].tipo)
                 num += 1
 
@@ -421,6 +421,7 @@ def crear_elementos_casillas(casilla,n_casillas):
         casilla[i] = Squares(num,tipo)
         print(casilla[i].tipo,end=' ')
     print()
+    return casilla
 
 
 def main():
@@ -436,7 +437,7 @@ def main():
         casilla.append(None)
 
     n_casillas = crear_num_casillas()
-    crear_elementos_casillas(casilla,n_casillas)
+    casilla = crear_elementos_casillas(casilla,n_casillas)
 
     screen = pygame.display.set_mode(screen_size)  # Medidas
     running = True
