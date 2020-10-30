@@ -217,22 +217,6 @@ class Game(object):
         """
         Este metodo recibe y procesa los eventos en la ventana.
         """
-        global pos_doble
-
-        if (self.player1.n_square == self.player2.n_square): same_square = True
-        else: same_square = False
-
-        if same_square==True and pos_doble==False:  # revisar si las posiciones y la casilla de los jugadores es igual (a medias)
-            self.player1.speed_x += 20
-            self.player2.speed_x -= 20
-            pos_doble = True
-
-        elif same_square == False and pos_doble == True:
-            self.player1.speed_x -= 20
-            self.player2.speed_x += 20
-            pos_doble = False
-
-
 
         for event in pygame.event.get():  # Bucle que recibe eventos.
 
@@ -292,6 +276,24 @@ class Game(object):
         En este metodo se ejecuta toda la logica del programa.
         """
         #Se llena la lista de las casillas
+
+        global pos_doble
+
+        #acomodar fichas si estan en la misma casilla
+        if (self.player1.n_square == self.player2.n_square): same_square = True
+        else: same_square = False
+
+        if same_square==True and pos_doble==False:  # revisar si las posiciones y la casilla de los jugadores es igual (a medias)
+            self.player1.speed_x += 20
+            self.player2.speed_x -= 20
+            pos_doble = True
+
+        elif same_square == False and pos_doble == True:
+            self.player1.speed_x -= 20
+            self.player2.speed_x += 20
+            pos_doble = False
+
+
         for i in range(60):
             valor = randint(1,6)
             self.colores.append(valor)
@@ -360,12 +362,31 @@ class Game(object):
 
         pygame.display.flip()  # Refresca la ventana
 
+def crear_lista_casillas():
+
+    n_square = 1
+    casillas = []
+
+    while n_square <= 60:
+        if (n_square - 1) % 20 == 0:
+            for i in range(10):
+                casillas.append(n_square)
+                n_square += 1
+        else:
+            temporal = n_square + 9
+            for i in range(10):
+                casillas.append(temporal)
+                temporal -= 1
+            n_square += 10
+    return casillas
 def main():
     """
     Funcion principal que ejecuta mediante un bucle infinito el juego.
     """
     #Se inicializa la ventana de pygame
     pygame.init()
+
+    crear_lista_casillas()
 
     screen = pygame.display.set_mode(screen_size)  # Medidas
     running = True
