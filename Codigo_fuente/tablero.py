@@ -18,7 +18,7 @@ pos_doble = False
 BLACK = [0, 0, 0]
 WHITE = [255, 255, 255]
 RED = [255, 0, 0]
-BLUE = [31, 151, 255, 100]
+BLUE = [31, 200, 255, 100]
 GREEN = [0, 255, 0]
 PURPLE = [127, 96, 252, 92]
 ORANGE = [255, 136, 22, 100]
@@ -33,80 +33,74 @@ IMAGE1 = 'Resources\Images\Dice1.png'
 IMAGE2 = 'Resources\Images\Dice1.png'
 
 #Se crea la clase de las casillas como objetos, generando metodos para diferenciar sus funciones.
-class Squares(pygame.sprite.Sprite):
+class Squares():
     """
     Esta clase trae todas las casillas como metodos a llamar
     """
-    def __init__(self, x_pos, y_pos, screen, color):
+    def __init__(self):
         """
         Caracteristicas de todas las casillas.
-        :param int x_pos: Posicion x de la casilla
-        :param int y_pos: Posicion y de la casilla
-        :param class screen: Superficie se ubican elementos
-        :param list color: Lista con el tipo de las casillas
         """
         self.square_size = [90, 90]
-        self.square_pos = [x_pos, y_pos]
-        self.color = color
-        self.screen = screen
+        self.color = []
 
     def Trivia_UP(self):
         """
         Casillas que contienen preguntas y adelantan al jugador.
         """
-        pygame.draw.rect(self.screen, BLUE, [self.square_pos, self.square_size])
-        pygame.draw.rect(self.screen, BLACK, [self.square_pos, self.square_size], 2)
+        pass
 
     def Trivia_DOWN(self):
         """
         Casillas que contienen preguntas que al ser incorrectas devuelven al jugador.
         """
-        pygame.draw.rect(self.screen, ORANGE, [self.square_pos, self.square_size])
-        pygame.draw.rect(self.screen,BLACK, [self.square_pos, self.square_size], 2)
+        pass
 
     def Trivia_NONE(self):
         """
         Casillas que no generan ninguna accion, es decir que son estaticas.
         """
-        pygame.draw.rect(self.screen, GREEN, [self.square_pos, self.square_size])
-        pygame.draw.rect(self.screen, BLACK, [self.square_pos, self.square_size], 2)
+        pass
 
-    def DrawSquare(self):
+    def DrawSquare(self, screen, x_pos, y_pos, casilla):
         """
         Metodo que activa un color de casilla aleatoriamente.
+        :param class screen: Superficie se ubican elementos
+        :param int x_pos: Posicion x de la casilla
+        :param int y_pos: Posicion y de la casilla
+        :param int color: valor del tipo de las casillas
         """
-        if self.color == 1 or self.color == 4:
-            self.Trivia_UP()
-        elif self.color == 2 or self.color == 5:
-            self.Trivia_DOWN()
-        elif self.color == 3 or self.color == 6:
-            self.Trivia_NONE()
-
+        if casilla == 1 or casilla == 4:
+            self.color = BLUE
+        elif casilla == 2 or casilla == 5:
+            self.color = ORANGE
+        elif casilla == 3 or casilla == 6:
+            self.color = GREEN
+        pygame.draw.rect(screen, self.color, [[x_pos,y_pos], self.square_size])
+        pygame.draw.rect(screen, BLACK, [[x_pos,y_pos], self.square_size], 2)
 #Se crea la clase de los dados.
 class Dices(object):
-    def __init__(self, screen):
+    def __init__(self):
         """
         Esta clase contiene las caracteristicas y metodos de los dados.
-        :param class screen: Superficie donde se ubican elementos
         """
-        self.screen = screen
         self.dices_size = [30, 30]
-        self.count = count
-        self.dice1_value = 0
+        self.dice_value = 0
 
-    def print_dice(self,image,num):
+    def print_dice(self,screen,image,num):
         """
         Metodo que carga la imagen del dado desde su directorio, la escala y la imprime.
+        :param class screen: Superficie donde se ubican elementos
         :param string image: Direccion de la imagen
         :param int num: Identificador de dado
         """
-        self.image = pygame.image.load(image).convert()#Carga la imagen
-        self.image = pygame.transform.smoothscale(self.image, self.dices_size)#Escala la imagen
+        image = pygame.image.load(image).convert()#Carga la imagen
+        image = pygame.transform.smoothscale(image, self.dices_size)#Escala la imagen
         #Si el parametro *num* es 1, imprime el dado en la primera posicion, sino en la segunda.
         if num==1:
-            self.screen.blit(self.image,(15, 545))
+            screen.blit(image,(15, 545))
         else:
-            self.screen.blit(self.image, (48, 545))
+            screen.blit(image, (48, 545))
         time.sleep(0.1)#Sleep para no hacer iteraciones tan aceleradas.
 
     def roll_dice(self,roll,imagen):
@@ -115,7 +109,7 @@ class Dices(object):
         :param bool roll: Bandera para empezar a girar el dado
         :param string imagen: direccion de la imagen
         :return: string imagen
-        :return: int self.dice1_value
+        :return: int self.dice_value
         """
         keys = pygame.key.get_pressed()#Guarda en una variable que se presiona SPACE
         #Si se presiona y no esta girando, lo pone a girar; pero si esta girando y se presiona, lo detiene
@@ -125,29 +119,28 @@ class Dices(object):
             roll = False
         #Mientras la variable roll sea True, se mantendra retornando valores random.
         if roll == True:
-            self.count += 1
             num = random.randint(1, 6)
             if num == 1:
                 IMAGE = 'Resources\Images\Dice1.png'
-                self.dice1_value = num
+                self.dice_value = num
             elif num == 2:
                 IMAGE = 'Resources\Images\Dice2.png'
-                self.dice1_value = num
+                self.dice_value = num
             elif num == 3:
                 IMAGE = 'Resources\Images\Dice3.png'
-                self.dice1_value = num
+                self.dice_value = num
             elif num == 4:
                 IMAGE = 'Resources\Images\Dice4.png'
-                self.dice1_value = num
+                self.dice_value = num
             elif num == 5:
                 IMAGE = 'Resources\Images\Dice5.png'
-                self.dice1_value = num
+                self.dice_value = num
             else:
                 IMAGE = 'Resources\Images\Dice6.png'
-                self.dice1_value = num
+                self.dice_value = num
 
-            return IMAGE, self.dice1_value
-        return imagen, self.dice1_value
+            return IMAGE, self.dice_value
+        return imagen, self.dice_value
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image,plus_pos, size,n_square):
@@ -166,19 +159,20 @@ class Player(pygame.sprite.Sprite):
         self.speed_y = 20
         self.score = 0
         self.points = 0
-        self.casilla = 1
-        self.move_casilla = 1
+        #self.casilla = 1
+        #self.move_casilla = 1
         self.n_square = n_square
 
-    def movement(self, x, y):
+    def movement(self, x, y, points):
         """
         Movimiento de la fichas
         :param int x: Cantidad de pixeles en el movimiento en x
         :param int y: Cantidad de pixeles en el movimiento en y
+        :param int points: Valor extra en el avance normal
         """
         self.speed_x += x
         self.speed_y += y
-        self.points += 0.5
+        self.points += 1*points
         #self.move_casilla += 1
 
     def update(self):
@@ -202,10 +196,10 @@ class Game(object):
         #Se coloca el titulo de la ventana
         pygame.display.set_caption("Tablero")
         #Se carga y coloca el icono
-        self.icon = pygame.image.load('Resources/Images/Logo_Mindquare.ico')
-        pygame.display.set_icon(self.icon)
+        icon = pygame.image.load('Resources/Images/Logo_Mindquare.ico')
+        pygame.display.set_icon(icon)
         #Lista que guarda el identificador de la casilla
-        self.colores = []
+        self.tipo_casilla = []
         #Se crean grupos para añadirles a los jugadores como Sprites(objetos que colisionan.)
         self.player_sprites_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
@@ -224,51 +218,51 @@ class Game(object):
                 return False
             if event.type == pygame.KEYDOWN: # Condicional que recibe el evento cuando se presiona una tecla.
                 if event.key == pygame.K_LEFT:
-                    self.player1.movement(-90, 0)
+                    self.player1.movement(-90, 0, 1)
                     self.player1.n_square-=1
 
                 elif event.key == pygame.K_RIGHT:
-                    self.player1.movement(90, 0)
+                    self.player1.movement(90, 0, 1)
                     self.player1.n_square +=1
 
                 elif event.key == pygame.K_UP:
-                    self.player1.movement(0, -90)
+                    self.player1.movement(0, -90, 1)
                 elif event.key == pygame.K_DOWN:
-                    self.player1.movement(0, 90)
+                    self.player1.movement(0, 90, 1)
 
 
                 elif event.key == pygame.K_a:
-                    self.player2.movement(-90, 0)
+                    self.player2.movement(-90, 0, 1)
                     self.player2.n_square -=1
 
                 elif event.key == pygame.K_d:
-                    self.player2.movement(90,0)
+                    self.player2.movement(90,0, 1)
                     self.player2.n_square +=1
 
                 elif event.key == pygame.K_w:
-                    self.player2.movement(0,-90)
+                    self.player2.movement(0,-90, 1)
                 elif event.key == pygame.K_s:
-                    self.player2.movement(0,90)
+                    self.player2.movement(0,90, 1)
 
 
             if event.type == pygame.KEYUP: # Condicional que recibe el evento cuando se suelta una tecla.
                 if event.key == pygame.K_LEFT:
-                    self.player1.movement(0, 0)
+                    self.player1.movement(0, 0,0)
                 elif event.key == pygame.K_RIGHT:
-                    self.player1.movement(0, 0)
+                    self.player1.movement(0, 0,0)
                 elif event.key == pygame.K_UP:
-                    self.player1.movement(0, 0)
+                    self.player1.movement(0, 0,0)
                 elif event.key == pygame.K_DOWN:
-                    self.player1.movement(0, 0)
+                    self.player1.movement(0, 0,0)
 
                 elif event.key == pygame.K_a:
-                    self.player2.movement(0, 0)
+                    self.player2.movement(0, 0,0)
                 elif event.key == pygame.K_d:
-                    self.player2.movement(0,0)
+                    self.player2.movement(0,0,0)
                 elif event.key == pygame.K_w:
-                    self.player2.movement(0,0)
+                    self.player2.movement(0,0,0)
                 elif event.key == pygame.K_s:
-                    self.player2.movement(0,0)
+                    self.player2.movement(0,0,0)
         return True
 
     def run_logic(self):
@@ -296,7 +290,8 @@ class Game(object):
 
         for i in range(60):
             valor = randint(1,6)
-            self.colores.append(valor)
+            self.tipo_casilla.append(valor)
+
 
         #Se añaden los jugadores a los grupos de sprites.
         self.all_sprites_list.add(self.player1)
@@ -313,7 +308,7 @@ class Game(object):
         k = 0
         for i in range(0, 900, 90):
             for j in range(0, 540, 90):  # Ciclo for clasico para dibujar una matriz.
-                self.square = Squares(i, j, screen, self.colores[k]).DrawSquare()
+                self.square = Squares().DrawSquare(screen,i, j,self.tipo_casilla[k])
                 k+=1
 
         #Imprimir numeros de las casillas
@@ -343,15 +338,15 @@ class Game(object):
         global IMAGE2
 
         #Se crean los dados y luego se imprimen en la pantalla.
-        DADO1 = Dices(screen)
+        DADO1 = Dices()
         IMAGE1 = DADO1.roll_dice(roll,IMAGE1)[0]
         VALUE1 = DADO1.roll_dice(roll,IMAGE1)[1]
-        DADO1.print_dice(IMAGE1, 1)
+        DADO1.print_dice(screen,IMAGE1, 1)
 
-        DADO2 = Dices(screen)
+        DADO2 = Dices()
         IMAGE2 = DADO2.roll_dice(roll,IMAGE2)[0]
         VALUE2 = DADO1.roll_dice(roll,IMAGE1)[1]
-        DADO2.print_dice(IMAGE2, 2)
+        DADO2.print_dice(screen,IMAGE2, 2)
 
         #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
         score_p1 = self.fuente2.render(f'Jugador 1: {self.player1.score}',1, WHITE)
@@ -363,6 +358,9 @@ class Game(object):
         pygame.display.flip()  # Refresca la ventana
 
 def crear_lista_casillas():
+    """
+    Se crea una lista con el orden de las casillas
+    """
 
     n_square = 1
     casillas = []
@@ -379,6 +377,16 @@ def crear_lista_casillas():
                 temporal -= 1
             n_square += 10
     return casillas
+
+def crear_elementos_casillas(casillas):
+    """
+    Se crea una lista de casillas como objetos
+    :param list casillas: Lista de listas vacias a llenar
+    """
+    for casilla in range(60):
+        casillas[casilla] = Squares()
+    return casillas
+
 def main():
     """
     Funcion principal que ejecuta mediante un bucle infinito el juego.
@@ -386,7 +394,13 @@ def main():
     #Se inicializa la ventana de pygame
     pygame.init()
 
+
+    casillas = []
+    for i in range(60):
+        casillas.append([])
     crear_lista_casillas()
+    crear_elementos_casillas(casillas)
+
 
     screen = pygame.display.set_mode(screen_size)  # Medidas
     running = True

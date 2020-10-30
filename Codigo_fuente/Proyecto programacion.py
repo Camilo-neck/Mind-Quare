@@ -419,7 +419,6 @@ def main():
 
     for i in range(0, cant_jugadores):  # inicializar lista jugador
         jugador.append([])
-
     for i in range(0, 60):  # inicializar lista Casilla
         Casilla.append(None)
 
