@@ -12,7 +12,8 @@ from tkinter import ttk #Se importa el metodo ttk de Tkinter
 from tkinter import messagebox #Se importa el metodo ttk de Tkinter
 from tkinter import filedialog #Se importa el metodo ttk de Tkinter
 import sqlite3 #Se importa la libreria para maneja la base de datos
-import tablero #Se importa el archivo del tablero.
+import tablero #Se importa el archivo del tablero.py
+import Inicio #Se importa el archivo inicio.py
 
 class Aplicacion:
     """
@@ -315,6 +316,7 @@ def main():
     """
     Funcion principal que abre la aplicacion.
     """
+    #Inicio.video_inicio()
     Aplicacion()
 
 
