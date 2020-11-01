@@ -27,6 +27,10 @@ Interfaces:
 pip install pygame==2.0.0.dev18 
 -tkinter : 
 pip install tk
+imageio :
+-pip install imageio
+imageio_ffmpge:
+-pip install imageio_ffmpeg
 
 (Ejecutar el archivo requirements.py para descargar estas librerias.)
 

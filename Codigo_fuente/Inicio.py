@@ -1,7 +1,6 @@
 import tkinter as tk, threading
-import imageio
+import imageio, time
 from PIL import Image, ImageTk
-import login
 
 video_name = "Resources/Videos/MIND QUARE.mp4" #This is your video file path
 video = imageio.get_reader(video_name)
@@ -12,11 +11,17 @@ def stream(label,Inicio):
         frame_image = ImageTk.PhotoImage(Image.fromarray(image))
         label.config(image=frame_image)
         label.image = frame_image
-    Inicio.destroy()
+    time.sleep(0.001)
+    #Inicio.destroy()
     #login.main()
+
+def destruir(Inicio):
+    Inicio.destroy()
 
 def video_inicio():
     Inicio = tk.Tk()
+    Inicio.title('MindQuare')
+    Inicio.iconbitmap("Resources\Images\Logo_Mindquare.ico")
     sw = Inicio.winfo_screenwidth()
     sh = Inicio.winfo_screenheight()
     x = sw // 3
@@ -29,4 +34,5 @@ def video_inicio():
     thread.start()
     Inicio.mainloop()
 
-video_inicio()
+if __name__ == '__main__':
+    video_inicio()
