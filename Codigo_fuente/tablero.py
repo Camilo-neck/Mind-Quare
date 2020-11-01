@@ -363,22 +363,16 @@ class Game(object):
         DADO1 = Dices()
         DADO2 = Dices()
 
-        DADO1.roll_dice(roll, IMAGE1)
+        datos_dado1 = DADO1.roll_dice(roll, IMAGE1)
         DADO1.print_dice(screen, IMAGE1, 1)
-        DADO2.roll_dice(roll, IMAGE2)
+        datos_dado2 = DADO2.roll_dice(roll, IMAGE2)
         DADO2.print_dice(screen, IMAGE2, 2)
 
-        while roll == True:
-            datos_dado1 = DADO1.roll_dice(roll, IMAGE1)
-            DADO1.print_dice(screen, IMAGE1, 1)
-            datos_dado2 = DADO2.roll_dice(roll, IMAGE2)
-            DADO2.print_dice(screen, IMAGE2, 2)
+        IMAGE1 = datos_dado1[0]
+        VALUE1 = datos_dado1[1]
 
-            IMAGE1 = datos_dado1[0]
-            VALUE1 = datos_dado1[1]
-
-            IMAGE2 = datos_dado2[0]
-            VALUE2 = datos_dado2[1]
+        IMAGE2 = datos_dado2[0]
+        VALUE2 = datos_dado2[1]
 
 
         #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
