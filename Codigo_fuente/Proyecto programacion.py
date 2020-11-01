@@ -71,10 +71,10 @@ def imprimir_titulo():
     with Title as f:
         lineas = f.readlines()[:]
 
-    print(Fore.MAGENTA + pos(14,12) + (lineas[0]).strip())
-    print(Fore.BLUE + pos(14,13) + (lineas[1]).strip())
-    print(Fore.CYAN + pos(14,14) + (lineas[2]).strip())
-    print(Fore.GREEN + pos(14,15) + (lineas[3]).strip())
+    print(Fore.MAGENTA + pos(19,12) + (lineas[0]).strip())
+    print(Fore.BLUE + pos(19,13) + (lineas[1]).strip())
+    print(Fore.CYAN + pos(19,14) + (lineas[2]).strip())
+    print(Fore.GREEN + pos(19,15) + (lineas[3]).strip())
 
 def Instrucciones():
     """

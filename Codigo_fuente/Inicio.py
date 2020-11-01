@@ -1,38 +1,48 @@
 import tkinter as tk, threading
-import imageio, time
+import imageio
 from PIL import Image, ImageTk
+from time import sleep
+
+import logging
+
+import login
+
 
 video_name = "Resources/Videos/MIND QUARE.mp4" #This is your video file path
 video = imageio.get_reader(video_name)
 
-def stream(label,Inicio):
+class ventana():
 
-    for image in video.iter_data():
-        frame_image = ImageTk.PhotoImage(Image.fromarray(image))
-        label.config(image=frame_image)
-        label.image = frame_image
-    time.sleep(0.001)
-    #Inicio.destroy()
-    #login.main()
+    def __init__(self):
 
-def destruir(Inicio):
-    Inicio.destroy()
+        self.Inicio = tk.Tk()
 
-def video_inicio():
-    Inicio = tk.Tk()
-    Inicio.title('MindQuare')
-    Inicio.iconbitmap("Resources\Images\Logo_Mindquare.ico")
-    sw = Inicio.winfo_screenwidth()
-    sh = Inicio.winfo_screenheight()
-    x = sw // 3
-    y = sh // 4
-    Inicio.geometry(f"500x405+{x}+{y}")
-    my_label = tk.Label(Inicio)
-    my_label.pack()
-    thread = threading.Thread(target=stream, args=(my_label,Inicio))
-    thread.daemon = 1
-    thread.start()
-    Inicio.mainloop()
+        self.sw = self.Inicio.winfo_screenwidth()
+        self.sh = self.Inicio.winfo_screenheight()
+        self.x = self.sw // 3
+        self.y = self.sh // 4
+        self.Inicio.geometry(f"500x405+{self.x}+{self.y}")
+        self.Inicio.resizable(width=False, height=False)
+        self.my_label = tk.Label(self.Inicio)
+        self.my_label.pack()
 
-if __name__ == '__main__':
-    video_inicio()
+        thread = threading.Thread(target=self.stream, args=(self.my_label,self.Inicio))
+        thread.start()
+  
+
+        self.Inicio.mainloop()
+
+    def stream(self,label,Inicio):
+
+        for image in video.iter_data():
+            frame_image = ImageTk.PhotoImage(Image.fromarray(image))
+            label.config(image=frame_image)
+            label.image = frame_image
+            sleep(0.008)      
+
+def main():
+    ventana()
+    login.Aplicacion()
+
+if __name__=="__main__":
+    main()

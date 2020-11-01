@@ -419,8 +419,6 @@ def crear_elementos_casillas(casilla,n_casillas):
         num = n_casillas[i]
         tipo = randint(1, 3)
         casilla[i] = Squares(num,tipo)
-        print(casilla[i].tipo,end=' ')
-    print()
     return casilla
 
 
