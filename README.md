@@ -2,18 +2,19 @@
  Juego interactivo de preguntas con tablero.
  Grupo #1
  
-###### Desarrollado por
+### Desarrollado por
     -Camilo Andres Cuello
     -Juan Andres Orozco
     -Santiago Ospina
 
 Universidad Nacional de Colombia.
 
-###### Objetivo 
+### Objetivo 
 Videojuego en base a el lenguaje de programación Python :snake:, su temática será la de un juego de preguntas divididas por categorías donde los participantes deberán ir avanzando por un tablero lanzando los dados, dependiendo de la casilla en la que el jugador se sitúe habrá un efecto sobre la partida del mismo. 
 
-###### En este avance se encuentra lo siguiente
-_(Nota: El código de la entrega #2 a ejecutar es "Proyecto programacion.py", los demás archivos son avances de la próxima entrega que hemos ido avanzando en este mismo repositorio)_
+### Contenido
+
+###### _(Nota: El código de la entrega #2 a ejecutar es "Proyecto programacion.py", los demás archivos son avances de la próxima entrega que hemos ido avanzando en este mismo repositorio)_
 
 -Demo de consola "Proyecto programacion.py" que incluye la logica y funcionamiento del juego en la consola cmd.
 
@@ -23,7 +24,7 @@ _(Nota: El código de la entrega #2 a ejecutar es "Proyecto programacion.py", lo
 
 -Video "Inicio.py" prueba usando libreria tkinter para reproducir un video al iniciar el juego (cuando este se termine de reproducir debe cerrarse (x) para continuar al login)
 
-###### Requisitos
+### Requisitos
 Para el correcto funcionamiento de MindQuare se requieren la instalacion las siguientes librerias que no se encuentran instaladas por defecto:📋
 _(Se requiere de sistema operativo windows puesto que se incluyen funciones especificas de la consola cmd)_
 
@@ -43,7 +44,7 @@ imageio_ffmpge:
 
 (Ejecutar el archivo requirements.py para descargar estas librerias.)
 
-###### Instrucciones del juego
+### Instrucciones del juego
 
 Este es en demo en consola de MindQuare, cuyas reglas son:
 1) Se debe ingresar la cantidad de jugadores (debe ser un numero entero).
