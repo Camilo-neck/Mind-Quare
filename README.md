@@ -42,7 +42,7 @@ imageio :
 imageio_ffmpge:
 -pip install imageio_ffmpeg
 
-###### _Ejecutar el archivo requirements.py para descargar estas librerias._
+###### _Ejecutar el archivo requirements.py para descargar e instalar estas librerias._
 
 ### Instrucciones del juego
 
