@@ -2,7 +2,7 @@
  Juego interactivo de preguntas con tablero.
  Grupo #1
  
-### Desarrolladores
+### Integrantes
     -Camilo Andres Cuello
     -Juan Andres Orozco
     -Santiago Ospina
