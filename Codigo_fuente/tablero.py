@@ -28,12 +28,6 @@ ORANGE = [255, 136, 22, 100]
 DARK_GREEN = [0,59,44]
 
 screen_size = [900, 580] #ancho y largo de la ventana
-roll = False #Determina si giran los dados.
-count = 0
-
-#Se declaran las imagenes de los dados.
-IMAGE1 = 'Resources\Images\Dice1.png'
-IMAGE2 = 'Resources\Images\Dice1.png'
 
 #Se crea la clase de las casillas como objetos, generando metodos para diferenciar sus funciones.
 class Squares():
@@ -85,12 +79,15 @@ class Squares():
         pygame.draw.rect(screen, BLACK, [[x_pos,y_pos], self.square_size], 2)
 #Se crea la clase de los dados.
 class Dices(object):
-    def __init__(self):
+    def __init__(self,image,value,roll):
         """
         Esta clase contiene las caracteristicas y metodos de los dados.
         """
         self.dices_size = [30, 30]
-        self.dice_value = 0
+        self.image = image
+        self.value = value
+        self.roll = roll
+
 
     def print_dice(self,screen,image,num):
         """
@@ -108,7 +105,7 @@ class Dices(object):
             screen.blit(image, (48, 545))
         time.sleep(0.1)#Sleep para no hacer iteraciones tan aceleradas.
 
-    def roll_dice(self,roll,imagen):
+    def roll_dice(self,imagen,roll):
         """
         Metodo que al detectar que se preciona SPACE, comienza a generar numeros random.
         :param bool roll: Bandera para empezar a girar el dado
@@ -116,37 +113,40 @@ class Dices(object):
         :return: string imagen
         :return: int self.dice_value
         """
-        keys = pygame.key.get_pressed()#Guarda en una variable que se presiona SPACE
-        #Si se presiona y no esta girando, lo pone a girar; pero si esta girando y se presiona, lo detiene
+        keys = pygame.key.get_pressed()#Guarda en una variable que se presiona
+        #Si se presiona y no esta girando, roll sera true
+        if keys[pygame.K_SPACE] and roll==False:
+            print("RUN ROLL")
+            self.roll = True
 
-        if keys[pygame.K_SPACE] and roll == False:
-            roll = True
-        elif roll == True and keys[pygame.K_SPACE]:
-            roll = False
         #Mientras la variable roll sea True, se mantendra retornando valores random.
-        if roll == True:
+        while roll == True:
             num = random.randint(1, 6)
             if num == 1:
-                IMAGE = 'Resources\Images\Dice1.png'
-                self.dice_value = num
+                self.image = 'Resources\Images\Dice1.png'
+                self.value = num
             elif num == 2:
-                IMAGE = 'Resources\Images\Dice2.png'
-                self.dice_value = num
+                self.image = 'Resources\Images\Dice2.png'
+                self.value = num
             elif num == 3:
-                IMAGE = 'Resources\Images\Dice3.png'
-                self.dice_value = num
+                self.image = 'Resources\Images\Dice3.png'
+                self.value = num
             elif num == 4:
-                IMAGE = 'Resources\Images\Dice4.png'
-                self.dice_value = num
+                self.image = 'Resources\Images\Dice4.png'
+                self.value = num
             elif num == 5:
-                IMAGE = 'Resources\Images\Dice5.png'
-                self.dice_value = num
+                self.image = 'Resources\Images\Dice5.png'
+                self.value = num
             else:
-                IMAGE = 'Resources\Images\Dice6.png'
-                self.dice_value = num
+                self.image = 'Resources\Images\Dice6.png'
+                self.value = num
 
-            return IMAGE, self.dice_value
-        return imagen, self.dice_value
+            if keys[pygame.K_p]:
+                print("STOP ROLL")
+                self.roll = False
+
+            return None #salir de la funcion
+        return None
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image,plus_pos, size,n_square):
@@ -238,7 +238,7 @@ class Game(object):
                     self.player1.movement(0, -90, 1)
                     numero_p1 += 10
 
-                elif event.key == pygame.K_DOWN and self.player1.rect.y < 400: 
+                elif event.key == pygame.K_DOWN and self.player1.rect.y < 400:
                     self.player1.movement(0, 90, 1)
                     numero_p1 -= 10
 
@@ -305,7 +305,7 @@ class Game(object):
             self.player2.speed_x += 20
             pos_doble = False
 
-    def run_logic(self):
+    def run_logic(self,dados):
         """
         En este metodo se ejecuta toda la logica del programa.
         """
@@ -317,7 +317,17 @@ class Game(object):
         #Se ejecuta la funcion de atualizar en los dos jugadores.
         self.all_sprites_list.update()
 
-    def display_frame(self, screen,casilla):
+        DADO1 = dados[0]
+        DADO2 = dados[1]
+
+        DADO1.roll_dice(DADO1.image,DADO1.roll)
+        DADO2.roll_dice(DADO2.image,DADO2.roll)
+
+        print("Dado 1:", DADO1.value)
+
+        print("Dado 2:", DADO2.value)
+
+    def display_frame(self, screen,casilla,dados):
         """
         Dibujar todo lo visible en la pantalla.
         :param class screen: Superficie donde se ubican elementos
@@ -355,25 +365,11 @@ class Game(object):
         #Se dibujan los dos jugadores desde su lista de Sprites
         self.all_sprites_list.draw(screen)
 
-        global IMAGE1
-        global IMAGE2
-        global roll
-
-        #Se crean los dados y luego se imprimen en la pantalla.
-        DADO1 = Dices()
-        DADO2 = Dices()
-
-        datos_dado1 = DADO1.roll_dice(roll, IMAGE1)
-        DADO1.print_dice(screen, IMAGE1, 1)
-        datos_dado2 = DADO2.roll_dice(roll, IMAGE2)
-        DADO2.print_dice(screen, IMAGE2, 2)
-
-        IMAGE1 = datos_dado1[0]
-        VALUE1 = datos_dado1[1]
-
-        IMAGE2 = datos_dado2[0]
-        VALUE2 = datos_dado2[1]
-
+        #Se imprimen los dados
+        DADO1 = dados[0]
+        DADO2 =  dados[1]
+        DADO1.print_dice(screen, DADO1.image, 1)
+        DADO2.print_dice(screen, DADO2.image, 2)
 
         #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
         score_p1 = self.fuente2.render(f'Jugador 1: {self.player1.score}',1, WHITE)
@@ -431,6 +427,11 @@ def main():
     n_casillas = crear_num_casillas()
     casilla = crear_elementos_casillas(casilla,n_casillas)
 
+    # Se crean los dados
+    DADO1 = Dices('Resources\Images\Dice1.png',1,False)
+    DADO2 = Dices('Resources\Images\Dice1.png',1,False)
+    dados = [DADO1,DADO2]
+
     screen = pygame.display.set_mode(screen_size)  # Medidas
     running = True
     clock = pygame.time.Clock()  # Controla las fps
@@ -439,8 +440,8 @@ def main():
     #Bucle infinito que corre el juego.
     while running:
         running = game.process_events(casilla)
-        game.run_logic()
-        game.display_frame(screen,casilla)
+        game.run_logic(dados)
+        game.display_frame(screen,casilla,dados)
         clock.tick(60) # 60fps
     pygame.quit()
 

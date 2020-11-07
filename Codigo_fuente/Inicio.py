@@ -29,7 +29,6 @@ class ventana():
         thread = threading.Thread(target=self.stream, args=(self.my_label,self.Inicio))
         thread.start()
   
-
         self.Inicio.mainloop()
 
     def stream(self,label,Inicio):
