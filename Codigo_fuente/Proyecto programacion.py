@@ -396,6 +396,7 @@ def main():
     jugador = []
     Casilla = []
     cant_preguntas = 20
+    cant_jugadores = 0
 
     # ingresar aqui las respuestas deseadas
     RM = ['A', 'C', 'D', 'B', 'C', 'A', 'D', 'B', 'A', 'C', 'C', 'D', 'A', 'B', 'C', 'C', 'A', 'C','A','A']
@@ -409,8 +410,9 @@ def main():
 
     while True: #bucle para recibir solo enteros y no otro tipo de variable (validar entrada)
         try:
-            cant_jugadores = int(input(Fore.WHITE + pos(28,13) + "Ingrese la cantidad de jugadores:"))
-            os.system('cls')
+            while cant_jugadores<=0:
+                cant_jugadores = int(input(Fore.WHITE + pos(28,13) + "Ingrese la cantidad de jugadores:"))
+                os.system('cls')
             break
         except ValueError:
             os.system('cls')
