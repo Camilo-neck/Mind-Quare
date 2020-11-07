@@ -34,7 +34,7 @@ class Squares():
     """
     Esta clase trae todas las casillas como metodos a llamar
     """
-    def __init__(self,num,tipo):
+    def __init__(self,num,tipo,pos_x,pos_y):
         """
         Caracteristicas de todas las casillas.
         """
@@ -42,6 +42,8 @@ class Squares():
         self.color = []
         self.num = num
         self.tipo = tipo
+        self.pos_x = pos_x
+        self.pos_y = pos_y
 
     def Trivia_UP(self):
         """
@@ -105,7 +107,7 @@ class Dices(object):
             screen.blit(image, (48, 545))
         time.sleep(0.1)#Sleep para no hacer iteraciones tan aceleradas.
 
-    def roll_dice(self,imagen,roll):
+    def roll_dice(self,roll,player,casilla):
         """
         Metodo que al detectar que se preciona SPACE, comienza a generar numeros random.
         :param bool roll: Bandera para empezar a girar el dado
@@ -113,6 +115,9 @@ class Dices(object):
         :return: string imagen
         :return: int self.dice_value
         """
+        global numero_p1
+        indice = player.n_square
+
         keys = pygame.key.get_pressed()#Guarda en una variable que se presiona
         #Si se presiona y no esta girando, roll sera true
         if keys[pygame.K_SPACE] and roll==False:
@@ -145,6 +150,18 @@ class Dices(object):
                 print("STOP ROLL")
                 self.roll = False
 
+
+
+                indice = player.n_square + self.value -1
+
+                player.movement(casilla[indice].pos_x,casilla[indice].pos_y,self.value)
+                player.n_square+=casilla[indice].num
+                numero_p1+=self.value
+
+
+
+
+
             return None #salir de la funcion
         return None
 
@@ -176,8 +193,8 @@ class Player(pygame.sprite.Sprite):
         :param int y: Cantidad de pixeles en el movimiento en y
         :param int points: Valor extra en el avance normal
         """
-        self.speed_x += x
-        self.speed_y += y
+        self.speed_x = x
+        self.speed_y = y
         self.points += 1*points
         #self.move_casilla += 1
 
@@ -305,7 +322,7 @@ class Game(object):
             self.player2.speed_x += 20
             pos_doble = False
 
-    def run_logic(self,dados):
+    def run_logic(self,dados,casilla):
         """
         En este metodo se ejecuta toda la logica del programa.
         """
@@ -320,12 +337,22 @@ class Game(object):
         DADO1 = dados[0]
         DADO2 = dados[1]
 
-        DADO1.roll_dice(DADO1.image,DADO1.roll)
-        DADO2.roll_dice(DADO2.image,DADO2.roll)
+        print("x:",casilla[10].pos_x)
+        print("y:", casilla[10].pos_y)
 
-        print("Dado 1:", DADO1.value)
+        self.player1.movement(casilla[0].pos_x, casilla[0].pos_y,0)
 
-        print("Dado 2:", DADO2.value)
+        DADO1.roll_dice(DADO1.roll,self.player1,casilla)
+        DADO2.roll_dice(DADO2.roll,self.player1,casilla)
+
+
+
+        mouse_pos=pygame.mouse.get_pos()
+        print(mouse_pos)
+
+        #print("Dado 1:", DADO1.value)
+
+        #print("Dado 2:", DADO2.value)
 
     def display_frame(self, screen,casilla,dados):
         """
@@ -405,10 +432,21 @@ def crear_elementos_casillas(casilla,n_casillas):
     Se crea una lista de casillas como objetos
     :param list casillas: Lista de listas vacias a llenar
     """
+    pos_x = 20
+    pos_y = 460+90
+    cont = 0
     for i in range(60):
         num = n_casillas[i]
         tipo = randint(1, 3)
-        casilla[i] = Squares(num,tipo)
+        casilla[i] = Squares(num,tipo,pos_x,pos_y)
+
+        if cont>=9:
+            pos_y -= 90
+            pos_x = 20
+            cont=0
+        else:
+            pos_x += 90
+        cont+=1
     return casilla
 
 
@@ -440,7 +478,7 @@ def main():
     #Bucle infinito que corre el juego.
     while running:
         running = game.process_events(casilla)
-        game.run_logic(dados)
+        game.run_logic(dados,casilla)
         game.display_frame(screen,casilla,dados)
         clock.tick(60) # 60fps
     pygame.quit()
