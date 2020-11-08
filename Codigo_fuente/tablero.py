@@ -116,12 +116,11 @@ class Dices(object):
         :return: int self.dice_value
         """
         global numero_p1
-        indice = player.n_square
 
         keys = pygame.key.get_pressed()#Guarda en una variable que se presiona
         #Si se presiona y no esta girando, roll sera true
         if keys[pygame.K_SPACE] and roll==False:
-            print("RUN ROLL")
+            #print("RUN ROLL")
             self.roll = True
 
         #Mientras la variable roll sea True, se mantendra retornando valores random.
@@ -147,20 +146,30 @@ class Dices(object):
                 self.value = num
 
             if keys[pygame.K_p]:
-                print("STOP ROLL")
+                #print("STOP ROLL")
                 self.roll = False
 
 
 
-                indice = player.n_square + self.value -1
+
+                i_list=[]
+                for k in range(0,60):
+                    i_list.append(casilla[k].num)
+
+                print("n:", player.n_square)
+
+                indice = i_list.index(player.n_square+self.value)
+
+                print("indice:",indice)
+                print("x:",casilla[indice].pos_x)
+                print("y:", casilla[indice].pos_y)
 
                 player.movement(casilla[indice].pos_x,casilla[indice].pos_y,self.value)
-                player.n_square+=casilla[indice].num
+                #player.n_square=casilla[indice].num
+
+
                 numero_p1+=self.value
-
-
-
-
+                print("n nuevo:", player.n_square + self.value)
 
             return None #salir de la funcion
         return None
@@ -194,7 +203,7 @@ class Player(pygame.sprite.Sprite):
         :param int points: Valor extra en el avance normal
         """
         self.speed_x = x
-        self.speed_y = y
+        self.speed_y = y-440
         self.points += 1*points
         #self.move_casilla += 1
 
@@ -334,21 +343,28 @@ class Game(object):
         #Se ejecuta la funcion de atualizar en los dos jugadores.
         self.all_sprites_list.update()
 
+
         DADO1 = dados[0]
         DADO2 = dados[1]
 
-        print("x:",casilla[10].pos_x)
-        print("y:", casilla[10].pos_y)
+        '''
+        i_list = []
+        for k in range(0, 60):
+            i_list.append(casilla[k].num)
 
-        self.player1.movement(casilla[0].pos_x, casilla[0].pos_y,0)
+        indice = i_list.index(60)
+        self.player1.movement(casilla[indice].pos_x, casilla[indice].pos_y, 0)
+        '''
+
 
         DADO1.roll_dice(DADO1.roll,self.player1,casilla)
-        DADO2.roll_dice(DADO2.roll,self.player1,casilla)
+        #DADO2.roll_dice(DADO2.roll,self.player1,casilla)
+
 
 
 
         mouse_pos=pygame.mouse.get_pos()
-        print(mouse_pos)
+        #print(mouse_pos)
 
         #print("Dado 1:", DADO1.value)
 
@@ -433,14 +449,15 @@ def crear_elementos_casillas(casilla,n_casillas):
     :param list casillas: Lista de listas vacias a llenar
     """
     pos_x = 20
-    pos_y = 460+90
-    cont = 0
+    pos_y = 460
+    cont = 1
     for i in range(60):
         num = n_casillas[i]
         tipo = randint(1, 3)
         casilla[i] = Squares(num,tipo,pos_x,pos_y)
+        #print(casilla[i].num," (",casilla[i].pos_x,",",casilla[i].pos_y,")",sep="")
 
-        if cont>=9:
+        if cont==10:
             pos_y -= 90
             pos_x = 20
             cont=0
