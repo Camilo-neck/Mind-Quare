@@ -123,7 +123,7 @@ class Dices(object):
             self.roll = True
 
         #Mientras la variable roll sea True, se mantendra retornando valores random.
-        while roll == True:
+        if roll == True:
             num = random.randint(1, 6)
             if num == 1:
                 self.image = 'Resources\Images\Dice1.png'
@@ -156,6 +156,7 @@ class Dices(object):
                     i_list.append(casilla[k].num)
 
                 print("n:", player.n_square)
+                print("d:",self.value)
                 nuevo_pindex = player.n_square+self.value
                 if nuevo_pindex > 60:
                     nuevo_pindex = 60
@@ -170,11 +171,9 @@ class Dices(object):
                 player.n_square += self.value
                 print("n nuevo:", nuevo_pindex)
 
-                time.sleep(1)
-                self.image = self.image1
-
-
             return None #salir de la funcion
+        time.sleep(0.2)
+        self.image = self.image1
         return None
 
 class Player(pygame.sprite.Sprite):
