@@ -105,7 +105,7 @@ class Dices(object):
             screen.blit(image, (48, 545))
         time.sleep(0.1)#Sleep para no hacer iteraciones tan aceleradas.
 
-    def roll_dice(self,imagen,roll):
+    def roll_dice(self,roll):
         """
         Metodo que al detectar que se preciona SPACE, comienza a generar numeros random.
         :param bool roll: Bandera para empezar a girar el dado
@@ -320,8 +320,8 @@ class Game(object):
         DADO1 = dados[0]
         DADO2 = dados[1]
 
-        DADO1.roll_dice(DADO1.image,DADO1.roll)
-        DADO2.roll_dice(DADO2.image,DADO2.roll)
+        DADO1.roll_dice(DADO1.roll)
+        DADO2.roll_dice(DADO2.roll)
 
         print("Dado 1:", DADO1.value)
 
