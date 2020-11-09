@@ -14,8 +14,6 @@ import os #Libreria para utilzar funciones del OS (Unused)
 import time #Libreria para hacer manejar tiempos y retrasos en funciones
 
 pos_doble = False
-numero_p1 = 1
-numero_p2 = 1
 
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
@@ -115,7 +113,7 @@ class Dices(object):
         :return: string imagen
         :return: int self.dice_value
         """
-        global numero_p1
+
 
         keys = pygame.key.get_pressed()#Guarda en una variable que se presiona
         #Si se presiona y no esta girando, roll sera true
@@ -165,11 +163,10 @@ class Dices(object):
                 print("y:", casilla[indice].pos_y)
 
                 player.movement(casilla[indice].pos_x,casilla[indice].pos_y,self.value)
-                #player.n_square=casilla[indice].num
 
-
-                numero_p1+=self.value
+                player.n_square += self.value
                 print("n nuevo:", player.n_square + self.value)
+
 
             return None #salir de la funcion
         return None
@@ -237,15 +234,15 @@ class Game(object):
         self.player_sprites_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
         #Se crean los jugadores
-        self.player1 = Player('Resources\Images\player1.png',4,[50,50],0)
-        self.player2 = Player('Resources\Images\player2.png',4,[50,50],0)
+        self.player1 = Player('Resources\Images\player1.png',4,[50,50],1)
+        self.player2 = Player('Resources\Images\player2.png',4,[50,50],1)
 
     def process_events(self,casilla):
         """
         Este metodo recibe y procesa los eventos en la ventana.
         """
-        global numero_p1
-        global numero_p2
+        numero_p1=0
+        numero_p2=0
 
         for event in pygame.event.get():  # Bucle que recibe eventos.
 
@@ -305,8 +302,6 @@ class Game(object):
                 elif event.key == pygame.K_s:
                     self.player2.movement(0,0,0)
 
-        self.player1.n_square = casilla[numero_p1-1].num
-        self.player2.n_square = casilla[numero_p2-1].num
 
         #print(self.player1.n_square)
         #print(self.player2.n_square)
@@ -358,7 +353,7 @@ class Game(object):
 
 
         DADO1.roll_dice(DADO1.roll,self.player1,casilla)
-        #DADO2.roll_dice(DADO2.roll,self.player1,casilla)
+        DADO2.roll_dice(DADO2.roll,self.player1,casilla)
 
 
 
