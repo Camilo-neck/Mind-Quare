@@ -103,6 +103,7 @@ class Dices(object):
         """
         self.dices_size = [30, 30]
         self.image = image
+        self.image1 = image
         self.value = value
         self.roll = roll
 
@@ -172,7 +173,11 @@ class Dices(object):
                     i_list.append(casilla[k].num)
 
                 #print("n:", player.n_square)
-                indice = i_list.index(player.n_square+self.value)
+                print("n:", player.n_square)
+                nuevo_pindex = player.n_square+self.value
+                if nuevo_pindex > 60:
+                    nuevo_pindex = 60
+                indice = i_list.index(nuevo_pindex)
 
                 #print("indice:",indice)
                 #print("x:",casilla[indice].pos_x)
@@ -180,6 +185,10 @@ class Dices(object):
 
                 player.movement(casilla[indice].pos_x,casilla[indice].pos_y,self.value)
                 player.n_square += self.value
+
+                #print("n nuevo:", nuevo_pindex)
+
+                self.image = self.image
 
 
             return None #salir de la funcion
@@ -224,7 +233,10 @@ class Player(pygame.sprite.Sprite):
         """
         self.rect.x = self.speed_x
         self.rect.y = 460 + self.speed_y
-        self.score = int(self.points)
+        if self.points <= 60:
+            self.score = int(self.points)
+        else:
+            self.score = 60
         #self.casilla = self.move_casilla
 
 
@@ -261,61 +273,8 @@ class Game(object):
         for event in pygame.event.get():  # Bucle que recibe eventos.
 
             if event.type == pygame.QUIT:  # Condicional para cerrar la ventana al presionar la (x).
+                os.system('cls')
                 return False
-            if event.type == pygame.KEYDOWN: # Condicional que recibe el evento cuando se presiona una tecla.
-                if event.key == pygame.K_LEFT and self.player1.rect.x > 113:
-                    self.player1.movement(-90, 0, 1)
-                    numero_p1-=1
-
-                elif event.key == pygame.K_RIGHT and self.player1.rect.x < 834:
-                    self.player1.movement(90, 0, 1)
-                    numero_p1 +=1
-
-                elif event.key == pygame.K_UP and self.player1.rect.y > 32:
-                    self.player1.movement(0, -90, 1)
-                    numero_p1 += 10
-
-                elif event.key == pygame.K_DOWN and self.player1.rect.y < 400:
-                    self.player1.movement(0, 90, 1)
-                    numero_p1 -= 10
-
-
-                elif event.key == pygame.K_a and self.player2.rect.x > 113:
-                    self.player2.movement(-90, 0, 1)
-                    numero_p2 -= 1
-
-                elif event.key == pygame.K_d and self.player2.rect.x < 814:
-                    self.player2.movement(90,0, 1)
-                    numero_p2 += 1
-
-                elif event.key == pygame.K_w and self.player2.rect.y > 32:
-                    self.player2.movement(0,-90, 1)
-                    numero_p2 += 10
-
-                elif event.key == pygame.K_s and self.player2.rect.y < 400:
-                    self.player2.movement(0,90, 1)
-                    numero_p2 -= 10
-
-
-            if event.type == pygame.KEYUP: # Condicional que recibe el evento cuando se suelta una tecla.
-                if event.key == pygame.K_LEFT:
-                    self.player1.movement(0, 0,0)
-                elif event.key == pygame.K_RIGHT:
-                    self.player1.movement(0, 0,0)
-                elif event.key == pygame.K_UP:
-                    self.player1.movement(0, 0,0)
-                elif event.key == pygame.K_DOWN:
-                    self.player1.movement(0, 0,0)
-
-                elif event.key == pygame.K_a:
-                    self.player2.movement(0, 0,0)
-                elif event.key == pygame.K_d:
-                    self.player2.movement(0,0,0)
-                elif event.key == pygame.K_w:
-                    self.player2.movement(0,0,0)
-                elif event.key == pygame.K_s:
-                    self.player2.movement(0,0,0)
-
 
         #print(self.player1.n_square)
         #print(self.player2.n_square)
@@ -512,4 +471,5 @@ def main():
 
 #Condicional que verifica si se ejecuta desde el archivo, o se esta importando para llamar al main().
 if __name__ == '__main__':
+    os.system('cls')
     main()
