@@ -24,6 +24,9 @@ GREEN = [0, 255, 0]
 PURPLE = [127, 96, 252, 92]
 ORANGE = [255, 136, 22, 100]
 DARK_GREEN = [0,59,44]
+LIGHT_GREEN = [65, 240, 88, 94]
+YELLOW = [255, 255, 0]
+CYAN = [0, 255, 255]
 
 screen_size = [900, 580] #ancho y largo de la ventana
 
@@ -32,14 +35,15 @@ class Squares():
     """
     Esta clase trae todas las casillas como metodos a llamar
     """
-    def __init__(self,num,tipo,pos_x,pos_y):
+    def __init__(self,num,tipo,categoria,pos_x,pos_y):
         """
         Caracteristicas de todas las casillas.
         """
-        self.square_size = [90, 90]
-        self.color = []
+        self.color = list()
+        self.color_c = list()
         self.num = num
         self.tipo = tipo
+        self.categoria = categoria
         self.pos_x = pos_x
         self.pos_y = pos_y
 
@@ -61,7 +65,7 @@ class Squares():
         """
         pass
 
-    def DrawSquare(self, screen, x_pos, y_pos, tipo):
+    def DrawSquare(self, screen, x_pos, y_pos,size, tipo,size_c,categoria=0):
         """
         Metodo que activa un color de casilla aleatoriamente.
         :param class screen: Superficie se ubican elementos
@@ -75,8 +79,22 @@ class Squares():
             self.color = ORANGE
         elif tipo == 3:
             self.color = GREEN
-        pygame.draw.rect(screen, self.color, [[x_pos,y_pos], self.square_size])
-        pygame.draw.rect(screen, BLACK, [[x_pos,y_pos], self.square_size], 2)
+
+        if categoria  == 1:
+            self.color_c = RED
+        elif categoria  == 2:
+            self.color_c = YELLOW
+        elif categoria  == 3:
+            self.color_c = CYAN
+        elif categoria  == 4:
+            self.color_c = LIGHT_GREEN
+        else:
+            self.color_c = PURPLE
+
+        pygame.draw.rect(screen, self.color, [[x_pos,y_pos], size])
+        pygame.draw.rect(screen, BLACK, [[x_pos,y_pos], size], 2)
+        pygame.draw.rect(screen, self.color_c, [[x_pos, y_pos], size_c])
+        pygame.draw.rect(screen, BLACK, [[x_pos, y_pos], size_c], 2)
 #Se crea la clase de los dados.
 class Dices(object):
     def __init__(self,image,value,roll):
@@ -108,7 +126,7 @@ class Dices(object):
 
     def roll_dice(self,roll,player,casilla):
         """
-        Metodo que al detectar que se preciona SPACE, comienza a generar numeros random.
+        Metodo que al detectar que se preciona SPACE, comienza a generar numeros random y se detiene al precionar la letra p.
         :param bool roll: Bandera para empezar a girar el dado
         :param string imagen: direccion de la imagen
         :return: string imagen
@@ -146,30 +164,33 @@ class Dices(object):
 
             if keys[pygame.K_p]:
                 #print("STOP ROLL")
+                
                 self.roll = False
 
-
-
-
+                #Logica para ubicar el jugador en la casilla que marcaron los dados (antes de esto iria la pregunta)
                 i_list=[]
                 for k in range(0,60):
                     i_list.append(casilla[k].num)
 
-                print("n:", player.n_square)
-                print("d:",self.value)
+                #print("n:", player.n_square)
+                #print("n:", player.n_square)
+                #print("d:",self.value)
                 nuevo_pindex = player.n_square+self.value
-                if nuevo_pindex > 60:
+                if nuevo_pindex >= 59:
                     nuevo_pindex = 60
                 indice = i_list.index(nuevo_pindex)
 
-                print("indice:",indice)
-                print("x:",casilla[indice].pos_x)
-                print("y:", casilla[indice].pos_y)
+                #print("indice:",indice)
+                #print("x:",casilla[indice].pos_x)
+                #print("y:", casilla[indice].pos_y)
 
                 player.movement(casilla[indice].pos_x,casilla[indice].pos_y,self.value)
-
                 player.n_square += self.value
-                print("n nuevo:", nuevo_pindex)
+
+                #print("n nuevo:", nuevo_pindex)
+
+                self.image = self.image
+
 
             return None #salir de la funcion
         time.sleep(0.2)
@@ -309,12 +330,9 @@ class Game(object):
 
         DADO1.roll_dice(DADO1.roll,self.player1,casilla)
         DADO2.roll_dice(DADO2.roll,self.player1,casilla)
+        #if DADO1.roll==False and DADO2.roll==False:
+        #    print(self.player1.n_square)
 
-
-
-
-        mouse_pos=pygame.mouse.get_pos()
-        #print(mouse_pos)
 
         #print("Dado 1:", DADO1.value)
 
@@ -329,9 +347,9 @@ class Game(object):
         screen.fill(BLACK)
 
         num=0
-        for j in range(0,540,90):
+        for j in range(450,-90,-90):
             for i in range(0,900,90):  # Ciclo for clasico para dibujar una matriz.
-                self.square = casilla[num].DrawSquare(screen,i, j,casilla[num].tipo)
+                self.square = casilla[num].DrawSquare(screen,i, j,[90, 90],casilla[num].tipo,[35, 35],casilla[num].categoria)
                 num += 1
 
 
@@ -401,10 +419,14 @@ def crear_elementos_casillas(casilla,n_casillas):
     pos_x = 20
     pos_y = 460
     cont = 1
+
     for i in range(60):
         num = n_casillas[i]
         tipo = randint(1, 3)
-        casilla[i] = Squares(num,tipo,pos_x,pos_y)
+        categoria = randint(1, 5)
+        casilla[i] = Squares(num,tipo,categoria,pos_x,pos_y)
+        #print(casilla[i].num,"= ", casilla[i].tipo)
+        print(casilla[i].num,"= ", casilla[i].categoria, casilla[i].tipo)
         #print(casilla[i].num," (",casilla[i].pos_x,",",casilla[i].pos_y,")",sep="")
 
         if cont==10:
