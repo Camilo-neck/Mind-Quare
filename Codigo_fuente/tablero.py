@@ -338,6 +338,10 @@ class Game(object):
             VentanaPreguntas.Ventana()
             cont = 0
         keys = pygame.key.get_pressed()
+        self.Turno_actual = turnos[self.iterator]
+        DADO1.roll_dice(DADO1.roll,jugador[self.Turno_actual],casilla)
+        DADO2.roll_dice(DADO2.roll,jugador[self.Turno_actual],casilla)
+
         if keys[pygame.K_p]:
             if self.iterator == len(turnos)-1:
                 self.iterator = 0
@@ -345,18 +349,11 @@ class Game(object):
                 self.iterator += 1
             cont = 1
 
-
-        self.Turno_actual = turnos[self.iterator]
-        DADO1.roll_dice(DADO1.roll,jugador[self.Turno_actual],casilla)
-        DADO2.roll_dice(DADO2.roll,jugador[self.Turno_actual],casilla)
         i = 0
-        if jugador[self.Turno_actual].score >= 10:
+        if jugador[self.Turno_actual].score >= 60:
             self.winner = True
             if keys[pygame.K_e]:
                 exit()
-
-
-
 
         #if DADO1.roll==False and DADO2.roll==False:
         #    print(self.player1.n_square)
@@ -366,7 +363,7 @@ class Game(object):
 
         #print("Dado 2:", DADO2.value)
 
-    def display_frame(self, screen,casilla,dados,jugador):
+    def display_frame(self, screen,casilla,dados,jugador, cant_jugadores):
         """
         Dibujar todo lo visible en la pantalla.
         :param class screen: Superficie donde se ubican elementos
@@ -411,11 +408,12 @@ class Game(object):
         DADO2.print_dice(screen, DADO2.image, 2)
 
         #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
-        score_p1 = self.fuente2.render(f'Jugador 1: {jugador[0].score}',1, WHITE)
-        screen.blit(score_p1,(150,screen_size[1]-30))
+        for i in range(cant_jugadores):
+            score_p = self.fuente2.render(f'Jugador {i+1}: {jugador[i].score}',1, WHITE)
+            screen.blit(score_p,(300+(i*150),screen_size[1]-30))
 
-        score_p2 = self.fuente2.render(f'Jugador 2: {jugador[1].score}',1, WHITE)
-        screen.blit(score_p2,(300,screen_size[1]-30))
+        turno = self.fuente2.render(f'Turno de: {self.Turno_actual+1}', 1, WHITE)  # renderizar texto (numero de casilla)
+        screen.blit(turno, (100, screen_size[1]-30))
 
         if self.winner:
             screen.fill(WHITE)
@@ -506,7 +504,10 @@ def main():
 
     # Se crean los jugadores
     for i in range(cant_jugadores):
-        jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [50, 50], 1))
+        if i != 3:
+            jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [50, 50], 1))
+        else:
+            jugador.append(Player('Resources\Images\player'+str(i)+'.png', 4, [50, 50], 1))
 
     # Se crean los dados
     DADO1 = Dices('Resources\Images\Dice1.png',1,False)
@@ -522,7 +523,7 @@ def main():
     while running:
         running = game.process_events(casilla)
         game.run_logic(screen,jugador,dados,casilla,turnos,cant_jugadores)
-        game.display_frame(screen,casilla,dados,jugador)
+        game.display_frame(screen,casilla,dados,jugador,cant_jugadores)
         clock.tick(60) # 60fps
     pygame.quit()
 
