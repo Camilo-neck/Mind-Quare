@@ -7,13 +7,16 @@ Desarrollado por:
     -Santiago Ospina
 Universidad Nacional de Colombia.
 """
-from random import randint #Se importa la funcion randint de random
+from random import randint,shuffle #Se importa la funcion randint de random
 import random #Se importa las demas funciones de random
 import pygame #Se importa libreria pygame para la interfaz y las funciones del juego
 import os #Libreria para utilzar funciones del OS (Unused)
 import time #Libreria para hacer manejar tiempos y retrasos en funciones
+import VentanaPreguntas
 
 pos_doble = False
+ronda = 0
+cont = 0
 
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
@@ -190,7 +193,6 @@ class Dices(object):
 
                 self.image = self.image
 
-
             return None #salir de la funcion
         return None
 
@@ -222,6 +224,7 @@ class Player(pygame.sprite.Sprite):
         :param int y: Cantidad de pixeles en el movimiento en y
         :param int points: Valor extra en el avance normal
         """
+        self.speed_x = x
         self.speed_x = x
         self.speed_y = y-440
         self.points += 1*points
@@ -259,9 +262,8 @@ class Game(object):
         #Se crean grupos para añadirles a los jugadores como Sprites(objetos que colisionan.)
         self.player_sprites_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
-        #Se crean los jugadores
-        self.player1 = Player('Resources\Images\player1.png',4,[50,50],1)
-        self.player2 = Player('Resources\Images\player2.png',4,[50,50],1)
+
+        self.iterator = 0
 
     def process_events(self,casilla):
         """
@@ -281,33 +283,34 @@ class Game(object):
         #print()
         return True
 
-    def adjust_players_on_square(self): # acomoda las fichas si estan en la misma casilla
+    def adjust_players_on_square(self,jugador): # acomoda las fichas si estan en la misma casilla
 
         global pos_doble
-        if (self.player1.n_square == self.player2.n_square):
+        if (jugador[0].n_square == jugador[1].n_square):
             same_square = True
         else:
             same_square = False
 
         if same_square == True and pos_doble == False:  # revisar si las posiciones y la casilla de los jugadores es igual (a medias)
-            self.player1.speed_x += 20
-            self.player2.speed_x -= 20
+            jugador[0].speed_x += 20
+            jugador[1].speed_x -= 20
             pos_doble = True
 
         elif same_square == False and pos_doble == True:
-            self.player1.speed_x -= 20
-            self.player2.speed_x += 20
+            jugador[0].speed_x -= 20
+            jugador[1].speed_x += 20
             pos_doble = False
 
-    def run_logic(self,dados,casilla):
+    def run_logic(self,jugador,dados,casilla,turnos,cant_jugadores):
         """
         En este metodo se ejecuta toda la logica del programa.
         """
 
-        self.adjust_players_on_square()
+        self.adjust_players_on_square(jugador)
         #Se añaden los jugadores a los grupos de sprites.
-        self.all_sprites_list.add(self.player1)
-        self.all_sprites_list.add(self.player2)
+        for i in range(0,cant_jugadores):
+            self.all_sprites_list.add(jugador[i])
+
         #Se ejecuta la funcion de atualizar en los dos jugadores.
         self.all_sprites_list.update()
 
@@ -323,10 +326,29 @@ class Game(object):
         indice = i_list.index(60)
         self.player1.movement(casilla[indice].pos_x, casilla[indice].pos_y, 0)
         '''
+        global ronda
+        global cont
+
+        if cont == 1:
+            print('entré')
+            VentanaPreguntas.Ventana()
+            cont = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_p]:
+            if self.iterator == 0:
+                self.iterator = 1
+            else:
+                self.iterator = 0
+            cont = 1
 
 
-        DADO1.roll_dice(DADO1.roll,self.player1,casilla)
-        DADO2.roll_dice(DADO2.roll,self.player1,casilla)
+        Turno_actual = turnos[self.iterator]
+        DADO1.roll_dice(DADO1.roll,jugador[Turno_actual],casilla)
+        DADO2.roll_dice(DADO2.roll,jugador[Turno_actual],casilla)
+
+
+
+
         #if DADO1.roll==False and DADO2.roll==False:
         #    print(self.player1.n_square)
 
@@ -335,7 +357,7 @@ class Game(object):
 
         #print("Dado 2:", DADO2.value)
 
-    def display_frame(self, screen,casilla,dados):
+    def display_frame(self, screen,casilla,dados,jugador):
         """
         Dibujar todo lo visible en la pantalla.
         :param class screen: Superficie donde se ubican elementos
@@ -380,10 +402,10 @@ class Game(object):
         DADO2.print_dice(screen, DADO2.image, 2)
 
         #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
-        score_p1 = self.fuente2.render(f'Jugador 1: {self.player1.score}',1, WHITE)
+        score_p1 = self.fuente2.render(f'Jugador 1: {jugador[0].score}',1, WHITE)
         screen.blit(score_p1,(150,screen_size[1]-30))
 
-        score_p2 = self.fuente2.render(f'Jugador 2: {self.player2.score}',1, WHITE)
+        score_p2 = self.fuente2.render(f'Jugador 2: {jugador[1].score}',1, WHITE)
         screen.blit(score_p2,(300,screen_size[1]-30))
 
         pygame.display.flip()  # Refresca la ventana
@@ -435,6 +457,17 @@ def crear_elementos_casillas(casilla,n_casillas):
         cont+=1
     return casilla
 
+def lista_aleatoria(cant):
+    """
+    Crear lista de numeros aleatorios en la que no se repitan numeros.
+    :param int cant: Determina la cantidad de elementos deseados en la lista.
+    :return: list lista
+    """
+    lista=[]
+    for i in range(0,cant):
+        lista.append(i)
+    shuffle(lista)
+    return lista
 
 def main():
     """
@@ -443,6 +476,8 @@ def main():
     #Se inicializa la ventana de pygame
     pygame.init()
     casilla = []
+    jugador = []
+    cant_jugadores=2
 
     #inicializar lista casilla
     for i in range(60):
@@ -450,6 +485,12 @@ def main():
 
     n_casillas = crear_num_casillas()
     casilla = crear_elementos_casillas(casilla,n_casillas)
+    turnos = lista_aleatoria(cant_jugadores)
+    print(turnos)
+
+    # Se crean los jugadores
+    for i in range(cant_jugadores):
+        jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [50, 50], 1))
 
     # Se crean los dados
     DADO1 = Dices('Resources\Images\Dice1.png',1,False)
@@ -464,8 +505,8 @@ def main():
     #Bucle infinito que corre el juego.
     while running:
         running = game.process_events(casilla)
-        game.run_logic(dados,casilla)
-        game.display_frame(screen,casilla,dados)
+        game.run_logic(jugador,dados,casilla,turnos,cant_jugadores)
+        game.display_frame(screen,casilla,dados,jugador)
         clock.tick(60) # 60fps
     pygame.quit()
 
