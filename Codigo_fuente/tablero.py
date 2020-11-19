@@ -13,6 +13,7 @@ import pygame #Se importa libreria pygame para la interfaz y las funciones del j
 import os #Libreria para utilzar funciones del OS (Unused)
 import time #Libreria para hacer manejar tiempos y retrasos en funciones
 import VentanaPreguntas
+from sys import exit
 
 pos_doble = False
 ronda = 0
@@ -186,7 +187,6 @@ class Dices(object):
                 #print("indice:",indice)
                 #print("x:",casilla[indice].pos_x)
                 #print("y:", casilla[indice].pos_y)
-
                 player.movement(casilla[indice].pos_x,casilla[indice].pos_y,self.value)
                 player.n_square += self.value
 
@@ -195,7 +195,6 @@ class Dices(object):
                 self.image = self.image
 
             return None #salir de la funcion
-        time.sleep(0.2)
         self.image = self.image1
         return None
 
@@ -239,10 +238,10 @@ class Player(pygame.sprite.Sprite):
         """
         self.rect.x = self.speed_x
         self.rect.y = 460 + self.speed_y
-        if self.points <= 60:
-            self.score = int(self.points)
-        else:
+        if self.points >= 59:
             self.score = 60
+        else:
+            self.score = int(self.points)
         #self.casilla = self.move_casilla
 
 
@@ -262,6 +261,8 @@ class Game(object):
         pygame.display.set_icon(icon)
         #Lista que guarda el identificador de la casilla
         self.tipo_casilla = []
+        self.winner = False
+        self.Turno_actual = 0
         #Se crean grupos para añadirles a los jugadores como Sprites(objetos que colisionan.)
         self.player_sprites_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
@@ -304,7 +305,7 @@ class Game(object):
             jugador[1].speed_x += 20
             pos_doble = False
 
-    def run_logic(self,jugador,dados,casilla,turnos,cant_jugadores):
+    def run_logic(self,screen,jugador,dados,casilla,turnos,cant_jugadores):
         """
         En este metodo se ejecuta toda la logica del programa.
         """
@@ -338,16 +339,21 @@ class Game(object):
             cont = 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_p]:
-            if self.iterator == 0:
-                self.iterator = 1
-            else:
+            if self.iterator == len(turnos)-1:
                 self.iterator = 0
+            else:
+                self.iterator += 1
             cont = 1
 
 
-        Turno_actual = turnos[self.iterator]
-        DADO1.roll_dice(DADO1.roll,jugador[Turno_actual],casilla)
-        DADO2.roll_dice(DADO2.roll,jugador[Turno_actual],casilla)
+        self.Turno_actual = turnos[self.iterator]
+        DADO1.roll_dice(DADO1.roll,jugador[self.Turno_actual],casilla)
+        DADO2.roll_dice(DADO2.roll,jugador[self.Turno_actual],casilla)
+        i = 0
+        if jugador[self.Turno_actual].score >= 10:
+            self.winner = True
+            if keys[pygame.K_e]:
+                exit()
 
 
 
@@ -410,6 +416,13 @@ class Game(object):
 
         score_p2 = self.fuente2.render(f'Jugador 2: {jugador[1].score}',1, WHITE)
         screen.blit(score_p2,(300,screen_size[1]-30))
+
+        if self.winner:
+            screen.fill(WHITE)
+            victoria = self.fuente2.render(f'El jugador {self.Turno_actual+1} ha ganado!!', 1, RED)  # renderizar texto (numero de casilla)
+            screen.blit(victoria, (350, 250))
+            salir = self.fuente.render('Presione la tecla e para salir', 1, BLACK)  # renderizar texto (numero de casilla)
+            screen.blit(salir, (355, 300))
 
         pygame.display.flip()  # Refresca la ventana
 
@@ -508,7 +521,7 @@ def main():
     #Bucle infinito que corre el juego.
     while running:
         running = game.process_events(casilla)
-        game.run_logic(jugador,dados,casilla,turnos,cant_jugadores)
+        game.run_logic(screen,jugador,dados,casilla,turnos,cant_jugadores)
         game.display_frame(screen,casilla,dados,jugador)
         clock.tick(60) # 60fps
     pygame.quit()

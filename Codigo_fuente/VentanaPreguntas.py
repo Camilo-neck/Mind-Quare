@@ -5,7 +5,6 @@ from tkinter import Radiobutton, messagebox
 from random import randint
 from time import sleep, time
 
-answered = False
 
 class Ventana(Tk):
 
@@ -16,6 +15,8 @@ class Ventana(Tk):
         self.root.geometry('500x280')
         self.root.config(bg = 'black')
         self.root.resizable(width = False, height = False)
+
+        self.answered = False
 
         self.n_r = randint(0,19)
 
@@ -43,7 +44,7 @@ class Ventana(Tk):
             else:
                 self.validar.config(text = 'INCORRECTO', bg = '#B362F9', fg = 'red', font = ('Roman',15))
                 #print('Incorrecto')
-            answered = True
+            self.answered = True
 
 
         self.opcion1 = Radiobutton(self.textoCanva, text= self.data[1], font = ('Rockwell',11), variable = self.varOpcion, value = 1, bg = '#B362F9')
@@ -71,8 +72,7 @@ class Ventana(Tk):
 
 
     def contador(self,time = None):
-        global answered
-        if answered == True:
+        if self.answered == True:
             sleep(2)
             self.root.destroy()
             return None #salir
