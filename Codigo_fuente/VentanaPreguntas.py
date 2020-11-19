@@ -7,14 +7,20 @@ from time import sleep, time
 
 
 class Ventana(Tk):
-
+    def __Cancel(event=None): pass
     def __init__(self):
 
         self.root = Tk()
         self.root.title('PREGUNTA')
-        self.root.geometry('500x280')
+        self.sw = self.root.winfo_screenwidth()
+        self.sh = self.root.winfo_screenheight()
+        self.x = self.sw // 3
+        self.y = 100
+        self.root.geometry(f"500x280+{self.x}+{self.y}")
         self.root.config(bg = 'black')
         self.root.resizable(width = False, height = False)
+        self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
+        #self.root.wm_overrideredirect(1)
 
         self.answered = False
 
