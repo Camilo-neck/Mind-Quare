@@ -27,7 +27,7 @@ GREEN = [0, 255, 0]
 PURPLE = [127, 96, 252, 92]
 ORANGE = [255, 136, 22, 100]
 DARK_GREEN = [0,59,44]
-LIGHT_GREEN = [63,235,38,40]
+LIGHT_GREEN = [65, 240, 88, 94]
 YELLOW = [255, 255, 0]
 CYAN = [0, 255, 255]
 
@@ -144,7 +144,7 @@ class Dices(object):
             self.roll = True
 
         #Mientras la variable roll sea True, se mantendra retornando valores random.
-        while roll == True:
+        if roll == True:
             num = random.randint(1, 6)
             if num == 1:
                 self.image = 'Resources\Images\Dice1.png'
@@ -176,9 +176,10 @@ class Dices(object):
                     i_list.append(casilla[k].num)
 
                 #print("n:", player.n_square)
-                print("n:", player.n_square)
+                #print("n:", player.n_square)
+                #print("d:",self.value)
                 nuevo_pindex = player.n_square+self.value
-                if nuevo_pindex > 60:
+                if nuevo_pindex >= 59:
                     nuevo_pindex = 60
                 indice = i_list.index(nuevo_pindex)
 
@@ -194,6 +195,8 @@ class Dices(object):
                 self.image = self.image
 
             return None #salir de la funcion
+        time.sleep(0.2)
+        self.image = self.image1
         return None
 
 class Player(pygame.sprite.Sprite):
@@ -445,7 +448,7 @@ def crear_elementos_casillas(casilla,n_casillas):
         categoria = randint(1, 5)
         casilla[i] = Squares(num,tipo,categoria,pos_x,pos_y)
         #print(casilla[i].num,"= ", casilla[i].tipo)
-        print(casilla[i].num,"= ", casilla[i].categoria)
+        print(casilla[i].num,"= ", casilla[i].categoria, casilla[i].tipo)
         #print(casilla[i].num," (",casilla[i].pos_x,",",casilla[i].pos_y,")",sep="")
 
         if cont==10:
