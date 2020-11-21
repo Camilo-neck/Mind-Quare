@@ -15,6 +15,8 @@ import imageio
 from PIL import Image, ImageTk
 import sqlite3 #Se importa la libreria para maneja la base de datos
 import tablero #Se importa el archivo del tablero.py
+import Instrucciones
+from tkinter.constants import TOP
 #import Inicio #Se importa el archivo inicio.py
 usuario = ''
 class Aplicacion:
@@ -101,6 +103,9 @@ class Aplicacion:
         self.bSalir = tk.Button(self.root, text="SALIR", background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.root.destroy)
         self.bSalir.place(x=250,y=355)
 
+        self.bInst = tk.Button(self.root, text="Inst", background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.inst)
+        self.bInst.pack(side=TOP)
+
         #Se llama metodo que inicializa la base de datos.
         self.conexion_db()
 
@@ -145,7 +150,9 @@ class Aplicacion:
             messagebox.showwarning(
                 "Denegado", "El correo o la constraseña esta equivocado."
             )
-
+    def inst(self):
+        self.root.destroy()
+        Instrucciones.main()
     def signUp(self):
         """
         Metodo que nos dirige a la ventana de registro.
