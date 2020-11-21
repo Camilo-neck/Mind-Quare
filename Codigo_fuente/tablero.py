@@ -10,10 +10,11 @@ Universidad Nacional de Colombia.
 from random import randint,shuffle #Se importa la funcion randint de random
 import random #Se importa las demas funciones de random
 import pygame #Se importa libreria pygame para la interfaz y las funciones del juego
-import os #Libreria para utilzar funciones del OS (Unused)
+import os #Libreria para utilzar funciones del OS
 import time #Libreria para hacer manejar tiempos y retrasos en funciones
-import VentanaPreguntas
-from sys import exit
+import VentanaPreguntas #Se importa ventana que contiene las preguntas
+import login # Se importa ventana del login
+from sys import exit # Librería del sistema para terminar juego
 
 pos_doble = False
 ronda = 0
@@ -199,7 +200,7 @@ class Dices(object):
         return None
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image,plus_pos, size,n_square):
+    def __init__(self, image,plus_pos, size,n_square,nombre):
         """
         Clase del jugador.
         :param string image: Direccion de imagen
@@ -207,6 +208,7 @@ class Player(pygame.sprite.Sprite):
         :param list size: Lista con medidas x-y de la imagen
         """
         super().__init__()
+        self.nombre = nombre
         self.image = pygame.image.load(image)
         self.image = pygame.transform.smoothscale(self.image, size)
         self.image.set_colorkey(BLACK)
@@ -261,7 +263,9 @@ class Game(object):
         pygame.display.set_icon(icon)
         #Lista que guarda el identificador de la casilla
         self.tipo_casilla = []
-        self.winner = False
+        self.win = False
+        self.ronda = 0
+        self.cont = 0
         self.Turno_actual = 0
         #Se crean grupos para añadirles a los jugadores como Sprites(objetos que colisionan.)
         self.player_sprites_list = pygame.sprite.Group()
@@ -330,13 +334,11 @@ class Game(object):
         indice = i_list.index(60)
         self.player1.movement(casilla[indice].pos_x, casilla[indice].pos_y, 0)
         '''
-        global ronda
-        global cont
 
-        if cont == 1:
+        if self.cont == 1:
             print('entré')
             VentanaPreguntas.Ventana()
-            cont = 0
+            self.cont = 0
         keys = pygame.key.get_pressed()
         self.Turno_actual = turnos[self.iterator]
         DADO1.roll_dice(DADO1.roll,jugador[self.Turno_actual],casilla)
@@ -347,11 +349,11 @@ class Game(object):
                 self.iterator = 0
             else:
                 self.iterator += 1
-            cont = 1
+            self.cont = 1
 
         i = 0
         if jugador[self.Turno_actual].score >= 60:
-            self.winner = True
+            self.win = True
             if keys[pygame.K_e]:
                 exit()
 
@@ -409,13 +411,13 @@ class Game(object):
 
         #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
         for i in range(cant_jugadores):
-            score_p = self.fuente2.render(f'Jugador {i+1}: {jugador[i].score}',1, WHITE)
-            screen.blit(score_p,(300+(i*150),screen_size[1]-30))
+            score_p = self.fuente2.render(f'Jugador {jugador[i].nombre}: {jugador[i].score}',1, WHITE)
+            screen.blit(score_p,(255+(i*150),screen_size[1]-30))
 
-        turno = self.fuente2.render(f'Turno de: {self.Turno_actual+1}', 1, WHITE)  # renderizar texto (numero de casilla)
+        turno = self.fuente2.render(f'Turno de: {jugador[self.Turno_actual].nombre}', 1, WHITE)  # renderizar texto (numero de casilla)
         screen.blit(turno, (100, screen_size[1]-30))
 
-        if self.winner:
+        if self.win:
             screen.fill(WHITE)
             victoria = self.fuente2.render(f'El jugador {self.Turno_actual+1} ha ganado!!', 1, RED)  # renderizar texto (numero de casilla)
             screen.blit(victoria, (350, 250))
@@ -491,11 +493,26 @@ def main():
     pygame.init()
     casilla = []
     jugador = []
-    cant_jugadores=2
+    cant_jugadores = int()
+    while True:
+        try:
+            cant_jugadores=int(input('Ingrese el numero de jugadores(min 2, max 4): '))
+            if cant_jugadores < 2 or cant_jugadores > 4:
+                print('Cantidad de jugadores no válida.')
+                continue
+            else:
+                break
+        except ValueError:
+            print('Debe ser un valor entero.')
+
 
     #inicializar lista casilla
     for i in range(60):
         casilla.append(None)
+
+    #for player in range(cant_jugadores):
+    #    if login.main() == 'luisito@gmail.com':
+    #        return 'bye lusillo pillo'
 
     n_casillas = crear_num_casillas()
     casilla = crear_elementos_casillas(casilla,n_casillas)
@@ -504,10 +521,11 @@ def main():
 
     # Se crean los jugadores
     for i in range(cant_jugadores):
+        nombre_player = login.main()
         if i != 3:
-            jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [50, 50], 1))
+            jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [50, 50], 1,nombre_player))
         else:
-            jugador.append(Player('Resources\Images\player'+str(i)+'.png', 4, [50, 50], 1))
+            jugador.append(Player('Resources\Images\player'+str(i)+'.png', 4, [50, 50], 1,nombre_player))
 
     # Se crean los dados
     DADO1 = Dices('Resources\Images\Dice1.png',1,False)

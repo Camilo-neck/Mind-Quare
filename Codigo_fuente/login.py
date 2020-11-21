@@ -16,32 +16,7 @@ from PIL import Image, ImageTk
 import sqlite3 #Se importa la libreria para maneja la base de datos
 import tablero #Se importa el archivo del tablero.py
 #import Inicio #Se importa el archivo inicio.py
-
-"""class Intro:
-    def __init__(self):
-        self.video_name = "Resources/Videos/MIND QUARE.mp4" #This is your video file path
-        self.video = imageio.get_reader(self.video_name)
-        self.Inicio = tk.Tk()
-        self.sw = self.Inicio.winfo_screenwidth()
-        self.sh = self.Inicio.winfo_screenheight()
-        self.x = self.sw // 3
-        self.y = self.sh // 4
-        self.Inicio.geometry(f"500x405+{self.x}+{self.y}")
-        self.my_label = tk.Label(self.Inicio)
-        self.my_label.pack()
-        self.thread = threading.Thread(target=self.stream, args=())
-        self.thread.daemon = 1
-        self.thread.start()
-        self.Inicio.mainloop()
-
-    def stream(self):
-        for image in self.video.iter_data():
-            frame_image = ImageTk.PhotoImage(Image.fromarray(image))
-            self.my_label.config(image=frame_image)
-            self.my_label.image = frame_image
-        self.Inicio.destroy()
-        Aplicacion()"""
-
+usuario = ''
 class Aplicacion:
     """
     Clase que inicaliza y crea la ventana de inicio de sesion.
@@ -94,13 +69,13 @@ class Aplicacion:
         self.loginCanva.create_image(0,0, image = self.imagenPrincipal, anchor='nw')
 
         #Se imprime el texto del e-mail
-        self.loginCanva.create_text(130,290, text='Introduzca su E-mail:', font=('Cascadia Mono SemiBold', 10), fill='white')
+        self.loginCanva.create_text(125,290, text='Introduzca su Nickname:', font=('Cascadia Mono SemiBold', 10), fill='white')
 
         #Se crea el entry del email y la variable que recibe lo ingresado
-        self.emailvar = tk.StringVar()
-        self.emailEntry = tk.Entry(self.root, textvariable=self.emailvar, width=40)
-        self.emailEntry.place(x=218, y=280)
-        self.emailEntry.focus()
+        self.nickvar = tk.StringVar()
+        self.nickEntry = tk.Entry(self.root, textvariable=self.nickvar, width=40)
+        self.nickEntry.place(x=218, y=280)
+        self.nickEntry.focus()
 
         #Se imprime textro de constraseña.
         self.loginCanva.create_text(150,320, text='Introduzca su Constraseña:', font=('Cascadia Mono SemiBold', 10), fill='white')
@@ -146,10 +121,11 @@ class Aplicacion:
         """
         Metodo que revisa si el correo y la constraseña son correctos.
         """
+        global usuario
         #Busca en la base de datos si el correo y la constraseña se encuentran a la vez en un mismo usuario.
         self.miCursor.execute(
-            "SELECT * FROM USUARIOS WHERE EMAIL='"
-            + self.emailvar.get()
+            "SELECT * FROM USUARIOS WHERE NICK='"
+            + self.nickvar.get()
             + "' AND  PASSWORD='"
             + self.passvar.get()
             + "'"
@@ -160,9 +136,10 @@ class Aplicacion:
         self.miConexion.commit()
         #Si la lista obtenida no es vacia(Coincidieron los datos), cierra esta ventana, y se dirige al tablero.
         if self.datosUsuario != []:
+            usuario = self.nickvar.get()
             self.root.destroy()
             #funciones()
-            tablero.main()
+            #tablero.main()
         #En cambio si es vacia(No coincidieron los datos), muestra un aviso de que la informacion esta equivocada
         else:
             messagebox.showwarning(
@@ -345,6 +322,7 @@ def main():
     """
     #Inicio.video_inicio()
     Aplicacion()
+    return usuario
     #Intro()
 
 

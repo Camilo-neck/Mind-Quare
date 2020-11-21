@@ -2,6 +2,7 @@ import tkinter as tk, threading
 import imageio
 from PIL import Image, ImageTk
 from time import sleep
+import sys
 
 import logging
 
@@ -25,11 +26,19 @@ class ventana():
         self.Inicio.resizable(width=False, height=False)
         self.my_label = tk.Label(self.Inicio)
         self.my_label.pack()
+        self.done = False
 
         thread = threading.Thread(target=self.stream, args=(self.my_label,self.Inicio))
         thread.start()
-  
+
+        
         self.Inicio.mainloop()
+
+    def destroy(self):
+        if self.done:
+            print('entré')
+        else:
+            print('no')
 
     def stream(self,label,Inicio):
 
@@ -37,7 +46,9 @@ class ventana():
             frame_image = ImageTk.PhotoImage(Image.fromarray(image))
             label.config(image=frame_image)
             label.image = frame_image
-            sleep(0.008)      
+            sleep(0.008)
+        sys.exit()
+        print(self.done)  
 
 def main():
     ventana()
