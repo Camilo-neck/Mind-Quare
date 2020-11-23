@@ -6,7 +6,7 @@ import sys
 
 import logging
 
-import login
+import tablero
 
 
 video_name = "Resources/Videos/MIND QUARE.mp4" #This is your video file path
@@ -52,7 +52,7 @@ class ventana():
 
 def main():
     ventana()
-    login.Aplicacion()
+    tablero.main()
 
 if __name__=="__main__":
     main()
