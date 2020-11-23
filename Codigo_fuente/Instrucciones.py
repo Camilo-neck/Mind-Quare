@@ -49,6 +49,7 @@ class Instrucciones:
                         texto += '\n'
                 self.texto += texto+'\n'
             y+=1
+        archivo.close()
 
     def volver(self):
         self.root.destroy()

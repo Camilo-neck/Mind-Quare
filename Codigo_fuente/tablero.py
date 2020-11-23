@@ -130,93 +130,6 @@ class Dices(object):
             screen.blit(image, (48, 545))
         time.sleep(0.1)#Sleep para no hacer iteraciones tan aceleradas.
 
-    def roll_dice(self,roll,player,casilla,respuesta):
-        """
-        Metodo que al detectar que se preciona SPACE, comienza a generar numeros random y se detiene al precionar la letra p.
-        :param bool roll: Bandera para empezar a girar el dado
-        :param string imagen: direccion de la imagen
-        :return: string imagen
-        :return: int self.dice_value
-        """
-
-
-        keys = pygame.key.get_pressed()#Guarda en una variable que se presiona
-        #Si se presiona y no esta girando, roll sera true
-        if keys[pygame.K_SPACE] and roll==False:
-            #print("RUN ROLL")
-            self.roll = True
-
-        #Mientras la variable roll sea True, se mantendra retornando valores random.
-        if roll == True:
-            num = random.randint(1, 6)
-            if num == 1:
-                self.image = 'Resources\Images\Dice1.png'
-                self.value = num
-            elif num == 2:
-                self.image = 'Resources\Images\Dice2.png'
-                self.value = num
-            elif num == 3:
-                self.image = 'Resources\Images\Dice3.png'
-                self.value = num
-            elif num == 4:
-                self.image = 'Resources\Images\Dice4.png'
-                self.value = num
-            elif num == 5:
-                self.image = 'Resources\Images\Dice5.png'
-                self.value = num
-            else:
-                self.image = 'Resources\Images\Dice6.png'
-                self.value = num
-
-            if keys[pygame.K_p]:
-                #print("STOP ROLL")
-                
-                self.roll = False
-
-                #Logica para ubicar el jugador en la casilla que marcaron los dados (antes de esto iria la pregunta)
-                i_list=[]
-                for k in range(0,60):
-                    i_list.append(casilla[k].num)
-
-                #print("n:", player.n_square)
-                #print("n:", player.n_square)
-                #print("d:",self.value)
-
-                #if respuesta == True:
-                nuevo_pindex = player.n_square+self.value
-                #else:
-                #    nuevo_pindex = player.n_square-self.value
-
-
-                if nuevo_pindex < 1:
-                    nuevo_pindex = 1
-
-                if nuevo_pindex >= 59:
-                    nuevo_pindex = 60
-                indice = i_list.index(nuevo_pindex)
-
-                #print("indice:",indice)
-                #print("x:",casilla[indice].pos_x)
-                #print("y:", casilla[indice].pos_y)
-
-                player.movement(casilla[indice].pos_x,casilla[indice].pos_y,self.value)
-
-                #if respuesta == True:
-                player.n_square += self.value
-                #else:
-                #    player.n_square -= self.value
-
-                if player.n_square < 1:
-                    player.n_square = 1
-
-                #print("n nuevo:", nuevo_pindex)
-
-                self.image = self.image
-
-            return None #salir de la funcion
-        self.image = self.image1
-        return None
-
 class Player(pygame.sprite.Sprite):
     def __init__(self,
                 image,
@@ -344,6 +257,92 @@ class Game(object):
             jugador[1].speed_x += 20
             pos_doble = False
 
+    def roll_dice(self,DADO, roll, player, casilla, respuesta):
+        """
+        Metodo que al detectar que se preciona SPACE, comienza a generar numeros random y se detiene al precionar la letra p.
+        :param bool roll: Bandera para empezar a girar el dado
+        :param string imagen: direccion de la imagen
+        :return: string imagen
+        :return: int self.dice_value
+        """
+
+        keys = pygame.key.get_pressed()  # Guarda en una variable que se presiona
+        # Si se presiona y no esta girando, roll sera true
+        if keys[pygame.K_SPACE] and roll == False:
+            # print("RUN ROLL")
+            DADO.roll = True
+
+        # Mientras la variable roll sea True, se mantendra retornando valores random.
+        if roll == True:
+            num = random.randint(1, 6)
+            if num == 1:
+                DADO.image = 'Resources\Images\Dice1.png'
+                DADO.value = num
+            elif num == 2:
+                DADO.image = 'Resources\Images\Dice2.png'
+                DADO.value = num
+            elif num == 3:
+                DADO.image = 'Resources\Images\Dice3.png'
+                DADO.value = num
+            elif num == 4:
+                DADO.image = 'Resources\Images\Dice4.png'
+                DADO.value = num
+            elif num == 5:
+                DADO.image = 'Resources\Images\Dice5.png'
+                DADO.value = num
+            else:
+                DADO.image = 'Resources\Images\Dice6.png'
+                DADO.value = num
+
+            if keys[pygame.K_p]:
+                # print("STOP ROLL")
+
+                DADO.roll = False
+
+                # Logica para ubicar el jugador en la casilla que marcaron los dados (antes de esto iria la pregunta)
+                i_list = []
+                for k in range(0, 60):
+                    i_list.append(casilla[k].num)
+
+                # print("n:", player.n_square)
+                # print("n:", player.n_square)
+                # print("d:",self.value)
+
+                if respuesta == True:
+                    nuevo_pindex = player.n_square + DADO.value
+                else:
+                    nuevo_pindex = player.n_square - DADO.value
+
+                if nuevo_pindex < 1:
+                    nuevo_pindex = 1
+
+                if nuevo_pindex >= 59:
+                    nuevo_pindex = 60
+                indice = i_list.index(nuevo_pindex)
+
+                # print("indice:",indice)
+                # print("x:",casilla[indice].pos_x)
+                # print("y:", casilla[indice].pos_y)
+
+                player.movement(casilla[indice].pos_x, casilla[indice].pos_y, DADO.value)
+
+                if respuesta == True:
+                    player.n_square += DADO.value
+                else:
+                    player.n_square -= DADO.value
+
+                if player.n_square < 1:
+                    player.n_square = 1
+
+                # print("n nuevo:", nuevo_pindex)
+
+                DADO.image = DADO.image
+
+            return None  # salir de la funcion
+        DADO.image = DADO.image1
+        return None
+
+
     def run_logic(self,screen,jugador,dados,casilla,turnos,cant_jugadores):
         """
         En este metodo se ejecuta toda la logica del programa.
@@ -396,13 +395,15 @@ class Game(object):
             else:
                 n_pregunta = jugador[self.Turno_actual].preguntas_E[self.ronda]
 
-            a_value = VentanaPreguntas.Ventana(casilla[indice].categoria,n_pregunta)
+            a_value = VentanaPreguntas.main(casilla[indice].categoria,n_pregunta)
+            print(a_value)
             self.cont = 0
 
         keys = pygame.key.get_pressed()
         self.Turno_actual = turnos[self.iterator]
-        DADO1.roll_dice(DADO1.roll,jugador[self.Turno_actual],casilla,a_value) #---------Ultimo parametro a_value---------#
-        DADO2.roll_dice(DADO2.roll,jugador[self.Turno_actual],casilla,a_value)
+
+        self.roll_dice(DADO1,DADO1.roll,jugador[self.Turno_actual],casilla,a_value) #---------Ultimo parametro a_value---------#
+        self.roll_dice(DADO2,DADO2.roll,jugador[self.Turno_actual],casilla,a_value)
 
         if keys[pygame.K_p]:
             if self.iterator == len(turnos)-1:
