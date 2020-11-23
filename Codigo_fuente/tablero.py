@@ -19,6 +19,7 @@ from sys import exit # Librería del sistema para terminar juego
 pos_doble = False
 ronda = 0
 cont = 0
+a_value = None
 
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
@@ -129,7 +130,7 @@ class Dices(object):
             screen.blit(image, (48, 545))
         time.sleep(0.1)#Sleep para no hacer iteraciones tan aceleradas.
 
-    def roll_dice(self,roll,player,casilla):
+    def roll_dice(self,roll,player,casilla,respuesta):
         """
         Metodo que al detectar que se preciona SPACE, comienza a generar numeros random y se detiene al precionar la letra p.
         :param bool roll: Bandera para empezar a girar el dado
@@ -180,7 +181,16 @@ class Dices(object):
                 #print("n:", player.n_square)
                 #print("n:", player.n_square)
                 #print("d:",self.value)
+
+                #if respuesta == True:
                 nuevo_pindex = player.n_square+self.value
+                #else:
+                #    nuevo_pindex = player.n_square-self.value
+
+
+                if nuevo_pindex < 1:
+                    nuevo_pindex = 1
+
                 if nuevo_pindex >= 59:
                     nuevo_pindex = 60
                 indice = i_list.index(nuevo_pindex)
@@ -188,8 +198,16 @@ class Dices(object):
                 #print("indice:",indice)
                 #print("x:",casilla[indice].pos_x)
                 #print("y:", casilla[indice].pos_y)
+
                 player.movement(casilla[indice].pos_x,casilla[indice].pos_y,self.value)
+
+                #if respuesta == True:
                 player.n_square += self.value
+                #else:
+                #    player.n_square -= self.value
+
+                if player.n_square < 1:
+                    player.n_square = 1
 
                 #print("n nuevo:", nuevo_pindex)
 
@@ -200,7 +218,17 @@ class Dices(object):
         return None
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image,plus_pos, size,n_square,nombre):
+    def __init__(self,
+                image,
+                plus_pos,
+                size,
+                n_square,
+                nombre,
+                preguntas_M,
+                preguntas_H,
+                preguntas_G,
+                preguntas_C,
+                preguntas_E):
         """
         Clase del jugador.
         :param string image: Direccion de imagen
@@ -208,7 +236,7 @@ class Player(pygame.sprite.Sprite):
         :param list size: Lista con medidas x-y de la imagen
         """
         super().__init__()
-        self.nombre = nombre
+
         self.image = pygame.image.load(image)
         self.image = pygame.transform.smoothscale(self.image, size)
         self.image.set_colorkey(BLACK)
@@ -220,6 +248,12 @@ class Player(pygame.sprite.Sprite):
         #self.casilla = 1
         #self.move_casilla = 1
         self.n_square = n_square
+        self.nombre = nombre
+        self.preguntas_M = preguntas_M
+        self.preguntas_H = preguntas_H
+        self.preguntas_G = preguntas_G
+        self.preguntas_C = preguntas_C
+        self.preguntas_E = preguntas_E
 
     def movement(self, x, y, points):
         """
@@ -271,6 +305,7 @@ class Game(object):
         self.all_sprites_list = pygame.sprite.Group()
 
         self.iterator = 0
+        self.ronda = 0
 
     def process_events(self,casilla):
         """
@@ -313,6 +348,8 @@ class Game(object):
         En este metodo se ejecuta toda la logica del programa.
         """
 
+        global a_value
+
         self.adjust_players_on_square(jugador)
         #Se añaden los jugadores a los grupos de sprites.
         for i in range(0,cant_jugadores):
@@ -335,20 +372,47 @@ class Game(object):
         '''
 
         if self.cont == 1:
-            print('entré')
-            VentanaPreguntas.Ventana()
+            print('ronda:',self.ronda)
+            i_list = []
+            for k in range(0, 60):
+                i_list.append(casilla[k].num)
+            index = jugador[self.Turno_actual].n_square - DADO1.value - DADO2.value
+            if index >= 59:
+                index = 60
+            if index<1:
+                index = 1
+            indice = i_list.index(index)
+            #print('casilla:',casilla[indice].num)
+
+            if casilla[indice].categoria == 1:
+                n_pregunta = jugador[self.Turno_actual].preguntas_M[self.ronda]
+            elif casilla[indice].categoria == 2:
+                n_pregunta = jugador[self.Turno_actual].preguntas_H[self.ronda]
+            elif casilla[indice].categoria == 3:
+                n_pregunta = jugador[self.Turno_actual].preguntas_G[self.ronda]
+            elif casilla[indice].categoria == 4:
+                n_pregunta = jugador[self.Turno_actual].preguntas_C[self.ronda]
+            else:
+                n_pregunta = jugador[self.Turno_actual].preguntas_E[self.ronda]
+
+            a_value = VentanaPreguntas.Ventana(casilla[indice].categoria,n_pregunta)
             self.cont = 0
+
         keys = pygame.key.get_pressed()
         self.Turno_actual = turnos[self.iterator]
-        DADO1.roll_dice(DADO1.roll,jugador[self.Turno_actual],casilla)
-        DADO2.roll_dice(DADO2.roll,jugador[self.Turno_actual],casilla)
+        DADO1.roll_dice(DADO1.roll,jugador[self.Turno_actual],casilla,a_value) #---------Ultimo parametro a_value---------#
+        DADO2.roll_dice(DADO2.roll,jugador[self.Turno_actual],casilla,a_value)
 
         if keys[pygame.K_p]:
             if self.iterator == len(turnos)-1:
                 self.iterator = 0
+                self.ronda += 1
             else:
                 self.iterator += 1
             self.cont = 1
+
+        if self.ronda >=19: #--------------------CANTIDAD DE PREGUNTAS (20-1)-----------------------#
+            self.ronda = 0
 
         i = 0
         if jugador[self.Turno_actual].score >= 60:
@@ -462,7 +526,7 @@ def crear_elementos_casillas(casilla,n_casillas):
         categoria = randint(1, 5)
         casilla[i] = Squares(num,tipo,categoria,pos_x,pos_y)
         #print(casilla[i].num,"= ", casilla[i].tipo)
-        print(casilla[i].num,"= ", casilla[i].categoria, casilla[i].tipo)
+        #print(casilla[i].num,"= ", casilla[i].categoria, casilla[i].tipo)
         #print(casilla[i].num," (",casilla[i].pos_x,",",casilla[i].pos_y,")",sep="")
 
         if cont==10:
@@ -486,6 +550,24 @@ def lista_aleatoria(cant):
     shuffle(lista)
     return lista
 
+def crear_jugadores(cant_jugadores,cant_preguntas):
+    jugador = []
+    for i in range(cant_jugadores):
+        nombre_player = login.main()
+
+        questions_M = lista_aleatoria(cant_preguntas)
+        questions_H = lista_aleatoria(cant_preguntas)
+        questions_G = lista_aleatoria(cant_preguntas)
+        questions_C = lista_aleatoria(cant_preguntas)
+        questions_E = lista_aleatoria(cant_preguntas)
+
+        if i != 3:
+            jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [50, 50], 1,nombre_player,questions_M,questions_H,questions_G,questions_C,questions_E))
+        else:
+            jugador.append(Player('Resources\Images\player'+str(i)+'.png', 4, [50, 50], 1,nombre_player,questions_M,questions_H,questions_G,questions_C,questions_E))
+
+    return jugador
+
 def main():
     """
     Funcion principal que ejecuta mediante un bucle infinito el juego.
@@ -494,7 +576,8 @@ def main():
     pygame.init()
     casilla = []
     jugador = []
-    cant_jugadores = int()
+    cant_preguntas = 20
+
     while True:
         try:
             cant_jugadores=int(input('Ingrese el numero de jugadores(min 2, max 4): '))
@@ -505,7 +588,6 @@ def main():
                 break
         except ValueError:
             print('Debe ser un valor entero.')
-
 
     #inicializar lista casilla
     for i in range(60):
@@ -518,15 +600,10 @@ def main():
     n_casillas = crear_num_casillas()
     casilla = crear_elementos_casillas(casilla,n_casillas)
     turnos = lista_aleatoria(cant_jugadores)
-    print(turnos)
+    #print(turnos)
 
     # Se crean los jugadores
-    for i in range(cant_jugadores):
-        nombre_player = login.main()
-        if i != 3:
-            jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [50, 50], 1,nombre_player))
-        else:
-            jugador.append(Player('Resources\Images\player'+str(i)+'.png', 4, [50, 50], 1,nombre_player))
+    jugador = crear_jugadores(cant_jugadores,cant_preguntas)
 
     # Se crean los dados
     DADO1 = Dices('Resources\Images\Dice1.png',1,False)

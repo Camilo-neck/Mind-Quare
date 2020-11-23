@@ -8,7 +8,8 @@ from time import sleep, time
 value = False
 class Ventana(Tk):
     def __Cancel(event=None): pass
-    def __init__(self):
+    def __init__(self,categoria,n_pregunta):
+
         self.root = Tk()
         self.root.title('PREGUNTA')
         self.sw = self.root.winfo_screenwidth()
@@ -22,15 +23,47 @@ class Ventana(Tk):
         #self.root.wm_overrideredirect(1)
 
         self.answered = False
+        self.answ_value = False
+        self.categoria = categoria
 
-        self.n_r = randint(0,19)
+        self.n_r = n_pregunta
 
-        self.RC = [3, 2, 1, 2, 1, 2, 3, 4, 2, 3, 2, 1, 2, 3, 3, 1, 2, 2, 1, 4]
+        self.RM = ['A', 'C', 'D', 'B', 'C', 'A', 'D', 'B', 'A', 'C', 'C', 'D', 'A', 'B', 'C', 'C', 'A', 'C', 'A', 'A']
+        self.RH = ['A', 'C', 'A', 'A', 'B', 'C', 'A', 'C', 'B', 'B', 'A', 'A', 'B', 'B', 'C', 'A', 'B', 'D', 'B', 'A']
+        self.RG = ['B', 'C', 'A', 'C', 'A', 'D', 'B', 'A', 'B', 'A', 'B', 'A', 'D', 'C', 'A', 'B', 'B', 'C', 'A', 'B']
+        self.RC = ['C', 'B', 'A', 'B', 'A', 'B', 'C', 'D', 'B', 'C', 'B', 'A', 'B', 'C', 'C', 'A', 'B', 'B', 'A', 'D']
+        self.RE = ['B', 'D', 'A', 'C', 'B', 'B', 'A', 'C', 'B', 'B', 'B', 'B', 'A', 'D', 'B', 'B', 'B', 'B', 'B', 'C']
 
-        self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_ciencia.txt"), "r", encoding="utf-8")
+        if categoria == 1:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_matematicas.txt"), "r", encoding="utf-8")
+            self.R = self.RM
+            self.color = '#DF0101'
+            #print('Matematicas')
+        elif categoria == 2:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_historia.txt"), "r", encoding="utf-8")
+            self.R = self.RH
+            self.color = '#C7AF14'
+            #print('Historia')
+        elif categoria == 3:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_geografia.txt"), "r", encoding="utf-8")
+            self.R = self.RG
+            self.color = '#0FCBCB'
+            #print('Geografia')
+        elif categoria == 4:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_ciencia.txt"), "r", encoding="utf-8")
+            self.R = self.RC
+            self.color = '#1DCB0F'
+            #print('Ciencia')
+        else:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_entretenimiento.txt"), "r", encoding="utf-8")
+            self.R = self.RE
+            self.color = '#A901DF'
+            #print('Entretenimiento')
+
         self.data = self.preguntas.readlines()[((self.n_r*5)):(self.n_r*5)+5]
+        #print(self.R)
 
-        self.textoCanva = Canvas(self.root, width = 500, height = 280, relief = 'sunken', bg = '#B362F9')
+        self.textoCanva = Canvas(self.root, width = 500, height = 280, relief = 'sunken', bg = self.color)
         self.textoCanva.place(x=0 , y=0)
 
         self.textoCanva.create_text(250, 50, text = self.data[0], fill = 'black', font = ('Rockwell',12))
@@ -42,25 +75,33 @@ class Ventana(Tk):
         self.varOpcion = IntVar()
         self.cont = 0
         def respuest():
-            global value
-            global answered
-            if self.varOpcion.get() == self.RC[self.n_r]:
-                self.validar.config(text = 'CORRECTO!', bg = '#B362F9', fg = 'Darkgreen', font = ('Roman',15))
-                value = True
+
+            if self.varOpcion.get() == 1:
+                rta = 'A'
+            elif self.varOpcion.get() == 2:
+                rta = 'B'
+            elif self.varOpcion.get() == 3:
+                rta = 'C'
+            else:
+                rta = 'D'
+
+            if rta == self.R[self.n_r]:
+                self.validar.config(text = 'CORRECTO!', bg = self.color, fg = 'Darkgreen', font = ('Roman',15))
+                self.answ_value = True
                 #print('Correcto')
             else:
-                self.validar.config(text = 'INCORRECTO', bg = '#B362F9', fg = 'red', font = ('Roman',15))
-                value = False
+                self.validar.config(text = 'INCORRECTO', bg = self.color, fg = 'red', font = ('Roman',15))
+                self.answ_value = False
                 #print('Incorrecto')
             self.answered = True
 
 
-        self.opcion1 = Radiobutton(self.textoCanva, text= self.data[1], font = ('Rockwell',11), variable = self.varOpcion, value = 1, bg = '#B362F9')
-        self.opcion2 = Radiobutton(self.textoCanva, text= self.data[2], font = ('Rockwell',11), variable = self.varOpcion, value = 2, bg = '#B362F9')
-        self.opcion3 = Radiobutton(self.textoCanva, text= self.data[3], font = ('Rockwell',11), variable = self.varOpcion, value = 3, bg = '#B362F9')
-        self.opcion4 = Radiobutton(self.textoCanva, text= self.data[4], font = ('Rockwell',11), variable = self.varOpcion, value = 4, bg = '#B362F9')
+        self.opcion1 = Radiobutton(self.textoCanva, text= self.data[1], font = ('Rockwell',11), variable = self.varOpcion, value = 1, bg = self.color)
+        self.opcion2 = Radiobutton(self.textoCanva, text= self.data[2], font = ('Rockwell',11), variable = self.varOpcion, value = 2, bg = self.color)
+        self.opcion3 = Radiobutton(self.textoCanva, text= self.data[3], font = ('Rockwell',11), variable = self.varOpcion, value = 3, bg = self.color)
+        self.opcion4 = Radiobutton(self.textoCanva, text= self.data[4], font = ('Rockwell',11), variable = self.varOpcion, value = 4, bg = self.color)
         self.evaluar = Button(self.textoCanva, text = 'Estoy seguro', bg = 'lightblue', activebackground= 'lightgreen', command = respuest)
-        self.validar = Label(self.textoCanva, text = '', bg = '#B362F9')
+        self.validar = Label(self.textoCanva, text = '', bg = self.color)
 
         self.opcion1.place(x = 80, y = 60)
         self.opcion2.place(x = 80, y = 90)
@@ -71,7 +112,7 @@ class Ventana(Tk):
 
         #self.timer = Label(self.textoCanva, text = '')
 
-        self.time_l = Label(self.textoCanva, text = '30', width = 5, bg = '#B362F9', font = ('Arial',13))
+        self.time_l = Label(self.textoCanva, text = '30', width = 5, bg = self.color, font = ('Arial',13))
         self.time_l.place(x = 290, y = 190)
         self.time = 0
         self.contador(30)
@@ -83,7 +124,7 @@ class Ventana(Tk):
         if self.answered == True:
             sleep(2)
             self.root.destroy()
-            return None #salir
+            return self.answ_value #salir
 
         if time is not None:
             self.time = time
@@ -91,6 +132,7 @@ class Ventana(Tk):
         if self.time <= 0:
             self.validar.config(text = 'Tiempo agotado!')
             self.root.destroy()
+            return False
 
         else:
             self.time_l.config(text = f"{self.time}")
@@ -104,9 +146,8 @@ class Ventana(Tk):
             self.time_l.after(1000, self.contador)
 
 def main():
-    Ventana()
-    print(value)
-    return value
+    Ventana(1,10)
+    print('end')
 
 if __name__ == "__main__":
     main()
