@@ -5,11 +5,10 @@ from tkinter import Radiobutton, messagebox
 from random import randint
 from time import sleep, time
 
-
+value = False
 class Ventana(Tk):
     def __Cancel(event=None): pass
     def __init__(self):
-
         self.root = Tk()
         self.root.title('PREGUNTA')
         self.sw = self.root.winfo_screenwidth()
@@ -43,12 +42,15 @@ class Ventana(Tk):
         self.varOpcion = IntVar()
         self.cont = 0
         def respuest():
+            global value
             global answered
             if self.varOpcion.get() == self.RC[self.n_r]:
                 self.validar.config(text = 'CORRECTO!', bg = '#B362F9', fg = 'Darkgreen', font = ('Roman',15))
+                value = True
                 #print('Correcto')
             else:
                 self.validar.config(text = 'INCORRECTO', bg = '#B362F9', fg = 'red', font = ('Roman',15))
+                value = False
                 #print('Incorrecto')
             self.answered = True
 
@@ -103,6 +105,8 @@ class Ventana(Tk):
 
 def main():
     Ventana()
+    print(value)
+    return value
 
 if __name__ == "__main__":
     main()

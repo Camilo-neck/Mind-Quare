@@ -229,7 +229,6 @@ class Player(pygame.sprite.Sprite):
         :param int points: Valor extra en el avance normal
         """
         self.speed_x = x
-        self.speed_x = x
         self.speed_y = y-440
         self.points += 1*points
         #self.move_casilla += 1
@@ -412,17 +411,19 @@ class Game(object):
         #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
         for i in range(cant_jugadores):
             score_p = self.fuente2.render(f'Jugador {jugador[i].nombre}: {jugador[i].score}',1, WHITE)
-            screen.blit(score_p,(255+(i*150),screen_size[1]-30))
+            screen.blit(score_p,(255+(i*155),screen_size[1]-30))
 
         turno = self.fuente2.render(f'Turno de: {jugador[self.Turno_actual].nombre}', 1, WHITE)  # renderizar texto (numero de casilla)
         screen.blit(turno, (100, screen_size[1]-30))
 
         if self.win:
             screen.fill(WHITE)
-            victoria = self.fuente2.render(f'El jugador {self.Turno_actual+1} ha ganado!!', 1, RED)  # renderizar texto (numero de casilla)
+            victoria = self.fuente2.render(f'{jugador[self.Turno_actual].nombre} ha ganado!!', 1, RED)  # renderizar texto (numero de casilla)
             screen.blit(victoria, (350, 250))
+            puntaje_win = self.fuente.render(f'Score: {jugador[self.Turno_actual].score}', 1, BLACK)  # renderizar texto (numero de casilla)
+            screen.blit(puntaje_win, (355, 300))
             salir = self.fuente.render('Presione la tecla e para salir', 1, BLACK)  # renderizar texto (numero de casilla)
-            screen.blit(salir, (355, 300))
+            screen.blit(salir, (355, 350))
 
         pygame.display.flip()  # Refresca la ventana
 
