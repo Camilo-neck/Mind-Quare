@@ -5,7 +5,8 @@ from tkinter import Radiobutton, messagebox
 from random import randint
 from time import sleep, time
 
-value = False
+value_answ = False
+
 class Ventana(Tk):
     def __Cancel(event=None): pass
     def __init__(self,categoria,n_pregunta):
@@ -76,6 +77,8 @@ class Ventana(Tk):
         self.cont = 0
         def respuest():
 
+            global value_answ
+
             if self.varOpcion.get() == 1:
                 rta = 'A'
             elif self.varOpcion.get() == 2:
@@ -88,10 +91,12 @@ class Ventana(Tk):
             if rta == self.R[self.n_r]:
                 self.validar.config(text = 'CORRECTO!', bg = self.color, fg = 'Darkgreen', font = ('Roman',15))
                 self.answ_value = True
+                value_answ = self.answ_value
                 #print('Correcto')
             else:
                 self.validar.config(text = 'INCORRECTO', bg = self.color, fg = 'red', font = ('Roman',15))
                 self.answ_value = False
+                value_answ = self.answ_value
                 #print('Incorrecto')
             self.answered = True
 
@@ -121,18 +126,22 @@ class Ventana(Tk):
 
 
     def contador(self,time = None):
+
+
         if self.answered == True:
+            self.preguntas.close()
             sleep(2)
             self.root.destroy()
-            return self.answ_value #salir
+            return None #salir
 
         if time is not None:
             self.time = time
 
         if self.time <= 0:
+            self.preguntas.close()
             self.validar.config(text = 'Tiempo agotado!')
             self.root.destroy()
-            return False
+            return None
 
         else:
             self.time_l.config(text = f"{self.time}")
@@ -145,9 +154,9 @@ class Ventana(Tk):
             self.time = self.time - 1
             self.time_l.after(1000, self.contador)
 
-def main():
-    Ventana(1,10)
-    print('end')
+def main(categoria,n_pregunta):
+    Ventana(categoria,n_pregunta)
+    return value_answ
 
 if __name__ == "__main__":
     main()
