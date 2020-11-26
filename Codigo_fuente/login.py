@@ -23,6 +23,7 @@ class Aplicacion:
     """
     Clase que inicaliza y crea la ventana de inicio de sesion.
     """
+    def __Cancel(event=None): pass
     def __init__(self):
         # ----------CARACTERISTECAS DE VENTANA-------------------
         self.root = tk.Tk()
@@ -34,6 +35,7 @@ class Aplicacion:
         self.root.title("MindQuare")
         self.root.iconbitmap("Resources\Images\Logo_Mindquare.ico")# Se carga el icono
         self.root.geometry(f"550x405+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
+        self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
         self.root.resizable(width=False, height=False)
         self.root.config(bg="white")
 
@@ -172,6 +174,7 @@ class ventanaRegistro:
         -Menor a 8 caracteres.
         -Que contenga un espacio.
     """
+    def __Cancel(event=None): pass
     def __init__(self):
         # ---------------INTERFAZ REGISTRO---------------
         self.registro = tk.Tk()
@@ -182,6 +185,7 @@ class ventanaRegistro:
         self.registro.title("Registro")
         self.registro.iconbitmap("Resources\Images\Logo_Mindquare.ico")
         self.registro.geometry(f"430x450+{self.x}+{self.y}")
+        self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
         self.registro.resizable(width=False, height=False)
         self.registro.config(bg="#F0F1F2")
         self.imagenPrincipal = tk.PhotoImage(file="Resources\Images\FondoRegistro2.png")

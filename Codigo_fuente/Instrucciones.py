@@ -20,7 +20,7 @@ class Instrucciones:
         self.root.geometry(f"660x425+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
         self.root.resizable(width=False, height=False)
         self.root.config(bg="white")
-        self.titulo = tk.Label(self.root, text='titulo',font=('Cascadia Mono SemiBold', 12), fg='black', bg='white')
+        self.titulo = tk.Label(self.root, text='',font=('Cascadia Mono SemiBold', 12), fg='black', bg='white')
         self.titulo.pack()
         self.texto = ''
         self.imprimir_instrucciones()
