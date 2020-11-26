@@ -370,6 +370,9 @@ class Game(object):
         self.player1.movement(casilla[indice].pos_x, casilla[indice].pos_y, 0)
         '''
 
+        keys = pygame.key.get_pressed()
+        self.Turno_actual = turnos[self.iterator]
+        
         if self.cont == 1:
             print('ronda:',self.ronda)
             i_list = []
@@ -398,8 +401,6 @@ class Game(object):
             print(a_value)
             self.cont = 0
 
-        keys = pygame.key.get_pressed()
-        self.Turno_actual = turnos[self.iterator]
 
         self.roll_dice(DADO1,DADO1.roll,jugador[self.Turno_actual],casilla,a_value) #---------Ultimo parametro a_value---------#
         self.roll_dice(DADO2,DADO2.roll,jugador[self.Turno_actual],casilla,a_value)
@@ -416,7 +417,7 @@ class Game(object):
             self.ronda = 0
 
         i = 0
-        if jugador[self.Turno_actual].score >= 60:
+        if jugador[self.Turno_actual].n_square >= 60:
             self.win = True
             if keys[pygame.K_e]:
                 exit()
