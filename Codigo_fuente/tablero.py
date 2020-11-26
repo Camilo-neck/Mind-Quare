@@ -55,23 +55,33 @@ class Squares():
         self.pos_x = pos_x
         self.pos_y = pos_y
 
-    def Trivia_UP(self):
+    def Trivia_NORMAL(self,respuesta,value1,value2):
         """
         Casillas que contienen preguntas y adelantan al jugador.
         """
-        pass
+        if respuesta:
+            return value1+value2
+        else:
+            return (value1+value2)*-1
 
-    def Trivia_DOWN(self):
+    def Trivia_DOUBLE(self,respuesta,value1,value2):
         """
         Casillas que contienen preguntas que al ser incorrectas devuelven al jugador.
         """
-        pass
+        if respuesta:
+            return (value1+value2)*2
+        else:
+            return ((value1+value2)*2)*-1
 
-    def Trivia_NONE(self):
+    def Trivia_BA1(self,respuesta,value1,value2):
         """
         Casillas que no generan ninguna accion, es decir que son estaticas.
         """
-        pass
+        if respuesta:
+            return 1
+        else:
+            return (value1+value2)*-1
+
 
     def DrawSquare(self, screen, x_pos, y_pos,size, tipo,size_c,categoria=0):
         """
@@ -213,6 +223,7 @@ class Game(object):
         self.win = False
         self.ronda = 0
         self.cont = 0
+        self.pos_doble = False
         self.Turno_actual = 0
         #Se crean grupos para añadirles a los jugadores como Sprites(objetos que colisionan.)
         self.player_sprites_list = pygame.sprite.Group()
@@ -241,21 +252,21 @@ class Game(object):
 
     def adjust_players_on_square(self,jugador): # acomoda las fichas si estan en la misma casilla
 
-        global pos_doble
+        #global pos_doble
         if (jugador[0].n_square == jugador[1].n_square):
             same_square = True
         else:
             same_square = False
 
-        if same_square == True and pos_doble == False:  # revisar si las posiciones y la casilla de los jugadores es igual (a medias)
+        if same_square == True and self.pos_doble == False:  # revisar si las posiciones y la casilla de los jugadores es igual (a medias)
             jugador[0].speed_x += 20
             jugador[1].speed_x -= 20
-            pos_doble = True
+            self.pos_doble = True
 
-        elif same_square == False and pos_doble == True:
+        elif same_square == False and self.pos_doble == True:
             jugador[0].speed_x -= 20
             jugador[1].speed_x += 20
-            pos_doble = False
+            self.pos_doble = False
 
     def roll_dice(self,DADO):
         """
@@ -302,7 +313,7 @@ class Game(object):
             return DADO.value, rolling  # salir de la funcion
         return DADO.value, rolling
 
-    def move_by_answ(self,casilla,player,value1,value2,respuesta,DADO1,DADO2):
+    def move_by_answ(self,casilla_actual,casilla,player,value1,value2,respuesta,DADO1,DADO2,tipo):
         # Logica para ubicar el jugador en la casilla que marcaron los dados (antes de esto iria la pregunta)
         i_list = []
         for k in range(0, 60):
@@ -312,12 +323,12 @@ class Game(object):
         # print("n:", player.n_square)
         # print("d:",self.value)
 
-        if respuesta == True:
-            direccion = 1
+        if tipo == 1:
+            total_value = casilla_actual.Trivia_NORMAL(respuesta, value1, value2)
+        elif tipo == 2:
+            total_value = casilla_actual.Trivia_DOUBLE(respuesta, value1, value2)
         else:
-            direccion = -1
-
-        total_value = (value1+value2)*direccion
+            total_value = casilla_actual.Trivia_BA1(respuesta, value1, value2)
 
         nuevo_pindex = player.n_square + total_value
 
@@ -393,14 +404,14 @@ class Game(object):
             i_list = []
             for k in range(0, 60):
                 i_list.append(casilla[k].num)
-            index = jugador[self.Turno_actual].n_square - DADO1.value - DADO2.value
+            index = jugador[self.Turno_actual].n_square
             if index >= 59:
                 index = 60
             if index < 1:
                 index = 1
             indice = i_list.index(index)
             # print('casilla:',casilla[indice].num)
-
+            print(casilla[indice].categoria)
             if casilla[indice].categoria == 1:
                 n_pregunta = jugador[self.Turno_actual].preguntas_M[self.ronda]
             elif casilla[indice].categoria == 2:
@@ -420,10 +431,11 @@ class Game(object):
             DADO2.print_dice(screen, DADO2.image, 2)
             pygame.display.flip()
 
-            a_value = VentanaPreguntas.main(casilla[indice].categoria, n_pregunta)
+            a_value = VentanaPreguntas.main(casilla[indice].tipo,casilla[indice].categoria, n_pregunta)
             #print(a_value)
 
-            self.move_by_answ(casilla,jugador[self.Turno_actual], value1, value2,a_value,DADO1,DADO2)
+
+            self.move_by_answ(casilla[indice],casilla,jugador[self.Turno_actual], value1, value2,a_value,DADO1,DADO2,casilla[indice].tipo)
 
             self.cont = 0
 
