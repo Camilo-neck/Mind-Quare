@@ -16,23 +16,24 @@ import VentanaPreguntas #Se importa ventana que contiene las preguntas
 import login # Se importa ventana del login
 from sys import exit # Librería del sistema para terminar juego
 
-pos_doble = False
+pos_doble = False #boleano que determina si los jugadores deben acomodarse de una forma especifica si hay 2 de ellos en la misma casilla (no funciona correctamente)
 ronda = 0
-cont = 0
-a_value = None
-rolling = False
+cont = 0 #valor que cambia entre 0 y 1 para controlar si se muestra o no la pregunta
+a_value = None #valor de la respuesta del jugador (True -> correcta , False -> Incorrecta)
+rolling = False #boleano que determina si los dados estan o no girando
 
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
 WHITE = [255, 255, 255]
+GRAY = [171,173,170,70]
 RED = [255, 0, 0]
 BLUE = [31, 200, 255, 100]
 GREEN = [0, 255, 0]
-PURPLE = [127, 96, 252, 92]
+PURPLE = [111, 0, 230, 92]
 ORANGE = [255, 136, 22, 100]
 DARK_GREEN = [0,59,44]
-LIGHT_GREEN = [65, 240, 88, 94]
-YELLOW = [255, 255, 0]
+LIGHT_GREEN = [147, 255, 0, 94]
+YELLOW = [240, 250, 15]
 CYAN = [0, 255, 255]
 
 screen_size = [900, 580] #ancho y largo de la ventana
@@ -99,12 +100,12 @@ class Squares():
             self.color_c = PURPLE
 
         pygame.draw.rect(screen, self.color, [[x_pos,y_pos], size])
-        pygame.draw.rect(screen, BLACK, [[x_pos,y_pos], size], 2)
+        pygame.draw.rect(screen, WHITE, [[x_pos,y_pos], size], 2)
         pygame.draw.rect(screen, self.color_c, [[x_pos, y_pos], size_c])
-        pygame.draw.rect(screen, BLACK, [[x_pos, y_pos], size_c], 2)
+        pygame.draw.rect(screen, WHITE, [[x_pos, y_pos], size_c], 2)
 #Se crea la clase de los dados.
 class Dices(object):
-    def __init__(self,image,value,roll):
+    def __init__(self,image,value):
         """
         Esta clase contiene las caracteristicas y metodos de los dados.
         """
@@ -112,8 +113,6 @@ class Dices(object):
         self.image = image
         self.image1 = image
         self.value = value
-        self.roll = roll
-
 
     def print_dice(self,screen,image,num):
         """
@@ -129,7 +128,7 @@ class Dices(object):
             screen.blit(image,(15, 545))
         else:
             screen.blit(image, (48, 545))
-        time.sleep(0.1)#Sleep para no hacer iteraciones tan aceleradas.
+        time.sleep(0.05)#Sleep para no hacer iteraciones tan aceleradas.
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,
@@ -295,7 +294,6 @@ class Game(object):
         if keys[pygame.K_p]:
             # print("STOP ROLL")
 
-            DADO.roll = False
             rolling = False
 
             DADO.image = DADO.image
@@ -360,26 +358,15 @@ class Game(object):
         #Se ejecuta la funcion de atualizar en los dos jugadores.
         self.all_sprites_list.update()
 
-
         DADO1 = dados[0]
         DADO2 = dados[1]
 
-        '''
-        i_list = []
-        for k in range(0, 60):
-            i_list.append(casilla[k].num)
-
-        indice = i_list.index(60)
-        self.player1.movement(casilla[indice].pos_x, casilla[indice].pos_y, 0)
-        '''
-
-        keys = pygame.key.get_pressed()
         self.Turno_actual = turnos[self.iterator]
 
         global rolling
 
         keys = pygame.key.get_pressed()  # Guarda en una variable que se presiona
-        # Si se presiona y no esta girando, roll sera true
+        # Si se presiona y no esta girando, rolling sera true
         if keys[pygame.K_SPACE]:
             rolling = True
 
@@ -387,7 +374,6 @@ class Game(object):
         if rolling==True:
             value1,rolling = self.roll_dice(DADO1)
             value2,rolling = self.roll_dice(DADO2)
-
 
         if keys[pygame.K_p]:
             if self.iterator == len(turnos)-1:
@@ -424,8 +410,16 @@ class Game(object):
             else:
                 n_pregunta = jugador[self.Turno_actual].preguntas_E[self.ronda]
 
+            #print("valor dado 1:",DADO1.value)
+            #print("imagen dado 1:", DADO1.image,'\n')
+            #print("valor dado 2:", DADO2.value)
+            #print("imagen dado 2:", DADO2.image, '\n')
+            DADO1.print_dice(screen, DADO1.image, 1)
+            DADO2.print_dice(screen, DADO2.image, 2)
+            pygame.display.flip()
+
             a_value = VentanaPreguntas.main(casilla[indice].categoria, n_pregunta)
-            print(a_value)
+            #print(a_value)
 
             self.move_by_answ(casilla,jugador[self.Turno_actual], value1, value2,a_value,DADO1,DADO2)
 
@@ -467,16 +461,16 @@ class Game(object):
             #Imprimir de izquierda a derecha
             if (n_square-1)%20==0:
                 for i in range(10, 901 - 80, 90):
-                    num_square = self.fuente.render(str(n_square), 1, BLACK)  # renderizar texto (numero de casilla)
+                    num_square = self.fuente.render(str(n_square), 1, GRAY)  # renderizar texto (numero de casilla)
                     screen.blit(num_square, (i, pos_S - 80))  # imprimir el renderizado
-                    pygame.draw.circle(screen, BLACK, (i + 7, pos_S - 72), 12, 2)  # dibujar marco de circulo
+                    pygame.draw.circle(screen, WHITE, (i + 7, pos_S - 72), 12, 2)  # dibujar marco de circulo
                     n_square += 1
             #Imprimir de derecha a izquierda
             else:
                 for i in range(901 - 80, 10, -90):
-                    num_square = self.fuente.render(str(n_square), 1, BLACK)
+                    num_square = self.fuente.render(str(n_square), 1, GRAY)
                     screen.blit(num_square, (i, pos_S - 80))
-                    pygame.draw.circle(screen, BLACK, (i + 7, pos_S - 72), 12, 2)
+                    pygame.draw.circle(screen, WHITE, (i + 7, pos_S - 72), 12, 2)
                     n_square += 1
             pos_S -= 90
 
@@ -623,8 +617,8 @@ def main():
     jugador = crear_jugadores(cant_jugadores,cant_preguntas)
 
     # Se crean los dados
-    DADO1 = Dices('Resources\Images\Dice1.png',1,False)
-    DADO2 = Dices('Resources\Images\Dice1.png',1,False)
+    DADO1 = Dices('Resources\Images\Dice1.png',1)
+    DADO2 = Dices('Resources\Images\Dice1.png',1)
     dados = [DADO1,DADO2]
 
     screen = pygame.display.set_mode(screen_size)  # Medidas
