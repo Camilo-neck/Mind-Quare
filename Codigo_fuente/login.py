@@ -73,7 +73,7 @@ class Aplicacion:
         self.loginCanva.create_image(0,0, image = self.imagenPrincipal, anchor='nw')
 
         #Se imprime el texto del e-mail
-        self.loginCanva.create_text(125,290, text='Introduzca su Nickname:', font=('Cascadia Mono SemiBold', 10), fill='white')
+        self.loginCanva.create_text(125,290, text='Introduzca su Nickname:', font=('Impact', 12), fill='white')
 
         #Se crea el entry del email y la variable que recibe lo ingresado
         self.nickvar = tk.StringVar()
@@ -82,7 +82,7 @@ class Aplicacion:
         self.nickEntry.focus()
 
         #Se imprime textro de constraseña.
-        self.loginCanva.create_text(150,320, text='Introduzca su Constraseña:', font=('Cascadia Mono SemiBold', 10), fill='white')
+        self.loginCanva.create_text(150,320, text='Introduzca su Constraseña:', font=('Impact', 12), fill='white')
 
         #Se crea el el entry de la constraseña y la variable que recibe lo ingresado.
         self.passvar = tk.StringVar()
@@ -93,19 +93,20 @@ class Aplicacion:
 
         # ------------------BOTÓN SING UP--------------------
 
-        self.bLogIn = tk.Button(self.root, text="SIGN UP", background='#43046D',foreground='#FFFFFF', activebackground='red',command=self.signUp)
+        self.bLogIn = tk.Button(self.root, text="SIGN UP", font=('Impact', 10), background='#43046D',foreground='#FFFFFF', activebackground='red',command=self.signUp)
         self.bLogIn.place(x=140, y=355)
 
         # ------------------BOTÓN LOG IN---------------------
 
-        self.bSign = tk.Button(self.root, text="LOG IN", background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.logIn)
+        self.bSign = tk.Button(self.root, text="LOG IN",font=('Impact', 10), background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.logIn)
         self.bSign.place(x=330, y=355)
 
         # -------------------BOTÓN DE SALIR------------------------
-        self.bSalir = tk.Button(self.root, text="SALIR", background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.root.destroy)
+        self.bSalir = tk.Button(self.root, text="SALIR",font=('Impact', 10), background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.root.destroy)
         self.bSalir.place(x=250,y=355)
 
-        self.bInst = tk.Button(self.root, text="Inst", background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.inst)
+        # -------------------BOTÓN DE INST------------------------
+        self.bInst = tk.Button(self.root, text="Inst",font=('Impact', 10), background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.inst)
         self.bInst.pack(side=TOP)
 
         #Se llama metodo que inicializa la base de datos.
@@ -185,7 +186,7 @@ class ventanaRegistro:
         self.registro.title("Registro")
         self.registro.iconbitmap("Resources\Images\Logo_Mindquare.ico")
         self.registro.geometry(f"430x450+{self.x}+{self.y}")
-        self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
+        self.registro.protocol('WM_DELETE_WINDOW', self.__Cancel )
         self.registro.resizable(width=False, height=False)
         self.registro.config(bg="#F0F1F2")
         self.imagenPrincipal = tk.PhotoImage(file="Resources\Images\FondoRegistro2.png")
@@ -198,7 +199,7 @@ class ventanaRegistro:
         # ---------------LABELS / ENTRYS -----------------------
 
         #Creacion de label y entry para el Nombre
-        self.registroCanva.create_text(95,210, text='Nombre:', font=('Cascadia Mono SemiBold', 12), fill='white')
+        self.registroCanva.create_text(95,210, text='Nombre:', font=('Impact', 12), fill='white')
 
         self.nombreVar = tk.StringVar()
         self.nombreEntry = tk.Entry(self.registro, textvariable=self.nombreVar, width=38)
@@ -206,21 +207,21 @@ class ventanaRegistro:
         self.nombreEntry.focus()
 #
         ##Creacion de label y entry para el Nickname
-        self.registroCanva.create_text(100,260, text='NickName:', font=('Cascadia Mono SemiBold', 12), fill='white')
+        self.registroCanva.create_text(100,260, text='NickName:', font=('Impact', 12), fill='white')
 #
         self.NICKVar = tk.StringVar()
         self.NICKEntry = tk.Entry(self.registro, textvariable=self.NICKVar, width=35)
         self.NICKEntry.place(x=150, y=255)
 #
         ##Creacion de label y entry para el email
-        self.registroCanva.create_text(90,310, text='Email:', font=('Cascadia Mono SemiBold', 12), fill='white')
+        self.registroCanva.create_text(90,310, text='Email:', font=('Impact', 12), fill='white')
 #
         self.emailVar = tk.StringVar()
         self.emailEntry = tk.Entry(self.registro, textvariable=self.emailVar, width=39)
         self.emailEntry.place(x=125, y=305)
 #
         ##Creacion de label y entry para la constraseña
-        self.registroCanva.create_text(115,360, text='Constraseña:', font=('Cascadia Mono SemiBold', 12), fill='white')
+        self.registroCanva.create_text(115,360, text='Constraseña:', font=('Impact', 12), fill='white')
 #
         self.passVar = tk.StringVar()
         self.passEntry = tk.Entry(self.registro, textvariable=self.passVar, width=30, show="*")
@@ -228,13 +229,13 @@ class ventanaRegistro:
 
         # --------------------BOTONES----------------------
 
-        self.bVolver = tk.Button(self.registro, text="VOLVER",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.volver)
+        self.bVolver = tk.Button(self.registro, text="VOLVER",font=('Impact', 10),bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.volver)
         self.bVolver.place(x=80, y=390)
 
-        self.bsalir = tk.Button(self.registro, text="SALIR",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registro.destroy)
+        self.bsalir = tk.Button(self.registro, text="SALIR",font=('Impact', 10),bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registro.destroy)
         self.bsalir.place(x=190, y=390)
 
-        self.bRegistro = tk.Button(self.registro, text="REGISTRAR",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registrar)
+        self.bRegistro = tk.Button(self.registro, text="REGISTRAR",font=('Impact', 10),bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registrar)
         self.bRegistro.place(x=280, y=390)
 
         self.conexion_db()
