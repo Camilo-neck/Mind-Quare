@@ -20,6 +20,7 @@ pos_doble = False
 ronda = 0
 cont = 0
 a_value = None
+rolling = False
 
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
@@ -257,7 +258,7 @@ class Game(object):
             jugador[1].speed_x += 20
             pos_doble = False
 
-    def roll_dice(self,DADO, roll, player, casilla, respuesta):
+    def roll_dice(self,DADO):
         """
         Metodo que al detectar que se preciona SPACE, comienza a generar numeros random y se detiene al precionar la letra p.
         :param bool roll: Bandera para empezar a girar el dado
@@ -265,82 +266,83 @@ class Game(object):
         :return: string imagen
         :return: int self.dice_value
         """
+        global rolling
+        keys = pygame.key.get_pressed()
 
-        keys = pygame.key.get_pressed()  # Guarda en una variable que se presiona
-        # Si se presiona y no esta girando, roll sera true
-        if keys[pygame.K_SPACE] and roll == False:
-            # print("RUN ROLL")
-            DADO.roll = True
+        # Si la variable roll es True, retornara un valor random.
+        num = random.randint(1, 6)
+        if num == 1:
+            DADO.image = 'Resources\Images\Dice1.png'
+            DADO.value = num
+        elif num == 2:
+            DADO.image = 'Resources\Images\Dice2.png'
+            DADO.value = num
+        elif num == 3:
+            DADO.image = 'Resources\Images\Dice3.png'
+            DADO.value = num
+        elif num == 4:
+            DADO.image = 'Resources\Images\Dice4.png'
+            DADO.value = num
+        elif num == 5:
+            DADO.image = 'Resources\Images\Dice5.png'
+            DADO.value = num
+        else:
+            DADO.image = 'Resources\Images\Dice6.png'
+            DADO.value = num
 
-        # Mientras la variable roll sea True, se mantendra retornando valores random.
-        if roll == True:
-            num = random.randint(1, 6)
-            if num == 1:
-                DADO.image = 'Resources\Images\Dice1.png'
-                DADO.value = num
-            elif num == 2:
-                DADO.image = 'Resources\Images\Dice2.png'
-                DADO.value = num
-            elif num == 3:
-                DADO.image = 'Resources\Images\Dice3.png'
-                DADO.value = num
-            elif num == 4:
-                DADO.image = 'Resources\Images\Dice4.png'
-                DADO.value = num
-            elif num == 5:
-                DADO.image = 'Resources\Images\Dice5.png'
-                DADO.value = num
-            else:
-                DADO.image = 'Resources\Images\Dice6.png'
-                DADO.value = num
+        #print(DADO.value)
+        #print(DADO.image)
 
-            if keys[pygame.K_p]:
-                # print("STOP ROLL")
+        if keys[pygame.K_p]:
+            # print("STOP ROLL")
 
-                DADO.roll = False
+            DADO.roll = False
+            rolling = False
 
-                # Logica para ubicar el jugador en la casilla que marcaron los dados (antes de esto iria la pregunta)
-                i_list = []
-                for k in range(0, 60):
-                    i_list.append(casilla[k].num)
+            DADO.image = DADO.image
 
-                # print("n:", player.n_square)
-                # print("n:", player.n_square)
-                # print("d:",self.value)
+            return DADO.value, rolling  # salir de la funcion
+        #DADO.image = DADO.image1
+        return DADO.value, rolling
 
-                if respuesta == True:
-                    nuevo_pindex = player.n_square + DADO.value
-                else:
-                    nuevo_pindex = player.n_square - DADO.value
+    def move_by_answ(self,casilla,player,value1,value2,respuesta):
+        # Logica para ubicar el jugador en la casilla que marcaron los dados (antes de esto iria la pregunta)
+        i_list = []
+        for k in range(0, 60):
+            i_list.append(casilla[k].num)
 
-                if nuevo_pindex < 1:
-                    nuevo_pindex = 1
+        # print("n:", player.n_square)
+        # print("n:", player.n_square)
+        # print("d:",self.value)
 
-                if nuevo_pindex >= 59:
-                    nuevo_pindex = 60
-                indice = i_list.index(nuevo_pindex)
+        if respuesta == True:
+            nuevo_pindex = player.n_square + (value1+value2)
+        else:
+            nuevo_pindex = player.n_square - (value1+value2)
 
-                # print("indice:",indice)
-                # print("x:",casilla[indice].pos_x)
-                # print("y:", casilla[indice].pos_y)
+        if nuevo_pindex < 1:
+            nuevo_pindex = 1
 
-                player.movement(casilla[indice].pos_x, casilla[indice].pos_y, DADO.value)
+        if nuevo_pindex >= 59:
+            nuevo_pindex = 60
+        indice = i_list.index(nuevo_pindex)
 
-                if respuesta == True:
-                    player.n_square += DADO.value
-                else:
-                    player.n_square -= DADO.value
+        # print("indice:",indice)
+        # print("x:",casilla[indice].pos_x)
+        # print("y:", casilla[indice].pos_y)
 
-                if player.n_square < 1:
-                    player.n_square = 1
+        player.movement(casilla[indice].pos_x, casilla[indice].pos_y, (value1+value2))
 
-                # print("n nuevo:", nuevo_pindex)
+        if respuesta == True:
+            player.n_square += (value1+value2)
+        else:
+            player.n_square -= (value1+value2)
 
-                DADO.image = DADO.image
+        if player.n_square < 1:
+            player.n_square = 1
 
-            return None  # salir de la funcion
-        DADO.image = DADO.image1
-        return None
+        # print("n nuevo:", nuevo_pindex)
+
 
 
     def run_logic(self,screen,jugador,dados,casilla,turnos,cant_jugadores):
@@ -371,18 +373,45 @@ class Game(object):
         self.player1.movement(casilla[indice].pos_x, casilla[indice].pos_y, 0)
         '''
 
+        keys = pygame.key.get_pressed()
+        self.Turno_actual = turnos[self.iterator]
+
+        global rolling
+
+        keys = pygame.key.get_pressed()  # Guarda en una variable que se presiona
+        # Si se presiona y no esta girando, roll sera true
+        if keys[pygame.K_SPACE]:
+            rolling = True
+
+        #print(rolling)
+        if rolling==True:
+            value1,rolling = self.roll_dice(DADO1)
+            value2,rolling = self.roll_dice(DADO2)
+
+
+        if keys[pygame.K_p]:
+            if self.iterator == len(turnos)-1:
+                self.iterator = 0
+                self.ronda += 1
+            else:
+                self.iterator += 1
+            self.cont = 1
+
+        if self.ronda >=19: #--------------------CANTIDAD DE PREGUNTAS (20-1)-----------------------#
+            self.ronda = 0
+
         if self.cont == 1:
-            print('ronda:',self.ronda)
+            print('ronda:', self.ronda)
             i_list = []
             for k in range(0, 60):
                 i_list.append(casilla[k].num)
             index = jugador[self.Turno_actual].n_square - DADO1.value - DADO2.value
             if index >= 59:
                 index = 60
-            if index<1:
+            if index < 1:
                 index = 1
             indice = i_list.index(index)
-            #print('casilla:',casilla[indice].num)
+            # print('casilla:',casilla[indice].num)
 
             if casilla[indice].categoria == 1:
                 n_pregunta = jugador[self.Turno_actual].preguntas_M[self.ronda]
@@ -395,26 +424,12 @@ class Game(object):
             else:
                 n_pregunta = jugador[self.Turno_actual].preguntas_E[self.ronda]
 
-            a_value = VentanaPreguntas.main(casilla[indice].categoria,n_pregunta)
+            a_value = VentanaPreguntas.main(casilla[indice].categoria, n_pregunta)
             print(a_value)
+
+            self.move_by_answ(casilla,jugador[self.Turno_actual], value1, value2,a_value)
+
             self.cont = 0
-
-        keys = pygame.key.get_pressed()
-        self.Turno_actual = turnos[self.iterator]
-
-        self.roll_dice(DADO1,DADO1.roll,jugador[self.Turno_actual],casilla,a_value) #---------Ultimo parametro a_value---------#
-        self.roll_dice(DADO2,DADO2.roll,jugador[self.Turno_actual],casilla,a_value)
-
-        if keys[pygame.K_p]:
-            if self.iterator == len(turnos)-1:
-                self.iterator = 0
-                self.ronda += 1
-            else:
-                self.iterator += 1
-            self.cont = 1
-
-        if self.ronda >=19: #--------------------CANTIDAD DE PREGUNTAS (20-1)-----------------------#
-            self.ronda = 0
 
         i = 0
         if jugador[self.Turno_actual].score >= 60:
