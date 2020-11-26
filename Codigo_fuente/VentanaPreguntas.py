@@ -35,31 +35,7 @@ class Ventana(Tk):
         self.RC = ['C', 'B', 'A', 'B', 'A', 'B', 'C', 'D', 'B', 'C', 'B', 'A', 'B', 'C', 'C', 'A', 'B', 'B', 'A', 'D']
         self.RE = ['B', 'D', 'A', 'C', 'B', 'B', 'A', 'C', 'B', 'B', 'B', 'B', 'A', 'D', 'B', 'B', 'B', 'B', 'B', 'C']
 
-        if categoria == 1:
-            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_matematicas.txt"), "r", encoding="utf-8")
-            self.R = self.RM
-            self.color = '#DF0101'
-            #print('Matematicas')
-        elif categoria == 2:
-            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_historia.txt"), "r", encoding="utf-8")
-            self.R = self.RH
-            self.color = '#C7AF14'
-            #print('Historia')
-        elif categoria == 3:
-            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_geografia.txt"), "r", encoding="utf-8")
-            self.R = self.RG
-            self.color = '#0FCBCB'
-            #print('Geografia')
-        elif categoria == 4:
-            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_ciencia.txt"), "r", encoding="utf-8")
-            self.R = self.RC
-            self.color = '#1DCB0F'
-            #print('Ciencia')
-        else:
-            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_entretenimiento.txt"), "r", encoding="utf-8")
-            self.R = self.RE
-            self.color = '#A901DF'
-            #print('Entretenimiento')
+        self.category()
 
         self.data = self.preguntas.readlines()[((self.n_r*5)):(self.n_r*5)+5]
         #print(self.R)
@@ -68,10 +44,10 @@ class Ventana(Tk):
         self.textoCanva.place(x=0 , y=0)
 
         self.textoCanva.create_text(250, 50, text = self.data[0], fill = 'black', font = ('Rockwell',12))
-        #self.textoCanva.create_text(250, 80, text = self.data[1], fill = 'black', font = ('Rockwell',11))
-        #self.textoCanva.create_text(250, 110, text = self.data[2], fill = 'black', font = ('Rockwell',11))
-        #self.textoCanva.create_text(250, 140, text = self.data[3], fill = 'black', font = ('Rockwell',11))
-        #self.textoCanva.create_text(250, 170, text = self.data[4], fill = 'black', font = ('Rockwell',11))
+        self.textoCanva.create_text(250, 80, text = self.data[1], fill = 'black', font = ('Rockwell',11))
+        self.textoCanva.create_text(250, 110, text = self.data[2], fill = 'black', font = ('Rockwell',11))
+        self.textoCanva.create_text(250, 140, text = self.data[3], fill = 'black', font = ('Rockwell',11))
+        self.textoCanva.create_text(250, 170, text = self.data[4], fill = 'black', font = ('Rockwell',11))
 
         self.varOpcion = IntVar()
         self.cont = 0
@@ -101,10 +77,10 @@ class Ventana(Tk):
             self.answered = True
 
 
-        self.opcion1 = Radiobutton(self.textoCanva, text= self.data[1], font = ('Rockwell',11), variable = self.varOpcion, value = 1, bg = self.color)
-        self.opcion2 = Radiobutton(self.textoCanva, text= self.data[2], font = ('Rockwell',11), variable = self.varOpcion, value = 2, bg = self.color)
-        self.opcion3 = Radiobutton(self.textoCanva, text= self.data[3], font = ('Rockwell',11), variable = self.varOpcion, value = 3, bg = self.color)
-        self.opcion4 = Radiobutton(self.textoCanva, text= self.data[4], font = ('Rockwell',11), variable = self.varOpcion, value = 4, bg = self.color)
+        self.opcion1 = Radiobutton(self.textoCanva, font = ('Rockwell',11), variable = self.varOpcion, value = 1, bg = self.color)
+        self.opcion2 = Radiobutton(self.textoCanva, font = ('Rockwell',11), variable = self.varOpcion, value = 2, bg = self.color)
+        self.opcion3 = Radiobutton(self.textoCanva, font = ('Rockwell',11), variable = self.varOpcion, value = 3, bg = self.color)
+        self.opcion4 = Radiobutton(self.textoCanva, font = ('Rockwell',11), variable = self.varOpcion, value = 4, bg = self.color)
         self.evaluar = Button(self.textoCanva, text = 'Estoy seguro', bg = 'lightblue', activebackground= 'lightgreen', command = respuest)
         self.validar = Label(self.textoCanva, text = '', bg = self.color)
 
@@ -124,6 +100,32 @@ class Ventana(Tk):
 
         self.root.mainloop()
 
+    def category(self):
+        if self.categoria == 1:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_matematicas.txt"), "r", encoding="utf-8")
+            self.R = self.RM
+            self.color = '#DF0101'
+            #print('Matematicas')
+        elif self.categoria == 2:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_historia.txt"), "r", encoding="utf-8")
+            self.R = self.RH
+            self.color = '#C7AF14'
+            #print('Historia')
+        elif self.categoria == 3:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_geografia.txt"), "r", encoding="utf-8")
+            self.R = self.RG
+            self.color = '#0FCBCB'
+            #print('Geografia')
+        elif self.categoria == 4:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_ciencia.txt"), "r", encoding="utf-8")
+            self.R = self.RC
+            self.color = '#1DCB0F'
+            #print('Ciencia')
+        else:
+            self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_entretenimiento.txt"), "r", encoding="utf-8")
+            self.R = self.RE
+            self.color = '#A901DF'
+            #print('Entretenimiento')
 
     def contador(self,time = None):
 

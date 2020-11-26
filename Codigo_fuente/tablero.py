@@ -100,9 +100,9 @@ class Squares():
             self.color_c = PURPLE
 
         pygame.draw.rect(screen, self.color, [[x_pos,y_pos], size])
-        pygame.draw.rect(screen, WHITE, [[x_pos,y_pos], size], 2)
+        pygame.draw.rect(screen, BLACK, [[x_pos,y_pos], size], 2)
         pygame.draw.rect(screen, self.color_c, [[x_pos, y_pos], size_c])
-        pygame.draw.rect(screen, WHITE, [[x_pos, y_pos], size_c], 2)
+        pygame.draw.rect(screen, BLACK, [[x_pos, y_pos], size_c], 2)
 #Se crea la clase de los dados.
 class Dices(object):
     def __init__(self,image,value):
@@ -157,7 +157,7 @@ class Player(pygame.sprite.Sprite):
         self.speed_x = 20+plus_pos
         self.speed_y = 20
         self.score = 0
-        self.points = 0
+        self.points = 1
         #self.casilla = 1
         #self.move_casilla = 1
         self.n_square = n_square
@@ -187,9 +187,10 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = self.speed_x
         self.rect.y = 460 + self.speed_y
         if self.points >= 59:
-            self.score = 60
-        else:
-            self.score = int(self.points)
+            self.points = 60
+        elif self.points <= 1:
+            self.points = 1
+        self.score = int(self.points)
         #self.casilla = self.move_casilla
 
 
@@ -312,9 +313,13 @@ class Game(object):
         # print("d:",self.value)
 
         if respuesta == True:
-            nuevo_pindex = player.n_square + (value1+value2)
+            direccion = 1
         else:
-            nuevo_pindex = player.n_square - (value1+value2)
+            direccion = -1
+
+        total_value = (value1+value2)*direccion
+
+        nuevo_pindex = player.n_square + total_value
 
         if nuevo_pindex < 1:
             nuevo_pindex = 1
@@ -327,12 +332,9 @@ class Game(object):
         # print("x:",casilla[indice].pos_x)
         # print("y:", casilla[indice].pos_y)
 
-        player.movement(casilla[indice].pos_x, casilla[indice].pos_y, (value1+value2))
+        player.movement(casilla[indice].pos_x, casilla[indice].pos_y, total_value)
 
-        if respuesta == True:
-            player.n_square += (value1+value2)
-        else:
-            player.n_square -= (value1+value2)
+        player.n_square += total_value
 
         if player.n_square < 1:
             player.n_square = 1
