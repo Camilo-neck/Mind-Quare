@@ -301,10 +301,9 @@ class Game(object):
             DADO.image = DADO.image
 
             return DADO.value, rolling  # salir de la funcion
-        #DADO.image = DADO.image1
         return DADO.value, rolling
 
-    def move_by_answ(self,casilla,player,value1,value2,respuesta):
+    def move_by_answ(self,casilla,player,value1,value2,respuesta,DADO1,DADO2):
         # Logica para ubicar el jugador en la casilla que marcaron los dados (antes de esto iria la pregunta)
         i_list = []
         for k in range(0, 60):
@@ -340,6 +339,8 @@ class Game(object):
         if player.n_square < 1:
             player.n_square = 1
 
+        DADO1.image = DADO1.image1
+        DADO2.image = DADO2.image1
         # print("n nuevo:", nuevo_pindex)
 
 
@@ -426,7 +427,7 @@ class Game(object):
             a_value = VentanaPreguntas.main(casilla[indice].categoria, n_pregunta)
             print(a_value)
 
-            self.move_by_answ(casilla,jugador[self.Turno_actual], value1, value2,a_value)
+            self.move_by_answ(casilla,jugador[self.Turno_actual], value1, value2,a_value,DADO1,DADO2)
 
             self.cont = 0
 
