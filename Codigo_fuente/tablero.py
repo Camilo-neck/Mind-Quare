@@ -17,11 +17,14 @@ import login # Se importa ventana del login
 from sys import exit # Librería del sistema para terminar juego
 
 pos_doble = False #boleano que determina si los jugadores deben acomodarse de una forma especifica si hay 2 de ellos en la misma casilla (no funciona correctamente)
-pos = False
+pos = False #boleano que solo es falso en la primera ronda para acomodar los jugadores en la primera casilla
 ronda = 0
 cont = 0 #valor que cambia entre 0 y 1 para controlar si se muestra o no la pregunta
 a_value = None #valor de la respuesta del jugador (True -> correcta , False -> Incorrecta)
 rolling = False #boleano que determina si los dados estan o no girando
+
+pos_test = 0 # valor que sirve para comparar con el valor de los dados y asi mover la ficha si estos no son iguales
+bandMove = False # bandera para saber si se debe mover o no una ficha
 
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
@@ -303,10 +306,10 @@ class Game(object):
 
             DADO.image = DADO.image
 
-            return DADO.value, rolling  # salir de la funcion
+            return DADO.value, rolling
         return DADO.value, rolling
 
-    def move_by_answ(self,casilla,tipo,player,value1,value2,respuesta,DADO1,DADO2):
+    def get_value(self,casilla,tipo,player,value1,value2,respuesta,DADO1,DADO2):
         # Logica para ubicar el jugador en la casilla que marcaron los dados (antes de esto iria la pregunta)
         i_list = []
         for k in range(0, 60):
@@ -329,6 +332,7 @@ class Game(object):
         if respuesta == True:
             if tipo == 3:
                 total_value = 1
+        '''
 
         nuevo_pindex = player.n_square + total_value
 
@@ -342,18 +346,78 @@ class Game(object):
         # print("indice:",indice)
         # print("x:",casilla[indice].pos_x)
         # print("y:", casilla[indice].pos_y)
-
+        
+        
         player.movement(casilla[indice].pos_x, casilla[indice].pos_y, total_value)
 
         player.n_square += total_value
 
         if player.n_square < 1:
             player.n_square = 1
+        
+        '''
 
-        DADO1.image = DADO1.image1
-        DADO2.image = DADO2.image1
+        #DADO1.image = DADO1.image1
+        #DADO2.image = DADO2.image1
         # print("n nuevo:", nuevo_pindex)
 
+        return total_value
+
+    def move_by_1(self,value,a_value,jugador,casilla,turnos):
+
+        i_list = []
+        for k in range(0, 60):
+            i_list.append(casilla[k].num)
+            # print(casilla[k].num, casilla[k].categoria)
+        index = jugador[self.Turno_actual].n_square
+        if index >= 59:
+            index = 60
+        if index < 1:
+            index = 1
+        indice = i_list.index(index)
+
+        global pos_test
+
+        if a_value == True:
+            value += 2
+            if pos_test < value:
+                jugador[self.Turno_actual].movement(casilla[indice].pos_x, casilla[indice].pos_y, 1)
+                jugador[self.Turno_actual].n_square += 1
+                time.sleep(0.2)
+            if pos_test == value:
+                jugador[self.Turno_actual].n_square -= 1
+                jugador[self.Turno_actual].points -=1
+            pos_test += 1
+
+            if pos_test > value:
+                pos_test = 0
+                if self.iterator == len(turnos)-1:
+                    self.iterator = 0
+                    self.ronda += 1
+                else:
+                    self.iterator += 1
+                return False
+        else:
+            if pos_test > value:
+                jugador[self.Turno_actual].movement(casilla[indice].pos_x, casilla[indice].pos_y, -1)
+                jugador[self.Turno_actual].n_square -= 1
+                time.sleep(0.2)
+            if pos_test == value:
+                jugador[self.Turno_actual].n_square += 1
+                jugador[self.Turno_actual].points += 1
+            pos_test -= 1
+
+            if pos_test < value or jugador[self.Turno_actual].n_square<1:
+                if jugador[self.Turno_actual].n_square<1:
+                    jugador[self.Turno_actual].n_square+=1
+                pos_test = 0
+                if self.iterator == len(turnos) - 1:
+                    self.iterator = 0
+                    self.ronda += 1
+                else:
+                    self.iterator += 1
+                return False
+        return True
 
 
     def run_logic(self,screen,jugador,dados,casilla,turnos,cant_jugadores):
@@ -363,6 +427,8 @@ class Game(object):
 
         global a_value
         global pos
+        global bandMove
+        global Newvalue
 
         if pos == False:
             pos = self.adjust_players_on_square(jugador,cant_jugadores)
@@ -391,11 +457,6 @@ class Game(object):
             value2,rolling = self.roll_dice(DADO2)
 
         if keys[pygame.K_p]:
-            if self.iterator == len(turnos)-1:
-                self.iterator = 0
-                self.ronda += 1
-            else:
-                self.iterator += 1
             self.cont = 1
 
         if self.ronda >=19: #--------------------CANTIDAD DE PREGUNTAS (20-1)-----------------------#
@@ -443,9 +504,15 @@ class Game(object):
             a_value = VentanaPreguntas.main(casilla[indice].tipo,casilla[indice].categoria, n_pregunta,temp)
             #print(a_value)
 
-            self.move_by_answ(casilla,casilla[indice].tipo,jugador[self.Turno_actual], value1, value2,a_value,DADO1,DADO2)
+            Newvalue = self.get_value(casilla,casilla[indice].tipo,jugador[self.Turno_actual], value1, value2,a_value,DADO1,DADO2)
+            Newvalue -= 1
 
             self.cont = 0
+            bandMove = True
+
+
+        if bandMove ==True:
+            bandMove = self.move_by_1(Newvalue,a_value, jugador, casilla,turnos)
 
         i = 0
         if jugador[self.Turno_actual].n_square >= 60:
@@ -507,10 +574,28 @@ class Game(object):
 
         #Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
         for i in range(cant_jugadores):
-            score_p = self.fuente2.render(f'Jugador {jugador[i].nombre}: {jugador[i].score}',1, WHITE)
+            if i == 0:
+                textColor = BLUE
+            elif i == 1:
+                textColor = RED
+            elif i == 2:
+                textColor = YELLOW
+            else:
+                textColor = PURPLE
+
+            score_p = self.fuente2.render(f'Jugador {jugador[i].nombre}: {jugador[i].score}',1, textColor)
             screen.blit(score_p,(255+(i*155),screen_size[1]-30))
 
-        turno = self.fuente2.render(f'Turno de: {jugador[self.Turno_actual].nombre}', 1, WHITE)  # renderizar texto (numero de casilla)
+        if self.Turno_actual == 0:
+            textColor = BLUE
+        elif self.Turno_actual == 1:
+            textColor = RED
+        elif self.Turno_actual == 2:
+            textColor = YELLOW
+        else:
+            textColor = PURPLE
+
+        turno = self.fuente2.render(f'Turno de: {jugador[self.Turno_actual].nombre}', 1, textColor)  # renderizar texto (numero de casilla)
         screen.blit(turno, (100, screen_size[1]-30))
 
         if self.win:
@@ -555,8 +640,12 @@ def crear_elementos_casillas(casilla,n_casillas):
 
     for i in range(60):
         num = n_casillas[i]
-        tipo = randint(1, 3)
+        if i>0:
+            tipo = randint(1, 3)
+        else:
+            tipo = 1
         categoria = randint(1, 5)
+
         casilla[i] = Squares(num,tipo,categoria,pos_x,pos_y)
         #print(casilla[i].num,"= ", casilla[i].tipo)
         #print(casilla[i].num,"= ", casilla[i].categoria, casilla[i].tipo)
