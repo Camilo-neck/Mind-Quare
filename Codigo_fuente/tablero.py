@@ -17,6 +17,7 @@ import login # Se importa ventana del login
 from sys import exit # Librería del sistema para terminar juego
 
 pos_doble = False #boleano que determina si los jugadores deben acomodarse de una forma especifica si hay 2 de ellos en la misma casilla (no funciona correctamente)
+pos = False
 ronda = 0
 cont = 0 #valor que cambia entre 0 y 1 para controlar si se muestra o no la pregunta
 a_value = None #valor de la respuesta del jugador (True -> correcta , False -> Incorrecta)
@@ -29,9 +30,9 @@ GRAY = [171,173,170,70]
 RED = [255, 0, 0]
 BLUE = [31, 200, 255, 100]
 GREEN = [0, 255, 0]
-PURPLE = [111, 0, 230, 92]
+PURPLE = [126, 50, 252, 92]
 ORANGE = [255, 136, 22, 100]
-DARK_GREEN = [0,59,44]
+DARK_GREEN = [ 20, 179, 0]
 LIGHT_GREEN = [147, 255, 0, 94]
 YELLOW = [240, 250, 15]
 CYAN = [0, 255, 255]
@@ -82,7 +83,6 @@ class Squares():
         else:
             return (value1+value2)*-1
 
-
     def DrawSquare(self, screen, x_pos, y_pos,size, tipo,size_c,categoria=0):
         """
         Metodo que activa un color de casilla aleatoriamente.
@@ -105,7 +105,7 @@ class Squares():
         elif categoria  == 3:
             self.color_c = CYAN
         elif categoria  == 4:
-            self.color_c = LIGHT_GREEN
+            self.color_c = DARK_GREEN
         else:
             self.color_c = PURPLE
 
@@ -211,8 +211,8 @@ class Game(object):
         """
         #Se declaran las fuentes que se utilizaran
 
-        self.fuente = pygame.font.SysFont('Verdana', 11)
-        self.fuente2 = pygame.font.SysFont('Verdana', 15)
+        self.fuente = pygame.font.SysFont('Impact', 15)
+        self.fuente2 = pygame.font.SysFont('Impact', 15)
         #Se coloca el titulo de la ventana
         pygame.display.set_caption("Tablero")
         #Se carga y coloca el icono
@@ -250,9 +250,28 @@ class Game(object):
         #print()
         return True
 
-    def adjust_players_on_square(self,jugador): # acomoda las fichas si estan en la misma casilla
 
-        #global pos_doble
+    def adjust_players_on_square(self,jugador,cant_jugadores): # acomoda las fichas
+
+        jugador[0].speed_x += 20
+        jugador[1].speed_x -= 20
+
+        if cant_jugadores >2:
+            jugador[0].speed_y += 20
+            jugador[1].speed_y += 20
+
+            jugador[2].speed_y -= 20
+
+        if cant_jugadores ==4:
+            jugador[2].speed_x -= 20
+
+            jugador[3].speed_x += 20
+            jugador[3].speed_y -= 20
+        return True
+
+
+        '''
+        global pos_doble
         if (jugador[0].n_square == jugador[1].n_square):
             same_square = True
         else:
@@ -266,7 +285,9 @@ class Game(object):
         elif same_square == False and self.pos_doble == True:
             jugador[0].speed_x -= 20
             jugador[1].speed_x += 20
-            self.pos_doble = False
+            pos_doble = False
+        '''
+
 
     def roll_dice(self,DADO):
         """
@@ -362,8 +383,10 @@ class Game(object):
         """
 
         global a_value
+        global pos
 
-        self.adjust_players_on_square(jugador)
+        if pos == False:
+            pos = self.adjust_players_on_square(jugador,cant_jugadores)
         #Se añaden los jugadores a los grupos de sprites.
         for i in range(0,cant_jugadores):
             self.all_sprites_list.add(jugador[i])
@@ -379,6 +402,14 @@ class Game(object):
         global rolling
 
         keys = pygame.key.get_pressed()  # Guarda en una variable que se presiona
+
+        i = 0
+        if jugador[self.Turno_actual].score >= 59:
+            print('win')
+            self.win = True
+            if keys[pygame.K_e]:
+                exit()
+
         # Si se presiona y no esta girando, rolling sera true
         if keys[pygame.K_SPACE]:
             rolling = True
@@ -404,14 +435,13 @@ class Game(object):
             i_list = []
             for k in range(0, 60):
                 i_list.append(casilla[k].num)
+                #print(casilla[k].num, casilla[k].categoria)
             index = jugador[self.Turno_actual].n_square
             if index >= 59:
                 index = 60
             if index < 1:
                 index = 1
             indice = i_list.index(index)
-            # print('casilla:',casilla[indice].num)
-            print(casilla[indice].categoria)
             if casilla[indice].categoria == 1:
                 n_pregunta = jugador[self.Turno_actual].preguntas_M[self.ronda]
             elif casilla[indice].categoria == 2:
@@ -431,20 +461,20 @@ class Game(object):
             DADO2.print_dice(screen, DADO2.image, 2)
             pygame.display.flip()
 
-            a_value = VentanaPreguntas.main(casilla[indice].tipo,casilla[indice].categoria, n_pregunta)
-            #print(a_value)
+            if casilla[indice].tipo == 2:
+                temp = 15
+            else:
+                temp = 30
 
+
+            a_value = VentanaPreguntas.main(casilla[indice].tipo,casilla[indice].categoria, n_pregunta,temp)
+            #print(a_value)
 
             self.move_by_answ(casilla[indice],casilla,jugador[self.Turno_actual], value1, value2,a_value,DADO1,DADO2,casilla[indice].tipo)
 
             self.cont = 0
 
-        i = 0
-        if jugador[self.Turno_actual].n_square >= 60:
-            self.win = True
-            if keys[pygame.K_e]:
-                exit()
-
+            
         #if DADO1.roll==False and DADO2.roll==False:
         #    print(self.player1.n_square)
 
@@ -475,16 +505,16 @@ class Game(object):
             #Imprimir de izquierda a derecha
             if (n_square-1)%20==0:
                 for i in range(10, 901 - 80, 90):
-                    num_square = self.fuente.render(str(n_square), 1, GRAY)  # renderizar texto (numero de casilla)
+                    num_square = self.fuente.render(str(n_square), 1, BLACK)  # renderizar texto (numero de casilla)
                     screen.blit(num_square, (i, pos_S - 80))  # imprimir el renderizado
-                    pygame.draw.circle(screen, WHITE, (i + 7, pos_S - 72), 12, 2)  # dibujar marco de circulo
+                    #pygame.draw.circle(screen, WHITE, (i + 7, pos_S - 72), 12, 2)  # dibujar marco de circulo
                     n_square += 1
             #Imprimir de derecha a izquierda
             else:
                 for i in range(901 - 80, 10, -90):
-                    num_square = self.fuente.render(str(n_square), 1, GRAY)
+                    num_square = self.fuente.render(str(n_square), 1, BLACK)
                     screen.blit(num_square, (i, pos_S - 80))
-                    pygame.draw.circle(screen, WHITE, (i + 7, pos_S - 72), 12, 2)
+                    #pygame.draw.circle(screen, WHITE, (i + 7, pos_S - 72), 12, 2)
                     n_square += 1
             pos_S -= 90
 
@@ -586,10 +616,7 @@ def crear_jugadores(cant_jugadores,cant_preguntas):
         questions_C = lista_aleatoria(cant_preguntas)
         questions_E = lista_aleatoria(cant_preguntas)
 
-        if i != 3:
-            jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [50, 50], 1,nombre_player,questions_M,questions_H,questions_G,questions_C,questions_E))
-        else:
-            jugador.append(Player('Resources\Images\player'+str(i)+'.png', 4, [50, 50], 1,nombre_player,questions_M,questions_H,questions_G,questions_C,questions_E))
+        jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [50, 50], 1,nombre_player,questions_M,questions_H,questions_G,questions_C,questions_E))
 
     return jugador
 

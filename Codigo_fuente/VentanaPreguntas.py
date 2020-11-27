@@ -9,7 +9,7 @@ value_answ = False
 
 class Ventana(Tk):
     def __Cancel(event=None): pass
-    def __init__(self,tipo,categoria,n_pregunta):
+    def __init__(self,tipo,categoria,n_pregunta,temp):
 
         self.root = Tk()
         self.root.title('PREGUNTA')
@@ -50,13 +50,13 @@ class Ventana(Tk):
         self.textoCanva.create_text(250, 170, text = self.data[4], fill = 'black', font = ('Rockwell',11))
 
         if tipo == 1:
-            nombre_tipo = 'Trivia normal'
+            nombre_tipo = 'Trivia Normal'
         elif tipo == 2:
-            nombre_tipo = 'Trivia double'
+            nombre_tipo = 'Trivia Double'
         else:
             nombre_tipo = 'Trivia BA1'
 
-        self.textoCanva.create_text(50, 27, text = nombre_tipo, fill = 'black', font = ('Rockwell',11))
+        self.textoCanva.create_text(50, 270, text=nombre_tipo, fill='black', font=('Rockwell', 11))
 
         self.varOpcion = IntVar()
         self.cont = 0
@@ -102,10 +102,10 @@ class Ventana(Tk):
 
         #self.timer = Label(self.textoCanva, text = '')
 
-        self.time_l = Label(self.textoCanva, text = '30', width = 5, bg = self.color, font = ('Arial',13))
+        self.time_l = Label(self.textoCanva, text = str(temp), width = 5, bg = self.color, font = ('Arial',13))
         self.time_l.place(x = 290, y = 190)
         self.time = 0
-        self.contador(30)
+        self.contador(temp)
 
         self.root.mainloop()
 
@@ -166,8 +166,8 @@ class Ventana(Tk):
             self.time = self.time - 1
             self.time_l.after(1000, self.contador)
 
-def main(tipo,categoria,n_pregunta):
-    Ventana(tipo,categoria,n_pregunta)
+def main(tipo,categoria,n_pregunta,temp):
+    Ventana(tipo,categoria,n_pregunta,temp)
     return value_answ
 
 if __name__ == "__main__":
