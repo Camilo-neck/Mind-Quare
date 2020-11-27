@@ -19,27 +19,26 @@ miCursor.execute(
 )"""
 
 nickvar = input()
-emailvar = input()
 
 miCursor.execute(
     'SELECT SCORE FROM USUARIOS WHERE NICK="'
     +nickvar
-    +'" OR NICK="fercho" OR NICK="roby"'
-)
-
-score = miCursor.fetchall()
-new_score = 30
-
-print(score)
-
-"""miCursor.execute(
-    'UPDATE USUARIOS SET SCORE='
-    +str((score+new_score))
-    +' WHERE NICK="'
-    +nickvar
     +'"'
 )
 
+score = miCursor.fetchall()[0][0]
+new_score = int(input())
+
+print(score)
+if new_score > score:
+    miCursor.execute(
+        'UPDATE USUARIOS SET SCORE='
+        + str(new_score)
+        +' WHERE NICK="'
+        +nickvar
+        +'"'
+    )
+"""
 miCursor.execute(
     'SELECT SCORE FROM USUARIOS WHERE NICK="'
     +nickvar
