@@ -26,7 +26,7 @@ miCursor.execute(
     +'"'
 )
 
-score = miCursor.fetchall()[0][0]
+score = miCursor.fetchall()[0][0] # [(0,)]
 new_score = int(input())
 
 print(score)
