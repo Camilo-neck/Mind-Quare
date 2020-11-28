@@ -10,14 +10,15 @@ miCursor = miConexion.cursor()
         NOMBRE VARCHAR(50) NOT NULL,
         EMAIL VARCHAR(60) UNIQUE,
         PASSWORD VARCHAR(20),
+        HIGHSCORE INTEGER,
         SCORE INTEGER
     )
     '''
 )
 miCursor.execute(
-    'INSERT INTO USUARIOS VALUES("luisito","Luis","luis@gmail.com","luis1234",0)'
-)"""
-
+    'INSERT INTO USUARIOS VALUES("luisito","Luis","luis@gmail.com","luis1234",0,0)'
+)
+"""
 nickvar = input()
 
 miCursor.execute(
@@ -38,18 +39,16 @@ if new_score > score:
         +nickvar
         +'"'
     )
-"""
+
 miCursor.execute(
     'SELECT SCORE FROM USUARIOS WHERE NICK="'
     +nickvar
-    +'" OR EMAIL="'
-    +emailvar
     +'"'
 )
 
 score = miCursor.fetchall()[0][0]
 
-print(score)"""
+print(score)
 
 miConexion.commit()
 miConexion.close()

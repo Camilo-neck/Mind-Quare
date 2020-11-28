@@ -232,9 +232,6 @@ class ventanaRegistro:
         self.bVolver = tk.Button(self.registro, text="VOLVER",font=('Impact', 10),bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.volver)
         self.bVolver.place(x=80, y=390)
 
-        self.bsalir = tk.Button(self.registro, text="SALIR",font=('Impact', 10),bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registro.destroy)
-        self.bsalir.place(x=190, y=390)
-
         self.bRegistro = tk.Button(self.registro, text="REGISTRAR",font=('Impact', 10),bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.registrar)
         self.bRegistro.place(x=280, y=390)
 
@@ -336,7 +333,7 @@ class ventanaRegistro:
                 + colectaEmail
                 + "','"
                 + colectaPass
-                + "', 0)"
+                + "', 0, 0)"
             )
             self.miConexion.commit()
             #Informa que se realizo el registro.

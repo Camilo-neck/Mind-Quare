@@ -25,7 +25,7 @@ class Users:
 
         #filling data
         for row in db_rows:
-            self.tree.insert('', 0, text = row[0], values = (row[1], row[2], row[4]))
+            self.tree.insert('', 0, text = row[0], values = (row[1], row[2], row[4], row[5]))
 
     def validation(self): #Validate
         return len(self.name.get()) != 0 and len(self.lastName.get()) and len(self.CC.get()) != 0 and  len(self.email.get()) != 0
