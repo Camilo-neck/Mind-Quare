@@ -17,7 +17,7 @@ import login # Se importa ventana del login
 from sys import exit # Librería del sistema para terminar juego
 
 pos_doble = False #boleano que determina si los jugadores deben acomodarse de una forma especifica si hay 2 de ellos en la misma casilla (no funciona correctamente)
-pos = False #boleano que solo es falso en la primera ronda para acomodar los jugadores en la primera casilla
+EndMove = True #boleano que solo es falso en la primera ronda para acomodar los jugadores en la primera casilla
 ronda = 0
 cont = 0 #valor que cambia entre 0 y 1 para controlar si se muestra o no la pregunta
 a_value = None #valor de la respuesta del jugador (True -> correcta , False -> Incorrecta)
@@ -47,7 +47,7 @@ class Squares():
     """
     Esta clase trae todas las casillas como metodos a llamar
     """
-    def __init__(self,num,tipo,categoria,pos_x,pos_y):
+    def __init__(self,num,tipo,categoria,pos_x,pos_y,players_on):
         """
         Caracteristicas de todas las casillas.
         """
@@ -58,6 +58,7 @@ class Squares():
         self.categoria = categoria
         self.pos_x = pos_x
         self.pos_y = pos_y
+        self.players_on = players_on
 
     def Trivia_NORMAL(self,respuesta,value1,value2):
         """
@@ -250,23 +251,21 @@ class Game(object):
         return True
 
 
-    def adjust_players_on_square(self,jugador,cant_jugadores): # acomoda las fichas
+    def adjust_player_on_square(self,jugador,just_moved): # acomoda las fichas
 
-        jugador[0].speed_x += 20
-        jugador[1].speed_x -= 20
-
-        if cant_jugadores >2:
-            jugador[0].speed_y += 20
-            jugador[1].speed_y += 20
-
-            jugador[2].speed_y -= 20
-
-        if cant_jugadores ==4:
-            jugador[2].speed_x -= 20
-
-            jugador[3].speed_x += 20
-            jugador[3].speed_y -= 20
-        return True
+        if just_moved == 0:
+            jugador[just_moved].speed_x -= 20
+            jugador[just_moved].speed_y -= 20
+        elif just_moved == 1:
+            jugador[just_moved].speed_x += 20
+            jugador[just_moved].speed_y -= 20
+        elif just_moved == 2:
+            jugador[just_moved].speed_x -= 20
+            jugador[just_moved].speed_y += 20
+        else:
+            jugador[just_moved].speed_x += 20
+            jugador[just_moved].speed_y += 20
+        return False
 
     def roll_dice(self,DADO):
         """
@@ -326,6 +325,8 @@ class Game(object):
 
     def move_by_1(self,value,a_value,jugador,casilla,turnos):
 
+        global EndMove
+
         i_list = []
         for k in range(0, 60):
             i_list.append(casilla[k].num)
@@ -335,6 +336,9 @@ class Game(object):
         if index < 1:
             index = 1
         indice = i_list.index(index)
+
+        casilla[indice-1].players_on -=1
+        casilla[indice].players_on +=1
 
         global pos_test
 
@@ -350,6 +354,7 @@ class Game(object):
             pos_test += 1
 
             if pos_test > value:
+                EndMove = True
                 pos_test = 0
                 if self.iterator == len(turnos)-1:
                     self.iterator = 0
@@ -359,6 +364,7 @@ class Game(object):
                 return False
         else:
             if pos_test > value:
+                EndMove = True
                 jugador[self.Turno_actual].movement(casilla[indice].pos_x, casilla[indice].pos_y, -1)
                 jugador[self.Turno_actual].n_square -= 1
                 time.sleep(0.2)
@@ -384,15 +390,15 @@ class Game(object):
         """
         En este metodo se ejecuta toda la logica del programa.
         """
+
         keys = pygame.key.get_pressed()  # Guarda en una variable que se presiona
         if not self.win:
             global a_value
-            global pos
+            global EndMove
             global bandMove
             global Newvalue
 
-            if pos == False:
-                pos = self.adjust_players_on_square(jugador,cant_jugadores)
+
             #Se añaden los jugadores a los grupos de sprites.
             for i in range(0,cant_jugadores):
                 self.all_sprites_list.add(jugador[i])
@@ -468,6 +474,12 @@ class Game(object):
 
             if bandMove ==True:
                 bandMove = self.move_by_1(Newvalue,a_value, jugador, casilla,turnos)
+
+            if EndMove == True:
+                EndMove = self.adjust_player_on_square(jugador,self.Turno_actual)
+                for i in range(60):
+                    print(casilla[i].players_on,end=' ')
+                print()
 
             i = 0
             if jugador[self.Turno_actual].score >= 59:
@@ -578,7 +590,7 @@ def crear_num_casillas():
             n_square += 10
     return casillas
 
-def crear_elementos_casillas(casilla,n_casillas):
+def crear_elementos_casillas(casilla,n_casillas,cant_jugadores):
     """
     Se crea una lista de casillas como objetos
     :param list casillas: Lista de listas vacias a llenar
@@ -588,14 +600,17 @@ def crear_elementos_casillas(casilla,n_casillas):
     cont = 1
 
     for i in range(60):
+
         num = n_casillas[i]
         if i>0:
             tipo = randint(1, 3)
+            players_on = 0
         else:
             tipo = 1
+            players_on = cant_jugadores
         categoria = randint(1, 5)
 
-        casilla[i] = Squares(num,tipo,categoria,pos_x,pos_y)
+        casilla[i] = Squares(num,tipo,categoria,pos_x,pos_y,players_on)
 
         if cont==10:
             pos_y -= 90
@@ -640,7 +655,6 @@ def main():
     #Se inicializa la ventana de pygame
     pygame.init()
     casilla = []
-    jugador = []
     cant_preguntas = 20
 
     while True:
@@ -659,7 +673,7 @@ def main():
         casilla.append(None)
 
     n_casillas = crear_num_casillas()
-    casilla = crear_elementos_casillas(casilla,n_casillas)
+    casilla = crear_elementos_casillas(casilla,n_casillas,cant_jugadores)
     turnos = lista_aleatoria(cant_jugadores)
 
     # Se crean los jugadores
