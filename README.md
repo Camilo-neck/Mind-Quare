@@ -1,60 +1,61 @@
-﻿# Mind Quare V.1.0 
- Juego interactivo de preguntas con tablero.
- Grupo #1
- 
-### Integrantes
-    -Camilo Andres Cuello
-    -Juan Andres Orozco
-    -Santiago Ospina
+# [Start Bootstrap - Scrolling Nav](https://startbootstrap.com/template/scrolling-nav/)
 
-Universidad Nacional de Colombia.
+[Scrolling Nav](https://startbootstrap.com/template/scrolling-nav/) is an unstyled one page starter template with a collapsing, smooth scrolling navigation bar for [Bootstrap](https://getbootstrap.com/) created by [Start Bootstrap](https://startbootstrap.com/).
 
-### Objetivo 
-Videojuego en base a el lenguaje de programación Python :snake:, su temática será la de un juego de preguntas divididas por categorías donde los participantes deberán ir avanzando por un tablero lanzando los dados, dependiendo de la casilla en la que el jugador se sitúe habrá un efecto sobre la partida del mismo. 
+## Preview
 
-### Contenido
+[![Scrolling Nav Preview](https://assets.startbootstrap.com/img/screenshots/templates/scrolling-nav.png)](https://startbootstrap.github.io/startbootstrap-scrolling-nav/)
 
-###### _Nota: El código de la entrega #2 a ejecutar es "Proyecto programacion.py", los demás archivos son avances de la próxima entrega que hemos ido avanzando en este mismo repositorio_
+**[View Live Preview](https://startbootstrap.github.io/startbootstrap-scrolling-nav/)**
 
--Demo de consola "Proyecto programacion.py" que incluye la logica y funcionamiento del juego en la consola cmd.
+## Status
 
--interfaz del tablero "tablero.py" un prototipo de la interfaz que tendra MindQuare en su version final.
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/StartBootstrap/startbootstrap-scrolling-nav/master/LICENSE)
+[![npm version](https://img.shields.io/npm/v/startbootstrap-scrolling-nav.svg)](https://www.npmjs.com/package/startbootstrap-scrolling-nav)
+[![Build Status](https://travis-ci.org/StartBootstrap/startbootstrap-scrolling-nav.svg?branch=master)](https://travis-ci.org/StartBootstrap/startbootstrap-scrolling-nav)
+[![dependencies Status](https://david-dm.org/StartBootstrap/startbootstrap-scrolling-nav/status.svg)](https://david-dm.org/StartBootstrap/startbootstrap-scrolling-nav)
+[![devDependencies Status](https://david-dm.org/StartBootstrap/startbootstrap-scrolling-nav/dev-status.svg)](https://david-dm.org/StartBootstrap/startbootstrap-scrolling-nav?type=dev)
 
--Login "LogIn.py" un prototipo junto con una base de datos en la que se puede registrar e iniciar sesion para acceder al juego.
+## Download and Installation
 
--Video "Inicio.py" prueba usando libreria tkinter para reproducir un video al iniciar el juego (cuando este se termine de reproducir debe cerrarse (x) para continuar al login)
+To begin using this template, choose one of the following options to get started:
 
-### Requisitos
-Para el correcto funcionamiento de MindQuare se requieren la instalacion las siguientes librerias que no se encuentran instaladas por defecto:📋
-_Se requiere de sistema operativo windows puesto que se incluyen funciones especificas de la consola cmd_
+* [Download the latest release on Start Bootstrap](https://startbootstrap.com/template/scrolling-nav/)
+* Install via npm: `npm i startbootstrap-scrolling-nav`
+* Clone the repo: `git clone https://github.com/StartBootstrap/startbootstrap-scrolling-nav.git`
+* [Fork, Clone, or Download on GitHub](https://github.com/StartBootstrap/startbootstrap-scrolling-nav)
 
-Demo de consola:
--colorama : 
-pip install colorama
+## Usage
 
-Interfaces:
--pygame : 
-pip install pygame==2.0.0.dev18 
--tkinter : 
-pip install tk
-imageio :
--pip install imageio
-imageio_ffmpge:
--pip install imageio_ffmpeg
+### Basic Usage
 
-###### _Ejecutar el archivo requirements.py para descargar e instalar estas librerias._
+After downloading, simply edit the HTML and CSS files included with the template in your favorite text editor to make changes. These are the only files you need to worry about, you can ignore everything else! To preview the changes you make to the code, you can open the `index.html` file in your web browser.
 
-### Instrucciones del juego
+### Advanced Usage
 
-Este es en demo en consola de MindQuare, cuyas reglas son:
-1) Se debe ingresar la cantidad de jugadores (debe ser un numero entero).
-2) Se debe ingresar el nombre de los respectivos jugadores.
-3) MindQuare hara que la partida sea completamente aleatoria.
-3) Se lanzaran los dados mostrando sus valores, y el total de casillas.
-4) Despues de lanzar los dados el jugador debera reponder una pregunta y dependiendo del tipo
-   de casilla este valor afectara la posicion del jugador.
-5) El tipo de casilla indica como el valor de los dados afecta al jugador.
-   - Trivia Normal, avanza o retrocede normalmente.
-   - Trivia Double, avanza o retrocede el doble.
-   - Trivia back or advance 1, retrocede o avanza solo 1.
-6) Gana el primer jugador que llegue a la casilla numero 60.
+After installation, run `npm install` and then run `npm start` which will open up a preview of the template in your default browser, watch for changes to core template files, and live reload the browser when changes are saved. You can view the `gulpfile.js` to see which tasks are included with the dev environment.
+
+You must have npm and Gulp installed globally on your machine in order to use these features.
+
+## Bugs and Issues
+
+Have a bug or an issue with this template? [Open a new issue](https://github.com/StartBootstrap/startbootstrap-scrolling-nav/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](https://startbootstrap.com/template/scrolling-nav/).
+
+## About
+
+Start Bootstrap is an open source library of free Bootstrap templates and themes. All of the free templates and themes on Start Bootstrap are released under the MIT license, which means you can use them for any purpose, even for commercial projects.
+
+* <https://startbootstrap.com>
+* <https://twitter.com/SBootstrap>
+
+Start Bootstrap was created by and is maintained by **[David Miller](https://davidmiller.io/)**.
+
+* <https://davidmiller.io>
+* <https://twitter.com/davidmillerhere>
+* <https://github.com/davidtmiller>
+
+Start Bootstrap is based on the [Bootstrap](https://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
+
+## Copyright and License
+
+Copyright 2013-2020 Start Bootstrap LLC. Code released under the [MIT](https://github.com/StartBootstrap/startbootstrap-scrolling-nav/blob/gh-pages/LICENSE) license.
