@@ -151,6 +151,7 @@ class Ventana(Tk):
         if self.time <= 0:
             self.preguntas.close()
             self.validar.config(text = 'Tiempo agotado!')
+            value_answ = False
             self.root.destroy()
             return None
 

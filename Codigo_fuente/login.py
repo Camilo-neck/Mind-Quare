@@ -122,7 +122,7 @@ class Aplicacion:
         """
         Metodo que crea una conexion a la base de datos y un corsor con el que realizamos las funciones.
         """
-        self.miConexion = sqlite3.connect("Resources\Data_base\Ingreso Datos.db")
+        self.miConexion = sqlite3.connect("Resources\\Data_base\\Users.db")
         self.miCursor = self.miConexion.cursor()
 
     def logIn(self):
@@ -247,7 +247,7 @@ class ventanaRegistro:
         """
         Metodo que conecta al la base de datos.
         """
-        self.miConexion = sqlite3.connect("Resources\Data_base\Ingreso Datos.db")
+        self.miConexion = sqlite3.connect("Resources\\Data_base\\Users.db")
         self.miCursor = self.miConexion.cursor()
 
     def volver(self):
@@ -272,6 +272,7 @@ class ventanaRegistro:
         #Banderas para verificar si el correo y la constraseña son validos.
         validadorE = False
         validadorP = False
+        validadorId = False
         #Si todos los campos estan vacios va a ir a revisar si el correo y la contraseña son validos.
         if (
             colectaNombre != ""
@@ -306,10 +307,25 @@ class ventanaRegistro:
             else:
                 #Sino valida la bandera de constraseña
                 validadorP = True
+            
+            self.miCursor.execute(
+            'SELECT * FROM USUARIOS WHERE NICK="'
+            +colectaNick
+            +'" OR EMAIL="'
+            +colectaEmail
+            +'"'
+            )
+            lista_identidad = self.miCursor.fetchall()
+
+            if lista_identidad != []:
+                messagebox.showwarning("Error", "Usuario o Email existentes.")
+            else:
+                validadorId = True
+
         else:
             messagebox.showwarning("Error", "Por Favor Ingresar todos los datos.")
         #Si las dos banderas son validas y los espacios estan llenos, procede a guardar los datos
-        if validadorE and validadorP:
+        if validadorE and validadorP and validadorId:
             #Inserta todos los datos obtenidos en la base de datos.
             self.miCursor.execute(
                 "INSERT INTO USUARIOS VALUES('"
@@ -320,7 +336,7 @@ class ventanaRegistro:
                 + colectaEmail
                 + "','"
                 + colectaPass
-                + "')"
+                + "', 0)"
             )
             self.miConexion.commit()
             #Informa que se realizo el registro.
