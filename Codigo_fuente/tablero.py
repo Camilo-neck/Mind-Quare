@@ -694,7 +694,6 @@ def main():
     #Se inicializa la ventana de pygame
     pygame.init()
     casilla = []
-    jugador = []
     cant_preguntas = 20
 
     while True:
