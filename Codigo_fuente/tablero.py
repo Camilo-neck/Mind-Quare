@@ -398,7 +398,8 @@ class Game(object):
             global bandMove
             global Newvalue
 
-
+            value1 = int()
+            value2 = int()
             #Se añaden los jugadores a los grupos de sprites.
             for i in range(0,cant_jugadores):
                 self.all_sprites_list.add(jugador[i])

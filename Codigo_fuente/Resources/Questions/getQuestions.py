@@ -33,9 +33,15 @@ def main():
     html = page.read().decode("utf-8")
     soup = BeautifulSoup(html, "html.parser")
 
+<<<<<<< HEAD
     enunciados = [t for t in soup.find_all(text=True) if t.parent.name in ['h3']]
     opciones = [t for t in soup.find_all(text=True) if t.parent.name in ['h5']]
     respuestas  = soup.find_all("h5", class_="respuestas")
+=======
+    enunciados = [t for t in soup.find_all(text=True) if t.parent.name in ['h3','enunciado']]
+    opciones = [t for t in soup.find_all(text=True) if t.parent.name in ['h5','opcion']]
+    respuestas = [t for t in soup.find_all(text=True) if t.parent.name in ['h5','respuestas']]
+>>>>>>> f0668243ce76ae07d8dd37f95a2a10f3483e5ade
 
     #extraer las preguntas por categoria
     preguntasMatematicas = obt_preguntas(enunciados,opciones,0,20)
@@ -43,12 +49,20 @@ def main():
     preguntasGeografia = obt_preguntas(enunciados,opciones,40,60)
     preguntasCiencia = obt_preguntas(enunciados,opciones,60,80)
     preguntasEntretenimiento = obt_preguntas(enunciados,opciones,80,100)
+<<<<<<< HEAD
     #extraer las respuestas por categoria  
     RM = (respuestas[0].getText())    #.replace("'",""))).replace(' ','').split(',')
     RH = (respuestas[1].getText())    #.replace("'",""))).replace(' ','').split(',')
     RG = (respuestas[2].getText())    #.replace("'",""))).replace(' ','').split(',')
     RC = (respuestas[3].getText())    #.replace("'",""))).replace(' ','').split(',')
     RE = (respuestas[4].getText())    #.replace("'",""))).replace(' ','').split(',')
+=======
+    #extraer las respuestas por categoria
+    R = ','.join([e for e in respuestas])
+    print(respuestas)
+    print(R)
+    input()
+>>>>>>> f0668243ce76ae07d8dd37f95a2a10f3483e5ade
 
     #crear un archivo con las preguntas por cada categoria
     crear_archivo(preguntasMatematicas,'preguntas_matematicas.txt')
