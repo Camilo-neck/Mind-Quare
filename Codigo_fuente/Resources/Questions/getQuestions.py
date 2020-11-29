@@ -38,9 +38,16 @@ def main():
 
     preguntasMatematicas = obt_preguntas(enunciados,opciones,0,20)
     preguntasHistoria = obt_preguntas(enunciados,opciones,20,40)
+    preguntasGeografia = obt_preguntas(enunciados,opciones,40,60)
+    preguntasCiencia = obt_preguntas(enunciados,opciones,60,80)
+    preguntasEntretenimiento = obt_preguntas(enunciados,opciones,80,100)
 
     crear_archivo(preguntasMatematicas,'preguntas_matematicas.txt')
     crear_archivo(preguntasHistoria,'preguntas_historia.txt')
+    crear_archivo(preguntasGeografia,'preguntas_geografia.txt')
+    crear_archivo(preguntasCiencia,'preguntas_ciencia.txt')
+    crear_archivo(preguntasEntretenimiento,'preguntas_entretenimiento.txt')
+   
 
 if __name__=='__main__':
     main()
