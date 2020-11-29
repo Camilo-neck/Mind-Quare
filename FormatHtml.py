@@ -1,4 +1,44 @@
-preguntas = '''¿Cómo se llamó durante más de 50 años San Petersburgo?
+preguntas = '''¿En que año descubrió Colón América?
+1492  
+1502
+1496
+1488
+¿En que guerra participó Juana de Arco?
+Primera cruzada
+Guerras napoleónicas
+Guerra de los 100 años   
+Guerra de los 30 años
+¿Cuál era la capital del Imperio Inca?
+Cuzco   
+Quito
+Machu Pichu
+Lima
+¿Cuándo se produjo principalmente el Siglo de Oro?
+XVI    
+XVII
+XV
+XIV
+¿Quién fue el primer emperador romano?
+Julio Cesar
+Cesar Augusto      
+Nerón
+Caligula
+¿Cómo se llamaba el cañón alemán más famoso de la I Guerra Mundial ?
+Luftwaffe
+Mackensen M-14
+Gran Berta     
+Enola Gay
+¿En que país nació Adolf Hitler?
+Austria     
+Suiza
+Alemania
+Polonia
+¿Por qué condenó la Iglesia a Galileo Galilei?
+Por decir que la tierra era redonda
+Por negar la existencia de Dios
+Por decir que la tierra giraba alrededor del sol     
+Por decir que la tierra era el centro del universo
+¿Cómo se llamó durante más de 50 años San Petersburgo?
 Petroburgo
 Leningrado   
 Trostskigrado
