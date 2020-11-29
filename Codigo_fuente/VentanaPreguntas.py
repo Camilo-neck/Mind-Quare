@@ -29,11 +29,13 @@ class Ventana(Tk):
 
         self.n_r = n_pregunta
 
-        self.RM = ['A', 'C', 'D', 'B', 'C', 'A', 'D', 'B', 'A', 'C', 'C', 'D', 'A', 'B', 'C', 'C', 'A', 'C', 'A', 'A']
-        self.RH = ['A', 'C', 'A', 'A', 'B', 'C', 'A', 'C', 'B', 'B', 'A', 'A', 'B', 'B', 'C', 'A', 'B', 'D', 'B', 'A']
-        self.RG = ['B', 'C', 'A', 'C', 'A', 'D', 'B', 'A', 'B', 'A', 'A', 'A', 'D', 'C', 'A', 'B', 'B', 'C', 'A', 'B']
-        self.RC = ['C', 'B', 'A', 'B', 'A', 'B', 'C', 'D', 'B', 'C', 'B', 'A', 'B', 'C', 'C', 'A', 'B', 'B', 'A', 'D']
-        self.RE = ['B', 'D', 'A', 'C', 'B', 'B', 'A', 'C', 'B', 'B', 'B', 'B', 'A', 'D', 'B', 'B', 'B', 'B', 'B', 'C']
+        respuestas = open((os.getcwd() + "\Resources\Questions\Respuestas.txt"), "r")
+        self.RM = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
+        self.RH = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
+        self.RG = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
+        self.RC = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
+        self.RE = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
+        respuestas.close()
 
         self.category()
 

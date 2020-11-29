@@ -33,9 +33,9 @@ def main():
     html = page.read().decode("utf-8")
     soup = BeautifulSoup(html, "html.parser")
 
-    enunciados = [t for t in soup.find_all(text=True) if t.parent.name in ['h3','enunciado']]
-    opciones = [t for t in soup.find_all(text=True) if t.parent.name in ['h6','opcion']]
-    respuestas = [t for t in soup.find_all(text=True) if t.parent.name in ['h6','respuestas']]
+    enunciados = [t for t in soup.find_all(text=True) if t.parent.name in ['h3']]
+    opciones = [t for t in soup.find_all(text=True) if t.parent.name in ['h5']]
+    respuestas  = soup.find_all("h5", class_="respuestas")
 
     #extraer las preguntas por categoria
     preguntasMatematicas = obt_preguntas(enunciados,opciones,0,20)
@@ -43,11 +43,12 @@ def main():
     preguntasGeografia = obt_preguntas(enunciados,opciones,40,60)
     preguntasCiencia = obt_preguntas(enunciados,opciones,60,80)
     preguntasEntretenimiento = obt_preguntas(enunciados,opciones,80,100)
-    #extraer las respuestas por categoria
-    R = ','.join([e for e in respuestas)])
-    print(respuestas)
-    print(R)
-    input()
+    #extraer las respuestas por categoria  
+    RM = (respuestas[0].getText())    #.replace("'",""))).replace(' ','').split(',')
+    RH = (respuestas[1].getText())    #.replace("'",""))).replace(' ','').split(',')
+    RG = (respuestas[2].getText())    #.replace("'",""))).replace(' ','').split(',')
+    RC = (respuestas[3].getText())    #.replace("'",""))).replace(' ','').split(',')
+    RE = (respuestas[4].getText())    #.replace("'",""))).replace(' ','').split(',')
 
     #crear un archivo con las preguntas por cada categoria
     crear_archivo(preguntasMatematicas,'preguntas_matematicas.txt')
@@ -55,6 +56,15 @@ def main():
     crear_archivo(preguntasGeografia,'preguntas_geografia.txt')
     crear_archivo(preguntasCiencia,'preguntas_ciencia.txt')
     crear_archivo(preguntasEntretenimiento,'preguntas_entretenimiento.txt')
+
+    #crear un archivo con las repsuestas
+    archivo = open('Respuestas.txt','w')
+    archivo.write(RM+'\n')
+    archivo.write(RH+'\n')
+    archivo.write(RG+'\n')
+    archivo.write(RC+'\n')
+    archivo.write(RE+'\n')
+    archivo.close()
     
 
 if __name__=='__main__':
