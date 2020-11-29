@@ -3,8 +3,7 @@
 3,149215
 3,144423
 3,144123
-Adivina cuántos años tengo sabiendo que la te
-            rcera parte de ellos menos 1 es igual a la sexta parte
+Adivina cuántos años tengo sabiendo que la tercera parte de ellos menos 1 es igual a la sexta parte
 7
 5
 6
@@ -24,8 +23,7 @@ Circunferencia de un circulo
 Teoria de la probabilidad
 Equivalencia entre masa y energia
 Volumen de un cubo
-Juan tiene 20 años menos que su padre y este
-            tiene el triple de los años de su hijo. ¿Qué edad tienen cada uno?
+Juan tiene 20 años menos que su padre y este tiene el triple de los años de su hijo. ¿Qué edad tienen cada uno?
 10 juan, 30 el padre
 11 juan, 31 el padre
 12 juan, 32 el padre
@@ -40,15 +38,12 @@ Triangulo que tiene todos sus lados iguales
 Triangulo que tiene dos lados de igual longitud
 Triangulo que tiene los tres lados desiguales
 Ninguna de las anteriores
-Alberto, Benjamín y Carlota hicieron un total
-             de 20 sándwiches.Benjamín hizo 3 veces más que Alberto, y Carlota hizo el doble
-             que Benjamín.¿Cuántos sándwiches hizo Alberto?
+Alberto, Benjamín y Carlota hicieron un total de 20 sándwiches.Benjamín hizo 3 veces más que Alberto, y Carlota hizo el doble que Benjamín.¿Cuántos sándwiches hizo Alberto?
 2
 4
 5
 6
-Si 10 + x es 5 más que 10, ¿cuál es el valor
-            de 2x?
+Si 10 + x es 5 más que 10, ¿cuál es el valor de 2x?
 -5
 5
 10
@@ -58,21 +53,17 @@ Si 50 es el 100%, cuanto es el 90%
 15
 45
 4
-En un torneo de tenis, el jugador que pierde
-            se vuelve a casa. Cuántos jugadores iniciaron este torneo si desde la ronda prel
-            iminar hasta la final se han jugado 128 partidos.
+En un torneo de tenis, el jugador que pierde se vuelve a casa. Cuántos jugadores iniciaron este torneo si desde la ronda preliminar hasta la final se han jugado 128 partidos.
 64
 No se puede saber
 127
 129
-¿Cuánto es la cuarta parte de la tercera part
-            e?
+¿Cuánto es la cuarta parte de la tercera parte?
 1/12
 3/4 partes
 1/7
 La parte contratande de la tercera parte
-Hay 165 ovejas y 5 perros en un rebaño, ¿cuán
-            tos años tiene el pastor?
+Hay 165 ovejas y 5 perros en un rebaño, ¿cuántos años tiene el pastor?
 25 años
 No se puede saber con esos datos
 33 años

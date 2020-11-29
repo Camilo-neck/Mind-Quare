@@ -35,19 +35,27 @@ def main():
 
     enunciados = [t for t in soup.find_all(text=True) if t.parent.name in ['h3','enunciado']]
     opciones = [t for t in soup.find_all(text=True) if t.parent.name in ['h6','opcion']]
+    respuestas = [t for t in soup.find_all(text=True) if t.parent.name in ['h6','respuestas']]
 
+    #extraer las preguntas por categoria
     preguntasMatematicas = obt_preguntas(enunciados,opciones,0,20)
     preguntasHistoria = obt_preguntas(enunciados,opciones,20,40)
     preguntasGeografia = obt_preguntas(enunciados,opciones,40,60)
     preguntasCiencia = obt_preguntas(enunciados,opciones,60,80)
     preguntasEntretenimiento = obt_preguntas(enunciados,opciones,80,100)
+    #extraer las respuestas por categoria
+    R = ','.join([e for e in respuestas)])
+    print(respuestas)
+    print(R)
+    input()
 
+    #crear un archivo con las preguntas por cada categoria
     crear_archivo(preguntasMatematicas,'preguntas_matematicas.txt')
     crear_archivo(preguntasHistoria,'preguntas_historia.txt')
     crear_archivo(preguntasGeografia,'preguntas_geografia.txt')
     crear_archivo(preguntasCiencia,'preguntas_ciencia.txt')
     crear_archivo(preguntasEntretenimiento,'preguntas_entretenimiento.txt')
-   
+    
 
 if __name__=='__main__':
     main()
