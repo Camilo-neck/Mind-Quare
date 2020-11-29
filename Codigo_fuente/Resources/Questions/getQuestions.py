@@ -33,8 +33,8 @@ def main():
     html = page.read().decode("utf-8")
     soup = BeautifulSoup(html, "html.parser")
 
-    enunciados = [t for t in soup.find_all(text=True) if t.parent.name in ['h3']]
-    opciones = [t for t in soup.find_all(text=True) if t.parent.name in ['h6']]
+    enunciados = [t for t in soup.find_all(text=True) if t.parent.name in ['h3','enunciado']]
+    opciones = [t for t in soup.find_all(text=True) if t.parent.name in ['h6','opcion']]
 
     preguntasMatematicas = obt_preguntas(enunciados,opciones,0,20)
     preguntasHistoria = obt_preguntas(enunciados,opciones,20,40)
