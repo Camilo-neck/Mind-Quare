@@ -34,8 +34,8 @@ def main():
     soup = BeautifulSoup(html, "html.parser")
 
     enunciados = [t for t in soup.find_all(text=True) if t.parent.name in ['h3','enunciado']]
-    opciones = [t for t in soup.find_all(text=True) if t.parent.name in ['h6','opcion']]
-    respuestas = [t for t in soup.find_all(text=True) if t.parent.name in ['h6','respuestas']]
+    opciones = [t for t in soup.find_all(text=True) if t.parent.name in ['h5','opcion']]
+    respuestas = [t for t in soup.find_all(text=True) if t.parent.name in ['h5','respuestas']]
 
     #extraer las preguntas por categoria
     preguntasMatematicas = obt_preguntas(enunciados,opciones,0,20)
@@ -44,7 +44,7 @@ def main():
     preguntasCiencia = obt_preguntas(enunciados,opciones,60,80)
     preguntasEntretenimiento = obt_preguntas(enunciados,opciones,80,100)
     #extraer las respuestas por categoria
-    R = ','.join([e for e in respuestas)])
+    R = ','.join([e for e in respuestas])
     print(respuestas)
     print(R)
     input()
