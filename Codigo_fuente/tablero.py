@@ -14,6 +14,7 @@ import os #Libreria para utilzar funciones del OS
 import time #Libreria para hacer manejar tiempos y retrasos en funciones
 import VentanaPreguntas #Se importa ventana que contiene las preguntas
 import login # Se importa ventana del login
+import sqlite3
 from sys import exit # Librería del sistema para terminar juego
 
 pos_doble = False #boleano que determina si los jugadores deben acomodarse de una forma especifica si hay 2 de ellos en la misma casilla (no funciona correctamente)
@@ -176,6 +177,7 @@ class Player(pygame.sprite.Sprite):
         #self.move_casilla = 1
         self.n_square = n_square
         self.nombre = nombre
+        self.winner= False
         self.preguntas_M = preguntas_M
         self.preguntas_H = preguntas_H
         self.preguntas_G = preguntas_G
@@ -214,7 +216,7 @@ class Game(object):
         Clase que ejecuta el juego.
         """
         #Se declaran las fuentes que se utilizaran
-
+        self.db = 'Resources\\Data_base\\Users.db'
         self.fuente = pygame.font.SysFont('Impact', 15)
         self.fuente2 = pygame.font.SysFont('Impact', 15)
         #Se coloca el titulo de la ventana
@@ -385,6 +387,12 @@ class Game(object):
                 return False
         return True
 
+    def run_query(self, query, parameters = ()): #Funcion para consultar base de datos
+        with sqlite3.connect(self.db) as conn:
+            cursor = conn.cursor()
+            result = cursor.execute(query, parameters)
+            conn.commit()
+        return list(result)
 
     def run_logic(self,screen,jugador,dados,casilla,turnos,cant_jugadores):
         """
@@ -478,16 +486,42 @@ class Game(object):
 
             if EndMove == True:
                 EndMove = self.adjust_player_on_square(jugador,self.Turno_actual)
-                for i in range(60):
-                    print(casilla[i].players_on,end=' ')
-                print()
+                #for i in range(60):
+                    #print(casilla[i].players_on,end=' ')
+                #print()
 
-            i = 0
             if jugador[self.Turno_actual].score >= 59:
                 print('win')
+                jugador[self.Turno_actual].winner = True
                 self.win = True
         else:
+            query1 = '''
+            UPDATE USUARIOS SET SCORE = ?
+            WHERE 
+            NICK = ? 
+        '''
+            query2 = '''
+            UPDATE USUARIOS SET VICTORIES = ?
+            WHERE 
+            NICK = ? 
+        '''
+            query3 = '''
+            SELECT VICTORIES FROM USUARIOS WHERE 
+            NICK = ? 
+        '''
+            query4 = '''
+            SELECT SCORE FROM USUARIOS WHERE 
+            NICK = ? 
+        '''
             if keys[pygame.K_e]:
+                for i in range(cant_jugadores):
+                    username = jugador[i].nombre
+                    new_score = int(jugador[i].score + (list(self.run_query(query4, (username,)))[0][0]))
+                    new_victories = 1 + list(self.run_query(query3, (username,)))[0][0]
+                    self.run_query(query1, (new_score,username,))
+                    if jugador[i].winner:
+                        self.run_query(query2, (new_victories,username,))
+
                 exit()
 
     def display_frame(self, screen,casilla,dados,jugador, cant_jugadores):

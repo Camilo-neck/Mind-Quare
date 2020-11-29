@@ -174,7 +174,7 @@ class Users:
         self.tree.heading('#0', text = 'Nickname', anchor = CENTER)
         self.tree.heading('#1', text = 'Nombre', anchor = CENTER)
         self.tree.heading('#2', text = 'Email', anchor = CENTER)
-        self.tree.heading('#3', text = 'High Score', anchor = CENTER)
+        self.tree.heading('#3', text = 'Victories', anchor = CENTER)
         self.tree.heading('#4', text = 'Score', anchor = CENTER)
 
         #Edit and Delete Buttons

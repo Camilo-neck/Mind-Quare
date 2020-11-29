@@ -4,13 +4,13 @@ miConexion= sqlite3.connect("Users.db")
 
 miCursor = miConexion.cursor()
 
-"""miCursor.execute(
+miCursor.execute(
     '''CREATE TABLE USUARIOS(
         NICK VARCHAR(15) PRIMARY KEY,
         NOMBRE VARCHAR(50) NOT NULL,
         EMAIL VARCHAR(60) UNIQUE,
         PASSWORD VARCHAR(20),
-        HIGHSCORE INTEGER,
+        VICTORIES INTEGER,
         SCORE INTEGER
     )
     '''
@@ -18,8 +18,8 @@ miCursor = miConexion.cursor()
 miCursor.execute(
     'INSERT INTO USUARIOS VALUES("luisito","Luis","luis@gmail.com","luis1234",0,0)'
 )
-"""
-nickvar = input()
+
+"""nickvar = input()
 
 miCursor.execute(
     'SELECT SCORE FROM USUARIOS WHERE NICK="'
@@ -48,7 +48,7 @@ miCursor.execute(
 
 score = miCursor.fetchall()[0][0]
 
-print(score)
+print(score)"""
 
 miConexion.commit()
 miConexion.close()
