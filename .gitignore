@@ -1,1 +1,10 @@
+#Pag web
 node_modules
+#Carpetas
+.idea/
+Codigo_fuente/.idea/
+Codigo_fuente/__pycache__/
+
+#Archivos
+Push.py
+.login.py.swp
