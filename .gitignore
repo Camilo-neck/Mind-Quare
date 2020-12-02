@@ -2,6 +2,7 @@
 node_modules
 #Carpetas
 .idea/
+.vs/
 Codigo_fuente/.idea/
 Codigo_fuente/__pycache__/
 

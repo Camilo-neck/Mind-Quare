@@ -12,8 +12,10 @@ import random #Se importa las demas funciones de random
 import pygame #Se importa libreria pygame para la interfaz y las funciones del juego
 import os #Libreria para utilzar funciones del OS
 import time #Libreria para hacer manejar tiempos y retrasos en funciones
+import VentanaInicio as inicio
 import VentanaPreguntas #Se importa ventana que contiene las preguntas
 import login # Se importa ventana del login
+import Cantidad_p as cant
 import sqlite3
 from sys import exit # Librería del sistema para terminar juego
 
@@ -692,16 +694,7 @@ def main():
     casilla = []
     cant_preguntas = 20
 
-    while True:
-        try:
-            cant_jugadores=int(input('Ingrese el numero de jugadores(min 2, max 4): '))
-            if cant_jugadores < 2 or cant_jugadores > 4:
-                print('Cantidad de jugadores no válida.')
-                continue
-            else:
-                break
-        except ValueError:
-            print('Debe ser un valor entero.')
+    cant_jugadores = cant.main()
 
     #inicializar lista casilla
     for i in range(60):
