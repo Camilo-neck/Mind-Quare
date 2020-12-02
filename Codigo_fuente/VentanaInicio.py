@@ -10,7 +10,11 @@ import tablero
 class V_inicio():
     def __init__(self):
         self.root = Tk()
-        self.root.geometry('500x400')
+        self.sw = self.root.winfo_screenwidth()
+        self.sh = self.root.winfo_screenheight()
+        self.x = self.sw // 3
+        self.y = self.sh // 4
+        self.root.geometry(f"500x400+{self.x}+{self.y}")
         self.root.title('MindQuare')
         self.root.resizable(width = False, height = False)
         self.imagenFondo = PhotoImage(file = "Resources\Images\GameLogoR.png")
@@ -50,6 +54,11 @@ class Users:
         self.wind = Tk()
         self.wind.title('Laderboard')
         self.wind.config(bg = '#000')
+        self.sw = self.wind.winfo_screenwidth()
+        self.sh = self.wind.winfo_screenheight()
+        self.x = self.sw // 3
+        self.y = self.sh // 4
+        self.wind.geometry(f"550x250+{self.x}+{self.y}")
 
         # Table
         self.tree = ttk.Treeview(height = 10)
@@ -66,7 +75,7 @@ class Users:
         self.tree.heading('#3', text = 'Victories', anchor = CENTER)
         self.tree.heading('#4', text = 'Score', anchor = CENTER)
         #Edit and Delete Buttons
-        ttk.Button(text = 'EDITAR', command = self.editClient).grid(row = 10, column = 1, sticky = W + E)
+        #ttk.Button(text = 'EDITAR', command = self.editClient).grid(row = 10, column = 1, sticky = W + E)
         ttk.Button(text = 'Volver', command = self.Volver).grid(row = 10, column = 0, sticky = W + E)
 
         self.sourceClients()
