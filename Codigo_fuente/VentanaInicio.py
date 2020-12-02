@@ -124,17 +124,117 @@ class Instrucciones:
         self.root.geometry(f"660x425+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
         self.root.resizable(width=False, height=False)
         self.root.config(bg="white")
-        self.titulo = tk.Label(self.root, text='',font=('Cascadia Mono SemiBold', 12), fg='black', bg='white')
+
+        self.imagenPrincipal = tk.PhotoImage(file="Resources\Images\FondoR2.png")
+        self.Canva = tk.Canvas(self.root, width=720, height=405, bg='blue')
+        self.Canva.place(x=0, y=0)
+        self.Canva.create_image(0,0, image = self.imagenPrincipal, anchor='nw')
+
+        self.titulo = tk.Label(self.root, text='',font=('Impact', 12), fg='black', bg='white')
         self.titulo.pack()
         self.texto = ''
         self.imprimir_instrucciones()
-        self.instrucciones = tk.Label(self.root, text=self.texto,font=('Cascadia Mono SemiBold', 12), fg='black', bg='white',pady=10, justify=LEFT)
+        self.instrucciones = tk.Label(self.root, text=self.texto,font=('Impact', 12), fg='black', bg='white',pady=10, justify=LEFT)
         self.instrucciones.place(x=10, y=20)
 
-        self.volver = tk.Button(self.root, text="VOLVER",bg='#43046D', fg='#FFFFFF', activebackground='red', command=self.volver)
+        #------------Tipos interactivos----------------------------
+        self.tituloTipos = tk.Label(self.root, text='TIPOS',font=('Impact', 12), fg='black', bg='white')
+        self.tituloTipos.place(x=150,y=260)
+
+        self.NormalImg = PhotoImage(file='Resources\Images\CNormal.png')
+        self.TipoNormal = Label(self.root, image=self.NormalImg)
+        self.TipoNormal.place(x=100,y=300)
+
+        self.DoubleImg = PhotoImage(file='Resources\Images\CDouble.png')
+        self.TipoDouble = Label(self.root, image=self.DoubleImg)
+        self.TipoDouble.place(x=150,y=300)
+
+        self.BA1Img = PhotoImage(file='Resources\Images\CBA1.png')
+        self.TipoBA1 = Label(self.root, image=self.BA1Img)
+        self.TipoBA1.place(x=200,y=300)
+
+        self.status_label = Label(self.root, relief=SUNKEN, text='')
+        self.info = Label(self.root, relief=SUNKEN, text='')
+        self.status_label.text = self.info
+        self.status_label.config(text=self.info)
+        self.status_label.place(x=500,y=700)
+
+        self.TipoNormal.bind("<Enter>", lambda event, txt="Normal: Avanza o retrocede lo indicado por los dados": self.button_hover("<Enter>",txt,1))
+        self.TipoNormal.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+
+        self.TipoDouble.bind("<Enter>", lambda event, txt="Doble: Avanza o retrocede el doble de los dados": self.button_hover("<Enter>",txt,1))
+        self.TipoDouble.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+
+        self.TipoBA1.bind("<Enter>", lambda event, txt="Back or 1: Avanza 1 o retrocede lo indicado por los dados": self.button_hover("<Enter>",txt,1))
+        self.TipoBA1.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+
+        #------------Categorias interactivas----------------------------
+        self.tituloCategorias = tk.Label(self.root, text='CATEGORIAS',font=('Impact', 12), fg='black', bg='white')
+        self.tituloCategorias.place(x=425,y=260)
+
+        self.MImg = PhotoImage(file='Resources\Images\CMates.png')
+        self.Mates = Label(self.root, image=self.MImg)
+        self.Mates.place(x=350,y=300)
+
+        self.HImg = PhotoImage(file='Resources\Images\CHisto.png')
+        self.Histo = Label(self.root, image=self.HImg)
+        self.Histo.place(x=400,y=300)
+
+        self.GImg = PhotoImage(file='Resources\Images\CGeo.png')
+        self.Geo = Label(self.root, image=self.GImg)
+        self.Geo.place(x=450,y=300)
+
+        self.CImg = PhotoImage(file='Resources\Images\CCien.png')
+        self.Cien = Label(self.root, image=self.CImg)
+        self.Cien.place(x=500,y=300)
+
+        self.EImg = PhotoImage(file='Resources\Images\CEntr.png')
+        self.Entr = Label(self.root, image=self.EImg)
+        self.Entr.place(x=550,y=300)
+
+        self.status_label2 = Label(self.root, relief=SUNKEN, text='')
+        self.info2 = Label(self.root, relief=SUNKEN, text='')
+        self.status_label2.text = self.info2
+        self.status_label2.config(text=self.info2)
+        self.status_label2.place(x=500,y=700)
+
+        self.Mates.bind("<Enter>", lambda event, txt="Matematicas": self.button_hover("<Enter>",txt,2))
+        self.Mates.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+
+        self.Histo.bind("<Enter>", lambda event, txt="Historia": self.button_hover("<Enter>",txt,2))
+        self.Histo.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+
+        self.Geo.bind("<Enter>", lambda event, txt="Geografia": self.button_hover("<Enter>",txt,2))
+        self.Geo.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+
+        self.Cien.bind("<Enter>", lambda event, txt="Ciencia": self.button_hover("<Enter>",txt,2))
+        self.Cien.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+
+        self.Entr.bind("<Enter>", lambda event, txt="Entretenimiento": self.button_hover("<Enter>",txt,2))
+        self.Entr.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+
+
+
+        self.volver = tk.Button(self.root, text="VOLVER",bg='#43046D', fg='#FFFFFF',font=('Impact',12), activebackground='red', command=self.volver)
         self.volver.pack(side=BOTTOM)
-        
+
         self.root.mainloop()
+
+
+    def button_hover(self,e,txt,n):
+        info = txt
+        self.status_label.text = info
+        self.status_label.config(text=info)
+        if n==1:
+            self.status_label.place(x=25,y=350)
+        else:
+            self.status_label.place(x=430,y=350)
+
+    def button_hover_leave(self,e):
+        info = ''
+        self.status_label.text = info
+        self.status_label.config(text=info)
+        self.status_label.place(x=500,y=700)
 
     def imprimir_instrucciones(self):
         archivo = open((os.getcwd() + "\Resources\Instrucciones\Instrucciones_game.txt"), 'r')
@@ -142,14 +242,14 @@ class Instrucciones:
             data = f.readlines()[:]
         self.titulo.config(text = data[0].strip())
         y=7
-        for i in range(1,len(data)-2):
-            if len(data[i].strip()) < 70:
+        for i in range(1,len(data)):
+            if len(data[i].strip()) < 90:
                 self.texto += data[i].strip()+'\n'
             else:
                 texto = ''
                 for j in data[i].strip():
                     texto += j
-                    if len(texto) % 70 == 0:
+                    if len(texto) % 90 == 0:
                         texto += '\n'
                 self.texto += texto+'\n'
             y+=1
