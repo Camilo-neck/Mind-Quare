@@ -2,6 +2,23 @@ from tkinter import ttk
 from tkinter import *
 import sqlite3
 
+class cant_jugadores:
+    def __init__(self):
+        self.cantidad = Tk()
+        self.cantidad.title('MindQuare')
+        self.sw = self.cantidad.winfo_screenwidth()
+        self.sh = self.cantidad.winfo_screenheight()
+        self.x = self.sw // 3
+        self.y = self.sh // 4
+        self.cantidad.geometry(f"430x250+{self.x}+{self.y}")
+        self.cantidad.config(bg='#FFF')
+
+        Label(self.cantidad, text='Seleccione la cantidad de jugadores',font=('Impact', 12), pady= 30).pack()
+        Button(self.cantidad, text='2 Jugadores',font=('Impact', 10), width=20).pack()
+        Button(self.cantidad, text='3 Jugadores',font=('Impact', 10), width=20).pack()
+        Button(self.cantidad, text='4 Jugadores',font=('Impact', 10), width=20).pack()
+        self.cantidad.mainloop()
+
 class Users:
 
     db_name = 'Resources\\Data_base\\Users.db'
@@ -184,6 +201,7 @@ class Users:
         self.sourceClients()
 
 if __name__ == '__main__':
-    window = Tk()
-    application = Users(window)
-    window.mainloop()
+    #window = Tk()
+    #application = Users(window)
+    #window.mainloop()
+    cant_jugadores()
