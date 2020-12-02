@@ -1,7 +1,7 @@
 import tkinter as tk, threading #Se importan todos los elementos de Tkinter
 import os
 from tkinter.constants import BOTTOM, LEFT
-import login
+import VentanaInicio
 
 class Instrucciones:
     """
@@ -53,7 +53,7 @@ class Instrucciones:
 
     def volver(self):
         self.root.destroy()
-        login.main()
+        VentanaInicio.main()
 
 def main():
     Instrucciones()
