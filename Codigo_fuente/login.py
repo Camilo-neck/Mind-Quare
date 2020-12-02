@@ -100,7 +100,7 @@ class Aplicacion:
         self.bSign.place(x=330, y=355)
 
         # -------------------BOTÓN DE SALIR------------------------
-        self.bSalir = tk.Button(self.root, text="SALIR",font=('Impact', 10), background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.root.destroy)
+        self.bSalir = tk.Button(self.root, text="Invitado",font=('Impact', 10), background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.root.destroy)
         self.bSalir.place(x=250,y=355)
 
         #Se llama metodo que inicializa la base de datos.
