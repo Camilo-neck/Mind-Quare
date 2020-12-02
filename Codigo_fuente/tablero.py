@@ -315,7 +315,7 @@ class Game(object):
     def get_value(self,casilla_actual,casilla,tipo,value1,value2,respuesta):
         # Logica para ubicar el jugador en la casilla que marcaron los dados (antes de esto iria la pregunta)
         i_list = []
-        for k in range(0, 60):
+        for k in range(60):
             i_list.append(casilla[k].num)
 
         if tipo == 1:
@@ -332,7 +332,7 @@ class Game(object):
         global EndMove
 
         i_list = []
-        for k in range(0, 60):
+        for k in range(60):
             i_list.append(casilla[k].num)
         index = jugador[self.Turno_actual].n_square
         if index >= 59:
@@ -411,7 +411,7 @@ class Game(object):
             value1 = int()
             value2 = int()
             #Se añaden los jugadores a los grupos de sprites.
-            for i in range(0,cant_jugadores):
+            for i in range(cant_jugadores):
                 self.all_sprites_list.add(jugador[i])
 
             #Se ejecuta la funcion de atualizar en los dos jugadores.
@@ -443,7 +443,7 @@ class Game(object):
             if self.cont == 1:
                 print('ronda:', self.ronda)
                 i_list = []
-                for k in range(0, 60):
+                for k in range(60):
                     i_list.append(casilla[k].num)
                     #print(casilla[k].num, casilla[k].categoria)
                 index = jugador[self.Turno_actual].n_square
@@ -518,6 +518,8 @@ class Game(object):
             if keys[pygame.K_e]:
                 for i in range(cant_jugadores):
                     username = jugador[i].nombre
+                    if username == f'Invitado{i+1}':
+                        continue
                     new_score = int(jugador[i].score + (list(self.run_query(query4, (username,)))[0][0]))
                     new_victories = 1 + list(self.run_query(query3, (username,)))[0][0]
                     self.run_query(query1, (new_score,username,))
@@ -665,7 +667,7 @@ def lista_aleatoria(cant):
     :return: list lista
     """
     lista=[]
-    for i in range(0,cant):
+    for i in range(cant):
         lista.append(i)
     shuffle(lista)
     return lista
@@ -674,6 +676,8 @@ def crear_jugadores(cant_jugadores,cant_preguntas):
     jugador = []
     for i in range(cant_jugadores):
         nombre_player = login.main()
+        if nombre_player == "":
+            nombre_player = f'Invitado{i+1}'
 
         questions_M = lista_aleatoria(cant_preguntas)
         questions_H = lista_aleatoria(cant_preguntas)
