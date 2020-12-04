@@ -16,7 +16,6 @@ from PIL import Image, ImageTk
 import sqlite3 #Se importa la libreria para maneja la base de datos
 from tkinter.constants import TOP
 #import Inicio #Se importa el archivo inicio.py
-usuario = ''
 class Aplicacion:
     """
     Clase que inicaliza y crea la ventana de inicio de sesion.
@@ -37,30 +36,12 @@ class Aplicacion:
         self.root.resizable(width=False, height=False)
         self.root.config(bg="white")
 
+        self.usuario = ''
+
         # -----------IMAGEN INTERFAZ------------------------
 
         self.imagenPrincipal = tk.PhotoImage(file="Resources\Images\GameLogoR.png")
-        #self.imagenLogo = Label(
-        #    self.root,
-        #    image=self.imagenPrincipal,
-        #    width=720,
-        #    height=405,
-        #    justify="center",
-        #)
-        #self.imagenLogo.config(bg="white")
-        #self.imagenLogo.pack()
 
-        # ------------------FRASE BIENVENIDA--------------------
-        '''
-        self.Bienvenida = Label(
-            self.root,
-            text="Bienvenido al Sistema de ingreso de este juego\n Ingrese sesión",
-            bg="purple",
-            fg="black",
-            font=("Times New Roman", 17),
-        )
-        self.Bienvenida.place(x=150, y=205)
-        '''
         # ------------------LOG IN-----------------------------
 
         #Se crea lienzo.
@@ -123,7 +104,6 @@ class Aplicacion:
         """
         Metodo que revisa si el correo y la constraseña son correctos.
         """
-        global usuario
         #Busca en la base de datos si el correo y la constraseña se encuentran a la vez en un mismo usuario.
         self.miCursor.execute(
             "SELECT * FROM USUARIOS WHERE NICK='"
@@ -138,7 +118,7 @@ class Aplicacion:
         self.miConexion.commit()
         #Si la lista obtenida no es vacia(Coincidieron los datos), cierra esta ventana, y se dirige al tablero.
         if self.datosUsuario != []:
-            usuario = self.nickvar.get()
+            self.usuario = self.nickvar.get()
             self.root.destroy()
             #funciones()
             #tablero.main()
@@ -337,8 +317,8 @@ def main():
     Funcion principal que abre la aplicacion.
     """
     #Inicio.video_inicio()
-    Aplicacion()
-    return usuario
+    login= Aplicacion()
+    return login.usuario
     #Intro()
 
 

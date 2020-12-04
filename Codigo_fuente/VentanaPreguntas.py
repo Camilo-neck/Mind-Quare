@@ -5,8 +5,6 @@ from tkinter import Radiobutton, messagebox
 from random import randint
 from time import sleep, time
 
-value_answ = False
-
 class Ventana(Tk):
     def __Cancel(event=None): pass
     def __init__(self,tipo,categoria,n_pregunta,temp):
@@ -22,7 +20,7 @@ class Ventana(Tk):
         self.root.resizable(width = False, height = False)
         self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
         #self.root.wm_overrideredirect(1)
-
+        self.value_answ = False
         self.answered = False
         self.answ_value = False
         self.categoria = categoria
@@ -78,12 +76,12 @@ class Ventana(Tk):
             if rta == self.R[self.n_r]:
                 self.validar.config(text = 'CORRECTO!', bg = self.color, fg = 'Darkgreen', font = ('Roman',15))
                 self.answ_value = True
-                value_answ = self.answ_value
+                self.value_answ = self.answ_value
                 #print('Correcto')
             else:
                 self.validar.config(text = 'INCORRECTO', bg = self.color, fg = 'red', font = ('Roman',15))
                 self.answ_value = False
-                value_answ = self.answ_value
+                self.value_answ = self.answ_value
                 #print('Incorrecto')
             self.answered = True
 
@@ -153,7 +151,7 @@ class Ventana(Tk):
         if self.time <= 0:
             self.preguntas.close()
             self.validar.config(text = 'Tiempo agotado!')
-            value_answ = False
+            self.value_answ = False
             self.root.destroy()
             return None
 
@@ -169,8 +167,8 @@ class Ventana(Tk):
             self.time_l.after(1000, self.contador)
 
 def main(tipo,categoria,n_pregunta,temp):
-    Ventana(tipo,categoria,n_pregunta,temp)
-    return value_answ
+    pregunta = Ventana(tipo,categoria,n_pregunta,temp)
+    return pregunta.value_answ
 
 if __name__ == "__main__":
     main()
