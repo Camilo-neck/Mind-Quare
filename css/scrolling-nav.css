@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*!
  * Start Bootstrap - Scrolling Nav (https://startbootstrap.com/template/scrolling-nav)
  * Copyright 2013-2020 Start Bootstrap
@@ -14,3 +15,21 @@ section {
 .respuesta {
   display: none;
 }
+=======
+/*!
+ * Start Bootstrap - Scrolling Nav (https://startbootstrap.com/template/scrolling-nav)
+ * Copyright 2013-2020 Start Bootstrap
+ * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-scrolling-nav/blob/master/LICENSE)
+ */
+header {
+  padding: 156px 0 100px;
+}
+
+section {
+  padding: 150px 0;
+}
+
+.respuesta {
+  display: none;
+}
+>>>>>>> f41c4ed9464d0cc07a6d96ad9a881b30185f0fa3
