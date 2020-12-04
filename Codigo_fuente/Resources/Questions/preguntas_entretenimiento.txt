@@ -3,7 +3,7 @@ Gruñon
 Tontin
 Estornudo
 Feliz
-¿Qué nombre recibe toda persona que asiste aun espectáculo público?
+¿Qué nombre recibe toda persona que asiste a un espectáculo público?
 Receptor
 Pretendiente
 Acudiente
@@ -28,7 +28,7 @@ Un tiburon
 La ballena
 Un leon
 El lobo feroz
-¿Quién es el mejor amigo del reportero JimmyOlsen?
+¿Quién es el mejor amigo del reportero Jimmy Olsen?
 Clark Kent
 Lois Lane
 Perry White
@@ -87,14 +87,14 @@ Machine Gun Kelly
 Lanzamiento de bala
 Halterofilia
 Culturismo
-Lanzamiento de bala
-¿Cómo se llama el deporte en que sus practicantes levantan pesas?
-Halterofilia
-Culturismo
 Ninguna de las anteriores
-Justin bieber
 A quien se le considera el rey del pop
+Justin bieber
 Michael Jackson
 Freddie Mercury
 Bruno Mars
+¿Quien fue Stan Lee?
 Cantante
+Pintor
+Escritor y editor de Comics
+Todas las anteriores
