@@ -9,6 +9,9 @@ import tablero
 #----------------Ventana de Inicio----------------------#
 class V_inicio():
     def __init__(self):
+        '''
+        Ventana principal que contiene los botones de 'JUGAR' , 'INSTRUCCIONES' , 'LADERBOARD' y 'Salir'
+        '''
         self.root = Tk()
         self.sw = self.root.winfo_screenwidth()
         self.sh = self.root.winfo_screenheight()
@@ -35,21 +38,33 @@ class V_inicio():
         self.root.mainloop()
 
     def jugar(self):
+        '''
+        Cerrar la ventana y ejectuar la funcion principal de tablero.py
+        '''
         self.root.destroy()
         tablero.main()
     
     def instrucciones(self):
+        '''
+        Cerrar la ventana y abrir la ventana de Instrucciones
+        '''
         self.root.destroy()
         Instrucciones()
     def Laderboard(self):
+        '''
+        Cerrar la ventana y abrir la ventana de Users
+        '''
         self.root.destroy()
         Users()
 
 #------------Ranking--------------------
 class Users:
-
     db_name = 'Resources\\Data_base\\Users.db'
     def __init__(self):
+        '''
+        Clase que contiene la informacion se los puntajes de los usuarios registrados en la base de datos
+        '''
+
         # Abrir 
         self.wind = Tk()
         self.wind.title('Laderboard')
@@ -60,7 +75,7 @@ class Users:
         self.y = self.sh // 4
         self.wind.geometry(f"550x250+{self.x}+{self.y}")
 
-        # Table
+        # Tabla
         self.tree = ttk.Treeview(height = 10)
         self.tree['columns']=('#1', "#2", "#3", "#4")
         self.tree.grid(row = 9, column = 0, columnspan = 2)
@@ -74,12 +89,11 @@ class Users:
         self.tree.heading('#2', text = 'Email', anchor = CENTER)
         self.tree.heading('#3', text = 'Victories', anchor = CENTER)
         self.tree.heading('#4', text = 'Score', anchor = CENTER)
-        #Edit and Delete Buttons
-        #ttk.Button(text = 'EDITAR', command = self.editClient).grid(row = 10, column = 1, sticky = W + E)
+
+        # Boton de volver
         ttk.Button(text = 'Volver', command = self.Volver).grid(row = 10, column = 0, sticky = W + E)
 
         self.sourceClients()
-
         self.wind.mainloop()
 
     def run_query(self, query, parameters = ()): #Funcion para consultar base de datos
@@ -108,13 +122,12 @@ class Users:
 
 #--------------------Instrucciones---------------
 class Instrucciones:
-    """
-    Clase que inicaliza y crea la ventana de inicio de sesion.
-    """
     def __init__(self):
+        """
+        Clase que inicaliza y crea la ventana de Instrucciones.
+        """
         # ----------CARACTERISTECAS DE VENTANA-------------------
         self.root = tk.Tk()
-        #Obtener medidas de pantalla para centrar ventana.
         self.sw = self.root.winfo_screenwidth()
         self.sh = self.root.winfo_screenheight()
         self.x = (self.sw // 3)-50
@@ -133,6 +146,7 @@ class Instrucciones:
         self.titulo = tk.Label(self.root, text='',font=('Impact', 12), fg='black', bg='white')
         self.titulo.pack()
         self.texto = ''
+        # imprimir_instrucciones() modifica el texto
         self.imprimir_instrucciones()
         self.instrucciones = tk.Label(self.root, text=self.texto,font=('Impact', 12), fg='black', bg='white',pady=10, justify=LEFT)
         self.instrucciones.place(x=10, y=20)
@@ -153,20 +167,22 @@ class Instrucciones:
         self.TipoBA1 = Label(self.root, image=self.BA1Img)
         self.TipoBA1.place(x=200,y=300)
 
+        #label que contiene la informacion a mostrar de los tipos
         self.status_label = Label(self.root, relief=SUNKEN, text='')
         self.info = Label(self.root, relief=SUNKEN, text='')
         self.status_label.text = self.info
         self.status_label.config(text=self.info)
         self.status_label.place(x=500,y=700)
 
+        #Usar metodo bind para comprobar si el mouse esta sobre los tipos o no, y ejecutar una funcion en ambos casos
         self.TipoNormal.bind("<Enter>", lambda event, txt="Normal: Avanza o retrocede lo indicado por los dados": self.button_hover("<Enter>",txt,1))
-        self.TipoNormal.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+        self.TipoNormal.bind("<Leave>", lambda event: self.button_hover_leave("<leave>"))
 
         self.TipoDouble.bind("<Enter>", lambda event, txt="Doble: Avanza o retrocede el doble de los dados": self.button_hover("<Enter>",txt,1))
-        self.TipoDouble.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+        self.TipoDouble.bind("<Leave>", lambda event: self.button_hover_leave("<leave>"))
 
         self.TipoBA1.bind("<Enter>", lambda event, txt="Back or 1: Avanza 1 o retrocede lo indicado por los dados": self.button_hover("<Enter>",txt,1))
-        self.TipoBA1.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+        self.TipoBA1.bind("<Leave>", lambda event: self.button_hover_leave("<leave>"))
 
         #------------Categorias interactivas----------------------------
         self.tituloCategorias = tk.Label(self.root, text='CATEGORIAS',font=('Impact', 12), fg='black', bg='white')
@@ -192,29 +208,30 @@ class Instrucciones:
         self.Entr = Label(self.root, image=self.EImg)
         self.Entr.place(x=550,y=300)
 
+        #label que contiene la informacion a mostrar de las categorias
         self.status_label2 = Label(self.root, relief=SUNKEN, text='')
         self.info2 = Label(self.root, relief=SUNKEN, text='')
         self.status_label2.text = self.info2
         self.status_label2.config(text=self.info2)
         self.status_label2.place(x=500,y=700)
 
+        #Usar metodo bind para comprobar si el mouse esta sobre las categorias o no, y ejecutar una funcion en ambos casos
         self.Mates.bind("<Enter>", lambda event, txt="Matematicas": self.button_hover("<Enter>",txt,2))
-        self.Mates.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+        self.Mates.bind("<Leave>", lambda event: self.button_hover_leave("<leave>"))
 
         self.Histo.bind("<Enter>", lambda event, txt="Historia": self.button_hover("<Enter>",txt,2))
-        self.Histo.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+        self.Histo.bind("<Leave>", lambda event: self.button_hover_leave("<leave>"))
 
         self.Geo.bind("<Enter>", lambda event, txt="Geografia": self.button_hover("<Enter>",txt,2))
-        self.Geo.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+        self.Geo.bind("<Leave>", lambda event: self.button_hover_leave("<leave>"))
 
         self.Cien.bind("<Enter>", lambda event, txt="Ciencia": self.button_hover("<Enter>",txt,2))
-        self.Cien.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+        self.Cien.bind("<Leave>", lambda event: self.button_hover_leave("<leave>"))
 
         self.Entr.bind("<Enter>", lambda event, txt="Entretenimiento": self.button_hover("<Enter>",txt,2))
-        self.Entr.bind("<Leave>", lambda event: self.button_hover_leave("<Enter>"))
+        self.Entr.bind("<Leave>", lambda event: self.button_hover_leave("<leave>"))
 
-
-
+        #boton para volver a la ventana principal
         self.volver = tk.Button(self.root, text="VOLVER",bg='#43046D', fg='#FFFFFF',font=('Impact',12), activebackground='red', command=self.volver)
         self.volver.pack(side=BOTTOM)
 
@@ -222,6 +239,9 @@ class Instrucciones:
 
 
     def button_hover(self,e,txt,n):
+        '''
+        Funcion que cambia el texto de status_label conforme al tipo o cotegoria en el cual el mouse esta encima y lo ubica en su respectiva posicion
+        '''
         info = txt
         self.status_label.text = info
         self.status_label.config(text=info)
@@ -231,6 +251,9 @@ class Instrucciones:
             self.status_label.place(x=430,y=350)
 
     def button_hover_leave(self,e):
+        '''
+        Funcion que elimina el texto de status_label conforme al tipo o cotegoria en el cual el mouse ya no esta encima
+        '''
         info = ''
         self.status_label.text = info
         self.status_label.config(text=info)
