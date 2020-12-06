@@ -15,7 +15,7 @@ import time  # Libreria para hacer manejar tiempos y retrasos en funciones
 import VentanaInicio as inicio  # Se importa el menú
 import VentanaPreguntas  # Se importa ventana que contiene las preguntas
 import login  # Se importa ventana del login
-import Cantidad_p as cant  # Se importa la ventana que retorna la cantidad de jugadores
+import Cantidad_p as num_p  # Se importa la ventana que retorna la cantidad de jugadores
 import sqlite3  # Libreria para manejar la base de datos
 from sys import exit  # Librería del sistema para terminar juego
 
@@ -58,7 +58,7 @@ class Squares():
         self.num = num
         self.tipo = tipo
         self.categoria = categoria
-        self.pos_x = pos_x
+        self.pos_x = pos_x 
         self.pos_y = pos_y
         self.players_on = players_on
 
@@ -136,12 +136,11 @@ class Squares():
         else:
             self.color_c = PURPLE
 
-        pygame.draw.rect(screen, self.color, [[x_pos, y_pos], size])
-        pygame.draw.rect(screen, BLACK, [[x_pos, y_pos], size], 2)
-        pygame.draw.rect(screen, self.color_c, [[x_pos, y_pos], size_c])
-        pygame.draw.rect(screen, BLACK, [[x_pos, y_pos], size_c], 2)
-# Se crea la clase de los dados.
-
+        #Dibujar un cuadrado para el tipo y la categoria con sus respectivos marcos
+        pygame.draw.rect(screen, self.color, [[x_pos, y_pos], size]) #Cuadrado
+        pygame.draw.rect(screen, BLACK, [[x_pos, y_pos], size], 2) #Marco
+        pygame.draw.rect(screen, self.color_c, [[x_pos, y_pos], size_c]) #Cuadrado
+        pygame.draw.rect(screen, BLACK, [[x_pos, y_pos], size_c], 2) #Marco
 
 class Dices(object):
     def __init__(self, image, value):
@@ -176,7 +175,6 @@ class Dices(object):
 class Player(pygame.sprite.Sprite):
     def __init__(self,
                 image,
-                plus_pos,
                 size,
                 n_square,
                 nombre,
@@ -188,7 +186,6 @@ class Player(pygame.sprite.Sprite):
         """
         Clase del jugador.
         :param string image: Direccion de imagen.
-        :param int plus_pos: Desplazamiento adicional en x.
         :param list size: Lista con medidas x-y de la imagen.
         :param int n_square: Es el numero de la casilla en que se ubica el jugador.
         :param string nombre: Es el nombre de username de cada jugador.
@@ -204,12 +201,10 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.smoothscale(self.image, size)
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.speed_x = 20+plus_pos
+        self.speed_x = 20
         self.speed_y = 20
-        self.score = 0
-        self.points = 1
-        #self.casilla = 1
-        #self.move_casilla = 1
+        self.score = 0 #Puntaje total de la partida
+        self.points = 1 #Incrementador del puntaje
         self.n_square = n_square
         self.nombre = nombre
         self.winner = False
@@ -228,7 +223,7 @@ class Player(pygame.sprite.Sprite):
         """
         self.speed_x = x
         self.speed_y = y-440
-        self.points += 1*points
+        self.points += points
 
     def update(self):
         """
@@ -277,36 +272,34 @@ class Game(object):
         self.DADO1 = Dices('Resources\Images\Dice1.png', 1)
         self.DADO2 = Dices('Resources\Images\Dice1.png', 1)
         self.dados = [self.DADO1, self.DADO2]
-        # Lista que guarda el identificador de la casilla
+
         self.tipo_casilla = []
         self.win = False
         self.ronda = 0
-        self.cont = 0
-        self.pos_doble = False
-        self.Turno_actual = 0
-        # boleano que solo es falso en la primera ronda para acomodar los jugadores en la primera casilla
-        self.EndMove = True
-        # valor de la respuesta del jugador (True -> correcta , False -> Incorrecta)
-        self.a_value = None
+        self.cont = 0 
+        self.Turno_actual = 0     
+        self.EndMove = True # boleano que solo es falso en la primera ronda para acomodar los jugadores en la primera casilla, este indica si ya termino de moverse una ficha  
+        self.a_value = None # valor de la respuesta del jugador (True -> correcta , False -> Incorrecta)
         self.rolling = False  # boleano que determina si los dados estan o no girando
-        self.pos_test = 0  # valor que sirve para comparar con el valor de los dados y asi mover la ficha si estos no son iguales
+        self.pos_restante = 0  # valor que sirve para detectar cuantas casillas le faltan por moverse
         self.bandMove = False  # bandera para saber si se debe mover o no una ficha
-        # Se crean grupos para añadirles a los jugadores como Sprites(objetos que colisionan.)
+
+        # Se crean grupos para añadirles a los jugadores como Sprites
         self.player_sprites_list = pygame.sprite.Group()
         self.all_sprites_list = pygame.sprite.Group()
 
-        self.iterator = 0
+        self.TurnoIndex = 0 #controla que turno se debe leer de la lista turnos
 
     def crear_num_casillas(self,):
         """
-        Se crea una lista con el orden de las casillas
+        Se crea una lista en 'ZigZag' que contiene los numeros de cada casilla
         :return: list casillas
         """
         n_square = 1
         casillas = []
 
         while n_square <= 60:
-            if (n_square - 1) % 20 == 0:
+            if (n_square - 1) % 20 == 0: #Cada 20 el sentido en el cual se guardan los numeros cambia
                 for i in range(10):
                     casillas.append(n_square)
                     n_square += 1
@@ -320,7 +313,7 @@ class Game(object):
 
     def crear_elementos_casillas(self,):
         """
-        Se crea una lista de casillas como objetos
+        Se crea una lista de casillas como objetos con sus respectibos atributos
         :return: list self.casilla
         """
         pos_x = 20
@@ -366,13 +359,13 @@ class Game(object):
 
     def crear_jugadores(self,):
         """
-        Crear lista que contiene a los jugadores.
+        Crear lista que contiene a los jugadores y sus respectivos atributos.
         :return: list jugador
         """
         jugador = []
         for i in range(self.cant_jugadores):
-            nombre_player = login.main()
-            if nombre_player == "":
+            nombre_player = login.main() #El nombre del jugador sera retornado desde el login, el cual sera abierto segun la cantidad de jugadores
+            if nombre_player == "": #Si el nombre del jugador esta vacio entonces se tomara a este jugador como un invitado
                 nombre_player = f'Invitado{i+1}'
 
             questions_M = self.lista_aleatoria(self.cant_preguntas)
@@ -381,14 +374,14 @@ class Game(object):
             questions_C = self.lista_aleatoria(self.cant_preguntas)
             questions_E = self.lista_aleatoria(self.cant_preguntas)
 
-            jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', 4, [
+            jugador.append(Player('Resources\Images\player'+str(i+1)+'.png', [
                             50, 50], 1, nombre_player, questions_M, questions_H, questions_G, questions_C, questions_E))
 
         return jugador
 
     def process_events(self,):
         """
-        Este metodo recibe y procesa los eventos en la ventana.
+        Este metodo se encarga de detectar si se presiono la x.
         :return: True
         """
         for event in pygame.event.get():  # Bucle que recibe eventos.
@@ -398,11 +391,10 @@ class Game(object):
                 return False
         return True
 
-    def adjust_player_on_square(self, just_moved):  # acomoda las fichas
+    def adjust_player_on_square(self, just_moved):
         """
         Metodo que ajusta al jugador en la casilla luego de moverse.
         :param int just_moved: Es el jugador que acaba de moverse y se debe acomodar.
-        :return: False
         """
         if just_moved == 0:
             self.jugador[just_moved].speed_x -= 20
@@ -416,16 +408,14 @@ class Game(object):
         else:
             self.jugador[just_moved].speed_x += 20
             self.jugador[just_moved].speed_y += 20
-        return False
 
     def roll_dice(self, DADO):
         """
-        Metodo que al detectar que se preciona SPACE, comienza a generar numeros random y se detiene al precionar la letra p.
+        Metodo que al detectar que se preciona SPACE, comienza a generar numeros random y se detiene al presionar la letra p.
         :param object DADO: Es el dado que se va a girar.
         """
         keys = pygame.key.get_pressed()
 
-        # Si la variable roll es True, retornara un valor random.
         num = random.randint(1, 6)
         if num == 1:
             DADO.image = 'Resources\Images\Dice1.png'
@@ -447,27 +437,22 @@ class Game(object):
             DADO.value = num
 
         if keys[pygame.K_p]:
-
             self.rolling = False
-
-            DADO.image = DADO.image
-
             return DADO.value, self.rolling
+
         return DADO.value, self.rolling
 
     def get_value(self, casilla_actual, tipo, value1, value2, respuesta):
         """
-        Logica para ubicar el jugador en la casilla que marcaron los dados.
+        Obtener el valor total con el cual se movera el jugador (positivo si es correcto y negativo si es incorrecto).
         :param object casilla_actual: Es la casilla en la que esta ubicado el jugador que tiene el turno.
         :param int tipo: Numero que determina el tipo de la casilla.
         :param int value1: Valor del primer dado
         :param int value2: Valor del segundo dado
         :param bool respuesta: Valor booleano que dice si la repuesta es correcta o no.
         """
-        i_list = []
-        for k in range(60):
-            i_list.append(self.casilla[k].num)
 
+        #Dependiendo del tipo este llamara a los metodos respectivos para saber como modificar el valor de los dados
         if tipo == 1:
             total_value = casilla_actual.Trivia_NORMAL(
                 respuesta, value1, value2)
@@ -481,10 +466,12 @@ class Game(object):
 
     def move_by_1(self, value,):
         """
-        Metodo que da el efecto de movimiento por casillas al desplazar el jugador.
+        Metodo que mueve el jugador 1 casilla hacia adelante o hacia atras hasta que llegue al valor indicado (value) y cuando finaliza ajusta la partida para cambiar el turno y la ronda.
         :param int value: Es el numero de casillas que se debe mover el jugador.
         :return: bool False
         """
+
+        #Obtener el indice de la lista casilla segun el numero de casilla en el que se encuentra el jugador
         i_list = []
         for k in range(60):
             i_list.append(self.casilla[k].num)
@@ -500,53 +487,53 @@ class Game(object):
 
         if self.a_value == True:
             value += 2
-            if self.pos_test < value:
+            if self.pos_restante < value:
                 self.jugador[self.Turno_actual].movement(
                     self.casilla[indice].pos_x, self.casilla[indice].pos_y, 1)
                 self.jugador[self.Turno_actual].n_square += 1
                 time.sleep(0.2)
-            if self.pos_test == value:
+            if self.pos_restante == value:
                 self.jugador[self.Turno_actual].n_square -= 1
                 self.jugador[self.Turno_actual].points -= 1
-            self.pos_test += 1
+            self.pos_restante += 1
 
-            if self.pos_test > value:
+            if self.pos_restante > value:
                 self.EndMove = True
-                self.pos_test = 0
-                if self.iterator == len(self.turnos)-1:
-                    self.iterator = 0
+                self.pos_restante = 0
+                if self.TurnoIndex == len(self.turnos)-1:
+                    self.TurnoIndex = 0
                     self.ronda += 1
                 else:
-                    self.iterator += 1
+                    self.TurnoIndex += 1
                 return False
         else:
-            if self.pos_test > value:
+            if self.pos_restante > value:
                 self.EndMove = True
                 self.jugador[self.Turno_actual].movement(
                     self.casilla[indice].pos_x, self.casilla[indice].pos_y, -1)
                 self.jugador[self.Turno_actual].n_square -= 1
                 time.sleep(0.2)
-            if self.pos_test == value:
+            if self.pos_restante == value:
                 self.jugador[self.Turno_actual].n_square += 1
                 self.jugador[self.Turno_actual].points += 1
-            self.pos_test -= 1
+            self.pos_restante -= 1
 
-            if self.pos_test < value or self.jugador[self.Turno_actual].n_square < 1:
+            if self.pos_restante < value or self.jugador[self.Turno_actual].n_square < 1:
                 if self.jugador[self.Turno_actual].n_square < 1:
                     self.jugador[self.Turno_actual].n_square += 1
-                self.pos_test = 0
-                if self.iterator == len(self.turnos) - 1:
-                    self.iterator = 0
+                self.pos_restante = 0
+                if self.TurnoIndex == len(self.turnos) - 1:
+                    self.TurnoIndex = 0
                     self.ronda += 1
                 else:
-                    self.iterator += 1
+                    self.TurnoIndex += 1
                 return False
         return True
 
     def run_query(self, query, parameters=()):
         """
         Metodo para consultar base de datos.
-        :param string query: Es la intruccion a ejecutar por la basede datos.
+        :param string query: Es la intruccion a ejecutar por la base de datos.
         :param tuple parameters: Son los paremetros que se le pasan al query
         :return: list result
         """
@@ -562,29 +549,26 @@ class Game(object):
         :param class screen: Superficie donde se ubican elementos
         """
 
-        keys = pygame.key.get_pressed()  # Guarda en una variable que se presiona
-        if not self.win:
+        keys = pygame.key.get_pressed()  # Guarda en una variable la tecla que se presiona
+        if not self.win: #Si aun no hay ganador se ejecutara el juego
             value1 = int()
             value2 = int()
             # Se añaden los jugadores a los grupos de sprites.
             for i in range(self.cant_jugadores):
                 self.all_sprites_list.add(self.jugador[i])
-
-            # Se ejecuta la funcion de atualizar en los dos jugadores.
-            self.all_sprites_list.update()
+         
+            self.all_sprites_list.update() # Se ejecuta la funcion de atualizar en los dos jugadores.
 
             DADO1 = self.dados[0]
             DADO2 = self.dados[1]
 
-            self.Turno_actual = self.turnos[self.iterator]
+            self.Turno_actual = self.turnos[self.TurnoIndex] #El turno actual se leera en base a TurnoIndex como el indice de la lista turnos
 
-            global rolling
-
-            # Si se presiona y no esta girando, rolling sera true
+            # Si se presiona espacio, rolling sera true
             if keys[pygame.K_SPACE]:
                 self.rolling = True
 
-            # print(rolling)
+            # Si rolling es tru los dados giraran
             if self.rolling == True:
                 value1, self.rolling = self.roll_dice(DADO1)
                 value2, self.rolling = self.roll_dice(DADO2)
@@ -592,12 +576,13 @@ class Game(object):
             if keys[pygame.K_p]:
                 self.cont = 1
 
-            # --------------------CANTIDAD DE PREGUNTAS (20-1)-----------------------#
-            if self.ronda >= 19:
+            #CANTIDAD DE PREGUNTAS (20-1)#
+            if self.ronda > 19: #Debido a que la ronda es la que controla que pregunta se muestra al jugador, esta no puede superar la cantidad de preguntas
                 self.ronda = 0
 
+            #Si se detuvieron los dados se mostrara una pregunta al jugador dependiendo del tipo y la categoria
             if self.cont == 1:
-                print('ronda:', self.ronda)
+
                 i_list = []
                 for k in range(60):
                     i_list.append(self.casilla[k].num)
@@ -608,6 +593,7 @@ class Game(object):
                 if index < 1:
                     index = 1
                 indice = i_list.index(index)
+
                 if self.casilla[indice].categoria == 1:
                     n_pregunta = self.jugador[self.Turno_actual].preguntas_M[self.ronda]
                 elif self.casilla[indice].categoria == 2:
@@ -621,16 +607,18 @@ class Game(object):
 
                 DADO1.print_dice(screen, DADO1.image, 1)
                 DADO2.print_dice(screen, DADO2.image, 2)
-                pygame.display.flip()
+                pygame.display.flip() #refrescar la ventana
 
-                if self.casilla[indice].tipo == 2:
+                if self.casilla[indice].tipo == 2: #si el tipo es 2 el tiempo para responder sera la mitad
                     temp = 15
                 else:
                     temp = 30
 
+                #se muestra la ventana de pregunta y se obtiene el valor de respuesta del jugador
                 self.a_value = VentanaPreguntas.main(
                     self.casilla[indice].tipo, self.casilla[indice].categoria, n_pregunta, temp)
 
+                #se obtiene el valor con el cual de movera el jugador
                 self.Newvalue = self.get_value(
                     self.casilla[indice], self.casilla[indice].tipo, value1, value2, self.a_value)
                 self.Newvalue -= 1
@@ -639,30 +627,35 @@ class Game(object):
                 self.bandMove = True
 
             if self.bandMove == True:
-                self.bandMove = self.move_by_1(self.Newvalue,)
+                self.bandMove = self.move_by_1(self.Newvalue) #Si aun debe moverse este se movera 1, en caso contrario EndMove sera True
 
             if self.EndMove == True:
-                self.EndMove = self.adjust_player_on_square(self.Turno_actual)
+                self.adjust_player_on_square(self.Turno_actual) #Se acomodaran las casillas si ya se termino de mover
+                self.EndMove = False
 
-            if self.jugador[self.Turno_actual].score >= 59:
+            if self.jugador[self.Turno_actual].score >= 59: #Si un jugador supera la casillas 60 este ganara
                 print('win')
                 self.jugador[self.Turno_actual].winner = True
                 self.win = True
         else:
+            #Actualiza el puntaje del jugador en la tabla
             query1 = '''
             UPDATE USUARIOS SET SCORE = ?
             WHERE 
             NICK = ? 
         '''
+            #Actualiza las victorias del jugador en la tabla
             query2 = '''
             UPDATE USUARIOS SET VICTORIES = ?
             WHERE 
             NICK = ? 
         '''
+            #Selecciona el puntaje del jugador en la tabla
             query3 = '''
             SELECT VICTORIES FROM USUARIOS WHERE 
             NICK = ? 
         '''
+            #Selecciona las victorias del jugador en la tabla
             query4 = '''
             SELECT SCORE FROM USUARIOS WHERE 
             NICK = ? 
@@ -670,16 +663,14 @@ class Game(object):
             if keys[pygame.K_e]:
                 for i in range(self.cant_jugadores):
                     username = self.jugador[i].nombre
-                    if username == f'Invitado{i+1}':
+                    if username == f'Invitado{i+1}': #si es un invitado no se actualiza la tabla de score con su puntaje
                         continue
-                    new_score = int(
-                        self.jugador[i].score + (list(self.run_query(query4, (username,)))[0][0]))
-                    new_victories = 1 + \
-                        list(self.run_query(query3, (username,)))[0][0]
-                    self.run_query(query1, (new_score, username,))
+                    new_score = int(self.jugador[i].score + (list(self.run_query(query4, (username,)))[0][0])) #puntaje del jugador actual + puntaje de ese jugador en la tabla
+                    self.run_query(query1, (new_score, username,)) #Actualizar el puntaje
                     if self.jugador[i].winner:
-                        self.run_query(query2, (new_victories, username,))
-
+                        new_victories = 1 + list(self.run_query(query3, (username,)))[0][0] #victorias del ganador en la tabla +1
+                        self.run_query(query2, (new_victories, username,)) #Actualizar las victorias
+                
                 exit()
 
     def display_frame(self, screen,):
@@ -702,7 +693,7 @@ class Game(object):
             n_square = 1
             pos_S = 540
             while n_square <= 60:
-                # Imprimir de izquierda a derecha
+                # Imprimir de 'izquierda a derecha'
                 if (n_square-1) % 20 == 0:
                     for i in range(10, 901 - 80, 90):
                         # renderizar texto (numero de casilla)
@@ -710,9 +701,8 @@ class Game(object):
                             str(n_square), 1, BLACK)
                         # imprimir el renderizado
                         screen.blit(num_square, (i, pos_S - 80))
-                        # pygame.draw.circle(screen, WHITE, (i + 7, pos_S - 72), 12, 2)  # dibujar marco de circulo
                         n_square += 1
-                # Imprimir de derecha a izquierda
+                # Imprimir de 'derecha a izquierda'
                 else:
                     for i in range(901 - 80, 10, -90):
                         num_square = self.fuente.render(
@@ -722,7 +712,7 @@ class Game(object):
                         n_square += 1
                 pos_S -= 90
 
-            # Se dibujan los dos jugadores desde su lista de Sprites
+            # Se dibujan los jugadores desde su lista de Sprites
             self.all_sprites_list.draw(screen)
 
             # Se imprimen los dados
@@ -731,7 +721,7 @@ class Game(object):
             DADO1.print_dice(screen, DADO1.image, 1)
             DADO2.print_dice(screen, DADO2.image, 2)
 
-            # Se imprime texto que muestra el puntaje de los jugadores(La generación de score es una prueba)
+            # Se imprime texto que muestra el nombre y el puntaje de los jugadores con su respectivo color de ficha
             for i in range(self.cant_jugadores):
                 if i == 0:
                     textColor = BLUE
@@ -746,6 +736,7 @@ class Game(object):
                     f'Jugador {self.jugador[i].nombre}: {self.jugador[i].score}', 1, textColor)
                 screen.blit(score_p, (255+(i*155), screen_size[1]-30))
 
+            #Cambiar el color dependiendo del jugador del turno actual
             if self.Turno_actual == 0:
                 textColor = BLUE
             elif self.Turno_actual == 1:
@@ -759,6 +750,8 @@ class Game(object):
             turno = self.fuente2.render(
                 f'Turno de: {self.jugador[self.Turno_actual].nombre}', 1, textColor)
             screen.blit(turno, (100, screen_size[1]-30))
+
+        #Si ya hay un ganador se muestra la pantalla de Game Over y el juego se detiene    
         else:
             screen.fill(WHITE)
             # renderizar texto (numero de casilla)
@@ -783,7 +776,7 @@ def main():
     """
     # Se inicializa la ventana de pygame
     pygame.init()
-    cant_jugadores = cant.main()
+    cant_jugadores = num_p.main() #Se obtiene la cantidad de jugadores desde la ventana Cantidad_p
     screen = pygame.display.set_mode(screen_size)  # Medidas
     running = True
     clock = pygame.time.Clock()  # Controla las fps
@@ -791,9 +784,9 @@ def main():
 
     # Bucle infinito que corre el juego.
     while running:
-        running = game.process_events()
-        game.run_logic(screen,)
-        game.display_frame(screen,)
+        running = game.process_events() 
+        game.run_logic(screen,) #Se ejecutara la logica del juego
+        game.display_frame(screen,) #Se mostrara todo lo necesario en la pantalla
         clock.tick(60)  # 60fps
     pygame.quit()
 

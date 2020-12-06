@@ -80,7 +80,7 @@ class Aplicacion:
         self.bSign = tk.Button(self.root, text="LOG IN",font=('Impact', 10), background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.logIn)
         self.bSign.place(x=330, y=355)
 
-        # -------------------BOTÓN DE SALIR------------------------
+        # -------------------BOTÓN PARA INGRESAR COMO UN INVITADO------------------------
         self.bSalir = tk.Button(self.root, text="Invitado",font=('Impact', 10), background= '#43046D',foreground='#FFFFFF', activebackground='red',command=self.root.destroy)
         self.bSalir.place(x=250,y=355)
 
@@ -102,9 +102,9 @@ class Aplicacion:
 
     def logIn(self):
         """
-        Metodo que revisa si el correo y la constraseña son correctos.
+        Metodo que revisa si el nickname y la constraseña son correctos.
         """
-        #Busca en la base de datos si el correo y la constraseña se encuentran a la vez en un mismo usuario.
+        #Busca en la base de datos si el nickname y la constraseña se encuentran a la vez en un mismo usuario.
         self.miCursor.execute(
             "SELECT * FROM USUARIOS WHERE NICK='"
             + self.nickvar.get()
@@ -125,7 +125,7 @@ class Aplicacion:
         #En cambio si es vacia(No coincidieron los datos), muestra un aviso de que la informacion esta equivocada
         else:
             messagebox.showwarning(
-                "Denegado", "El correo o la constraseña esta equivocado."
+                "Denegado", "El nickname o la constraseña esta equivocado."
             )
     def signUp(self):
         """
@@ -237,11 +237,11 @@ class ventanaRegistro:
         #Se crean contadores para las arrobas y puntos.
         arrobas = colectaEmail.count("@")
         puntos = colectaEmail.count(".")
-        #Banderas para verificar si el correo y la constraseña son validos.
+        #Banderas para verificar si el correo ,la constraseña y el nickname son validos.
         validadorE = False
         validadorP = False
         validadorId = False
-        #Si todos los campos estan vacios va a ir a revisar si el correo y la contraseña son validos.
+        #Si todos los campos estan vacios va a ir a revisar si el correo, la contraseña y el nickname son validos.
         if (
             colectaNombre != ""
             or colectaNick != ""

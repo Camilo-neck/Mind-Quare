@@ -97,26 +97,41 @@ class Users:
         self.wind.mainloop()
 
     def run_query(self, query, parameters = ()): #Funcion para consultar base de datos
+        """
+        Metodo para consultar base de datos.
+        :param string query: Es la intruccion a ejecutar por la base de datos.
+        :param tuple parameters: Son los paremetros que se le pasan al query
+        :return: sqlite3.Cursor result
+        """
         with sqlite3.connect(self.db_name) as conn:
             cursor = conn.cursor()
             result = cursor.execute(query, parameters)
             conn.commit()
+        
+        print(type(result))
         return result
     
-    def sourceClients(self): #Funcion para buscar los datos
-        #Consult and clean data
+    def sourceClients(self):
+        '''
+        Metodo para limpiar la tabla,buscar los datos y rellenar la tabla
+        '''
+        #Limpiar la tabla
         records = self.tree.get_children()
         for element in records:
             self.tree.delete(element)
 
-        #obtain data
+        #Obtener datos
         query = 'SELECT * FROM USUARIOS ORDER BY SCORE ASC' 
         db_rows = self.run_query(query)
 
-        #filling data
+        #Llenar tabla con los datos
         for row in db_rows:
             self.tree.insert('', 0, text = row[0], values = (row[1], row[2], row[4], row[5]))
+
     def Volver(self):
+        '''
+        Funcion para destruir la ventana actual y volver a la ventana de inicio
+        '''
         self.wind.destroy()
         V_inicio()
 
@@ -143,13 +158,11 @@ class Instrucciones:
         self.Canva.place(x=0, y=0)
         self.Canva.create_image(0,0, image = self.imagenPrincipal, anchor='nw')
 
-        self.titulo = tk.Label(self.root, text='',font=('Impact', 12), fg='black', bg='white')
-        self.titulo.pack()
+        self.Canva.create_text(335,25, text='INSTRUCCIONES',font=('Impact', 15), fill='white', justify=LEFT)
         self.texto = ''
         # imprimir_instrucciones() modifica el texto
         self.imprimir_instrucciones()
-        self.instrucciones = tk.Label(self.root, text=self.texto,font=('Impact', 12), fg='black', bg='white',pady=10, justify=LEFT)
-        self.instrucciones.place(x=10, y=20)
+        self.Canva.create_text(335,120, text=self.texto,font=('Impact', 12), fill='white', justify=LEFT)
 
         #------------Tipos interactivos----------------------------
         self.tituloTipos = tk.Label(self.root, text='TIPOS',font=('Impact', 12), fg='black', bg='white')
@@ -240,7 +253,7 @@ class Instrucciones:
 
     def button_hover(self,e,txt,n):
         '''
-        Funcion que cambia el texto de status_label conforme al tipo o cotegoria en el cual el mouse esta encima y lo ubica en su respectiva posicion
+        Funcion que cambia el texto de status_label conforme al tipo o categoria en el cual el mouse esta encima y lo ubica en su respectiva posicion
         '''
         info = txt
         self.status_label.text = info
@@ -252,7 +265,7 @@ class Instrucciones:
 
     def button_hover_leave(self,e):
         '''
-        Funcion que elimina el texto de status_label conforme al tipo o cotegoria en el cual el mouse ya no esta encima
+        Funcion que elimina el texto de status_label conforme al tipo o categoria en el cual el mouse ya no esta encima
         '''
         info = ''
         self.status_label.text = info
@@ -260,10 +273,12 @@ class Instrucciones:
         self.status_label.place(x=500,y=700)
 
     def imprimir_instrucciones(self):
+        '''
+        Funcion que lee la sinstrucciones desde el archivo y las imprime en la ventana siguinedo un margen
+        '''
         archivo = open((os.getcwd() + "\Resources\Instrucciones\Instrucciones_game.txt"), 'r')
         with archivo as f:
             data = f.readlines()[:]
-        self.titulo.config(text = data[0].strip())
         y=7
         for i in range(1,len(data)):
             if len(data[i].strip()) < 90:
@@ -279,6 +294,9 @@ class Instrucciones:
         archivo.close()
 
     def volver(self):
+        '''
+        Funcion para destruir la ventana actual y volver a la ventana de inicio
+        '''
         self.root.destroy()
         V_inicio()
 
