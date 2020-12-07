@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import Radiobutton, messagebox
 from random import randint
 from time import sleep, time
+from tkinter import messagebox
 
 class Ventana(Tk):
     def __Cancel(event=None): pass
@@ -25,7 +26,6 @@ class Ventana(Tk):
         self.root.config(bg = 'black')
         self.root.resizable(width = False, height = False)
         self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
-        #self.root.wm_overrideredirect(1)
         self.value_answ = False
         self.answered = False
         self.answ_value = False
@@ -33,7 +33,12 @@ class Ventana(Tk):
 
         self.n_r = n_pregunta
 
-        respuestas = open((os.getcwd() + "\Resources\Questions\Respuestas.txt"), "r")
+        #obtener las respuestas desde el archivo y guardarlas en una lista
+        try:
+            respuestas = open((os.getcwd() + "\Resources\Questions\Respuestas.txt"), "r")
+        except FileNotFoundError:
+            messagebox.showerror(message="Por favor actualize la preguntas para jugar", title="Error de ruta")
+            exit()
         self.RM = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
         self.RH = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
         self.RG = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
@@ -199,6 +204,7 @@ class Ventana(Tk):
 def main(tipo,categoria,n_pregunta,temp):
     pregunta = Ventana(tipo,categoria,n_pregunta,temp)
     return pregunta.value_answ
+
 
 if __name__ == "__main__":
     main()

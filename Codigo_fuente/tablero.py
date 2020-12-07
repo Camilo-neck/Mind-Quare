@@ -8,6 +8,7 @@ Desarrollado por:
 Universidad Nacional de Colombia.
 """
 from random import randint, shuffle  # Se importa la funcion randint de random
+import getQuestions
 import random  # Se importa las demas funciones de random
 import pygame  # Se importa libreria pygame para la interfaz y las funciones del juego
 import os  # Libreria para utilzar funciones del OS
@@ -274,6 +275,8 @@ class Game(object):
 
         # Se crean los jugadores
         self.jugador = self.crear_jugadores()
+        for i in range(self.cant_jugadores):         
+            self.adjust_player_on_square(i)
 
         # Se crean los dados
         self.DADO1 = Dices('Resources\Images\Dice1.png', 1)
@@ -285,7 +288,7 @@ class Game(object):
         self.ronda = 0
         self.cont = 0 
         self.Turno_actual = 0     
-        self.EndMove = True # boleano que solo es falso en la primera ronda para acomodar los jugadores en la primera casilla, este indica si ya termino de moverse una ficha  
+        self.EndMove = False # boleano que indica si ya termino de moverse una ficha  
         self.a_value = None # valor de la respuesta del jugador (True -> correcta , False -> Incorrecta)
         self.rolling = False  # boleano que determina si los dados estan o no girando
         self.pos_restante = 0  # valor que sirve para detectar cuantas casillas le faltan por moverse
@@ -587,12 +590,12 @@ class Game(object):
 
             self.Turno_actual = self.turnos[self.TurnoIndex] #El turno actual se leera en base a TurnoIndex como el indice de la lista turnos
 
-            # Si se presiona espacio, rolling sera true
+            # Si se presiona espacio, rolling y en_juego seran true
             if keys[pygame.K_SPACE] and not self.en_juego:
                 self.rolling = True
                 self.en_juego = True
 
-            # Si rolling es tru los dados giraran
+            # Si rolling es true los dados giraran
             if self.rolling == True:
                 value1, self.rolling = self.roll_dice(DADO1)
                 value2, self.rolling = self.roll_dice(DADO2)
@@ -771,6 +774,7 @@ class Game(object):
                 f'Turno de: {self.jugador[self.Turno_actual].nombre}', 1, textColor)
             screen.blit(turno, (100, 550))
 
+            #Mostrar mensaje "En juego" (con puntos suspensivos) o el mensaje "Presione <SPACE> para girar y <p> para detener."
             if self.en_juego:
                 if len(self.en_juego_txt) < 21:
                     self.en_juego_txt += ' .'
@@ -811,7 +815,9 @@ def main():
     while True:
         # Se inicializa la ventana de pygame
         pygame.init()
-        cant_jugadores = num_p.main() #Se obtiene la cantidad de jugadores desde la ventana Cantidad_p
+        cant_jugadores,descargar = num_p.main() #Se obtiene la cantidad de jugadores, y la opcion de descargar las preguntas d ela web desde la ventana Cantidad_p
+        if descargar == True:
+            getQuestions.main()
         screen = pygame.display.set_mode(screen_size)  # Medidas
         running = True
         clock = pygame.time.Clock()  # Controla las fps
@@ -827,7 +833,6 @@ def main():
         if not play_again:
             pygame.quit()
             break
-
 
 # Condicional que verifica si se ejecuta desde el archivo, o se esta importando para llamar al main().
 if __name__ == '__main__':

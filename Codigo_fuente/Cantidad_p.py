@@ -45,6 +45,12 @@ class Seleccion():
 		self.Four_Players.bind("<Enter>", lambda event, img="Resources/Images/4players.png",bttn=self.Four_Players: self.button_hover("<Enter>",img,bttn))
 		self.Four_Players.bind("<Leave>", lambda event ,bttn=self.Four_Players: self.button_hover_leave("<Enter>",bttn))
 
+		
+		self.descargar = tk.BooleanVar()
+		self.descargar.set(False)
+		self.descargarMsg = Checkbutton(self.root, font = ('Rockwell',11),text = '¿Quiere actualizar las preguntas desde la web?', var = self.descargar, bg = 'black', fg = 'purple')
+		self.descargarMsg.place(x=100,y=350)
+
 
 		self.root.mainloop()
 
@@ -68,7 +74,7 @@ class Seleccion():
 
 def main():
 	Ventana = Seleccion()
-	return Ventana.cant
+	return Ventana.cant,Ventana.descargar.get()
 
 if __name__ == "__main__":
 	main()

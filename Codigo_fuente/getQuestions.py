@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+import os
 
 def obt_preguntas(enunciados,opciones,a,b):
     '''
@@ -34,8 +35,8 @@ def crear_archivo(preguntas,nombre):
         if i < 19:
             text += '\n'
     
-
-    archivo = open(nombre,'w',encoding='utf-8')
+    ruta = os.path.join(os.getcwd() + '\\Resources\\Questions\\', nombre)
+    archivo = open(ruta,'w',encoding='utf-8')
     archivo.write(text)
     archivo.close()
 
@@ -90,7 +91,8 @@ def main():
     crear_archivo(preguntasEntretenimiento,'preguntas_entretenimiento.txt')
 
     #crear un archivo con las respuestas
-    archivo = open('Respuestas.txt','w')
+    ruta = os.path.join(os.getcwd() + '\\Resources\\Questions\\', 'Respuestas.txt')
+    archivo = open(ruta,'w')
     archivo.write(RM+'\n')
     archivo.write(RH+'\n')
     archivo.write(RG+'\n')
