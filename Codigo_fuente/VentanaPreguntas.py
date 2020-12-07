@@ -8,14 +8,20 @@ from time import sleep, time
 class Ventana(Tk):
     def __Cancel(event=None): pass
     def __init__(self,tipo,categoria,n_pregunta,temp):
-
+        """
+        Ventana que contiene una pregunta y sus opciones , y que retorna si es correcta o no.
+        :param int tipo: Numero que determina el tipo de la casilla.
+        :param int categoria: Numero que identifica la categoria de la casilla.
+        :param int n_pregunta: Numero que se usa como indice en la lista de preguntas.
+        :param int temp: Es el tiempo que durará la ventana abierta.
+        """
         self.root = Tk()
         self.root.title('PREGUNTA')
         self.sw = self.root.winfo_screenwidth()
         self.sh = self.root.winfo_screenheight()
         self.x = self.sw // 3
         self.y = 100
-        self.root.geometry(f"500x280+{self.x}+{self.y}")
+        self.root.geometry(f"550x355+{self.x}+{self.y}")
         self.root.config(bg = 'black')
         self.root.resizable(width = False, height = False)
         self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
@@ -38,31 +44,32 @@ class Ventana(Tk):
         self.category()
 
         self.data = self.preguntas.readlines()[((self.n_r*5)):(self.n_r*5)+5]
-        #print(self.R)
 
-        self.textoCanva = Canvas(self.root, width = 500, height = 280, relief = 'sunken', bg = self.color)
-        self.textoCanva.place(x=0 , y=0)
+        self.categoria_frame = Frame(self.root, bg=self.color)
+        self.categoria_frame.pack(fill='both')
 
-        self.textoCanva.create_text(250, 50, text = self.data[0], fill = 'black', font = ('Rockwell',12))
-        self.textoCanva.create_text(250, 80, text = self.data[1], fill = 'black', font = ('Rockwell',11))
-        self.textoCanva.create_text(250, 110, text = self.data[2], fill = 'black', font = ('Rockwell',11))
-        self.textoCanva.create_text(250, 140, text = self.data[3], fill = 'black', font = ('Rockwell',11))
-        self.textoCanva.create_text(250, 170, text = self.data[4], fill = 'black', font = ('Rockwell',11))
+        Label(self.categoria_frame, text = self.cat_name, bg=self.color, fg='white', font=('Rockwell',15)).pack()
+
+        self.pregunta_frame = Frame(self.root)
+        self.pregunta_frame.pack(fill='both')
+
+        self.pregunta()    
+
+        Label(self.pregunta_frame, text = self.texto, font = ('Rockwell',12)).pack()
 
         if tipo == 1:
             nombre_tipo = 'Trivia Normal'
+            tipo_color = 'blue'
         elif tipo == 2:
             nombre_tipo = 'Trivia Double'
+            tipo_color = 'orange'
         else:
             nombre_tipo = 'Trivia BA1'
-
-        self.textoCanva.create_text(50, 270, text=nombre_tipo, fill='black', font=('Rockwell', 11))
+            tipo_color = 'green'
 
         self.varOpcion = IntVar()
         self.cont = 0
         def respuest():
-
-            global value_answ
 
             if self.varOpcion.get() == 1:
                 rta = 'A'
@@ -74,71 +81,94 @@ class Ventana(Tk):
                 rta = 'D'
 
             if rta == self.R[self.n_r]:
-                self.validar.config(text = 'CORRECTO!', bg = self.color, fg = 'Darkgreen', font = ('Roman',15))
+                self.validar.config(text = 'CORRECTO!', fg = 'Darkgreen', font = ('Rockwell',15))
                 self.answ_value = True
                 self.value_answ = self.answ_value
-                #print('Correcto')
             else:
-                self.validar.config(text = 'INCORRECTO', bg = self.color, fg = 'red', font = ('Roman',15))
+                self.validar.config(text = 'INCORRECTO', fg = 'red', font = ('Rockwell',15))
                 self.answ_value = False
                 self.value_answ = self.answ_value
-                #print('Incorrecto')
             self.answered = True
 
+        self.opcion1 = Radiobutton(self.pregunta_frame, font = ('Rockwell',11),text = self.data[1], variable = self.varOpcion, value = 1)
+        self.opcion2 = Radiobutton(self.pregunta_frame, font = ('Rockwell',11),text = self.data[2], variable = self.varOpcion, value = 2)
+        self.opcion3 = Radiobutton(self.pregunta_frame, font = ('Rockwell',11),text = self.data[3], variable = self.varOpcion, value = 3)
+        self.opcion4 = Radiobutton(self.pregunta_frame, font = ('Rockwell',11),text = self.data[4], variable = self.varOpcion, value = 4)
+        self.evaluar = Button(self.pregunta_frame, text = 'Responder', bg = 'lightblue', activebackground= 'lightgreen', command = respuest)
+        self.validar = Label(self.pregunta_frame, text = '', font = ('Rockwell',15))
 
-        self.opcion1 = Radiobutton(self.textoCanva, font = ('Rockwell',11), variable = self.varOpcion, value = 1, bg = self.color)
-        self.opcion2 = Radiobutton(self.textoCanva, font = ('Rockwell',11), variable = self.varOpcion, value = 2, bg = self.color)
-        self.opcion3 = Radiobutton(self.textoCanva, font = ('Rockwell',11), variable = self.varOpcion, value = 3, bg = self.color)
-        self.opcion4 = Radiobutton(self.textoCanva, font = ('Rockwell',11), variable = self.varOpcion, value = 4, bg = self.color)
-        self.evaluar = Button(self.textoCanva, text = 'Estoy seguro', bg = 'lightblue', activebackground= 'lightgreen', command = respuest)
-        self.validar = Label(self.textoCanva, text = '', bg = self.color)
+        self.opcion1.pack(fill='both')
+        self.opcion2.pack(fill='both')
+        self.opcion3.pack(fill='both')
+        self.opcion4.pack(fill='both')
+        self.evaluar.pack()
+        self.validar.pack()
 
-        self.opcion1.place(x = 80, y = 60)
-        self.opcion2.place(x = 80, y = 90)
-        self.opcion3.place(x = 80, y = 120)
-        self.opcion4.place(x = 80, y = 150)
-        self.evaluar.place(x = 190, y = 190)
-        self.validar.place(x = 200, y = 220)
+        self.tipo_frame = Frame(self.root, bg=tipo_color)
+        self.tipo_frame.pack(fill='both', side=BOTTOM)
 
-        #self.timer = Label(self.textoCanva, text = '')
+        Label(self.tipo_frame, text = nombre_tipo, bg=tipo_color, fg='white', font=('Rockwell',15)).pack()
 
-        self.time_l = Label(self.textoCanva, text = str(temp), width = 5, bg = self.color, font = ('Arial',13))
-        self.time_l.place(x = 290, y = 190)
+        self.time_l = Label(self.pregunta_frame, text = str(temp), width = 5, font = ('Rockwell',13))
+        self.time_l.pack()
         self.time = 0
         self.contador(temp)
 
         self.root.mainloop()
 
     def category(self):
+        """
+        Metodo que abre los archivos y extrae las preguntas segun la categoria.
+        """
         if self.categoria == 1:
             self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_matematicas.txt"), "r", encoding="utf-8")
             self.R = self.RM
             self.color = '#DF0101'
+            self.cat_name = 'Matematicas'
             #print('Matematicas')
         elif self.categoria == 2:
             self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_historia.txt"), "r", encoding="utf-8")
             self.R = self.RH
             self.color = '#C7AF14'
+            self.cat_name = 'Historia'
             #print('Historia')
         elif self.categoria == 3:
             self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_geografia.txt"), "r", encoding="utf-8")
             self.R = self.RG
             self.color = '#0FCBCB'
+            self.cat_name = 'Geografia'
             #print('Geografia')
         elif self.categoria == 4:
             self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_ciencia.txt"), "r", encoding="utf-8")
             self.R = self.RC
             self.color = '#1DCB0F'
+            self.cat_name = 'Ciencia'
             #print('Ciencia')
         else:
             self.preguntas = open((os.getcwd() + "\Resources\Questions\preguntas_entretenimiento.txt"), "r", encoding="utf-8")
             self.R = self.RE
             self.color = '#A901DF'
+            self.cat_name = 'Entretenimiento'
             #print('Entretenimiento')
 
+    def pregunta(self):
+        '''
+        Funcion que lee la sinstrucciones desde el archivo y las imprime en la ventana siguinedo un margen
+        '''
+        self.texto = ''
+        if len(self.data[0].strip()) < 75:
+            self.texto = self.data[0].strip()+'\n'
+        else:
+            for i in self.data[0].strip():
+                self.texto += i
+                if len(self.texto) % 72 == 0:
+                    self.texto += '\n'
+
     def contador(self,time = None):
-
-
+        """
+        Metodo que cuenta el tiempo que lleva abierta la ventana y la cierra al terminarse el mismo, o al contestar la pregunta.
+        :param int time: Tiempo que contará la ventana.
+        """
         if self.answered == True:
             self.preguntas.close()
             sleep(2)
@@ -160,7 +190,7 @@ class Ventana(Tk):
             if self.time > 20:
                 self.time_l.config(fg = '#008F39')
             elif self.time >10:
-                self.time_l.config(fg = '#FFFF00')
+                self.time_l.config(fg = 'orange')
             else:
                 self.time_l.config(fg = '#FF0000')
             self.time = self.time - 1

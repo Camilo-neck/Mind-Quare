@@ -33,7 +33,7 @@ LIGHT_GREEN = [147, 255, 0, 94]
 YELLOW = [240, 250, 15]
 CYAN = [0, 255, 255]
 
-screen_size = [900, 580]  # ancho y largo de la ventana
+screen_size = [900, 600]  # ancho y largo de la ventana
 
 # Se crea la clase de las casillas como objetos, generando metodos para diferenciar sus funciones.
 
@@ -248,11 +248,18 @@ class Game(object):
         self.db = 'Resources\\Data_base\\Users.db'
         self.fuente = pygame.font.SysFont('Impact', 15)
         self.fuente2 = pygame.font.SysFont('Impact', 15)
+        self.fuente3 = pygame.font.SysFont('Impact', 12)
         # Se coloca el titulo de la ventana
         pygame.display.set_caption("Tablero")
         # Se carga y coloca el icono
         icon = pygame.image.load('Resources/Images/Logo_Mindquare.ico')
         pygame.display.set_icon(icon)
+        self.replay = True
+        self.gameover = False
+
+        self.en_juego = False
+        self.en_juego_txt = 'Espere su turno'
+
         self.casilla = []
         self.cant_preguntas = 20
 
@@ -387,7 +394,7 @@ class Game(object):
         for event in pygame.event.get():  # Bucle que recibe eventos.
             # Condicional para cerrar la ventana al presionar la (x).
             if event.type == pygame.QUIT:
-                os.system('cls')
+                self.replay = False
                 return False
         return True
 
@@ -436,7 +443,7 @@ class Game(object):
             DADO.image = 'Resources\Images\Dice6.png'
             DADO.value = num
 
-        if keys[pygame.K_p]:
+        if keys[pygame.K_p] and self.en_juego:
             self.rolling = False
             return DADO.value, self.rolling
 
@@ -505,6 +512,7 @@ class Game(object):
                     self.ronda += 1
                 else:
                     self.TurnoIndex += 1
+                self.en_juego = False
                 return False
         else:
             if self.pos_restante > value:
@@ -527,6 +535,7 @@ class Game(object):
                     self.ronda += 1
                 else:
                     self.TurnoIndex += 1
+                self.en_juego = False
                 return False
         return True
 
@@ -542,6 +551,20 @@ class Game(object):
             result = cursor.execute(query, parameters)
             conn.commit()
         return list(result)
+    
+    def update_db(self):
+        """
+        Metodo que actualiza el puntaje y las victorias de los jugadores al finalizar el juego
+        """
+        for i in range(self.cant_jugadores):
+            username = self.jugador[i].nombre
+            if username == f'Invitado{i+1}': #si es un invitado no se actualiza la tabla de score con su puntaje
+                continue
+            new_score = int(self.jugador[i].score + (list(self.run_query(self.query4, (username,)))[0][0])) #puntaje del jugador actual + puntaje de ese jugador en la tabla
+            self.run_query(self.query1, (new_score, username,)) #Actualizar el puntaje
+            if self.jugador[i].winner:
+                new_victories = 1 + list(self.run_query(self.query3, (username,)))[0][0] #victorias del ganador en la tabla +1
+                self.run_query(self.query2, (new_victories, username,)) #Actualizar las victorias
 
     def run_logic(self, screen,):
         """
@@ -556,7 +579,7 @@ class Game(object):
             # Se añaden los jugadores a los grupos de sprites.
             for i in range(self.cant_jugadores):
                 self.all_sprites_list.add(self.jugador[i])
-         
+        
             self.all_sprites_list.update() # Se ejecuta la funcion de atualizar en los dos jugadores.
 
             DADO1 = self.dados[0]
@@ -565,15 +588,16 @@ class Game(object):
             self.Turno_actual = self.turnos[self.TurnoIndex] #El turno actual se leera en base a TurnoIndex como el indice de la lista turnos
 
             # Si se presiona espacio, rolling sera true
-            if keys[pygame.K_SPACE]:
+            if keys[pygame.K_SPACE] and not self.en_juego:
                 self.rolling = True
+                self.en_juego = True
 
             # Si rolling es tru los dados giraran
             if self.rolling == True:
                 value1, self.rolling = self.roll_dice(DADO1)
                 value2, self.rolling = self.roll_dice(DADO2)
 
-            if keys[pygame.K_p]:
+            if keys[pygame.K_p] and self.en_juego:
                 self.cont = 1
 
             #CANTIDAD DE PREGUNTAS (20-1)#
@@ -586,7 +610,6 @@ class Game(object):
                 i_list = []
                 for k in range(60):
                     i_list.append(self.casilla[k].num)
-                    #print(casilla[k].num, casilla[k].categoria)
                 index = self.jugador[self.Turno_actual].n_square
                 if index >= 59:
                     index = 60
@@ -633,45 +656,42 @@ class Game(object):
                 self.adjust_player_on_square(self.Turno_actual) #Se acomodaran las casillas si ya se termino de mover
                 self.EndMove = False
 
-            if self.jugador[self.Turno_actual].score >= 59: #Si un jugador supera la casillas 60 este ganara
+            if self.jugador[self.Turno_actual].score >= 25: #Si un jugador supera la casillas 60 este ganara
                 print('win')
                 self.jugador[self.Turno_actual].winner = True
                 self.win = True
         else:
+            # ** Se establecen los querys a ejecutar en la funcion update_db **
+
             #Actualiza el puntaje del jugador en la tabla
-            query1 = '''
+            self.query1 = '''
             UPDATE USUARIOS SET SCORE = ?
             WHERE 
             NICK = ? 
         '''
             #Actualiza las victorias del jugador en la tabla
-            query2 = '''
+            self.query2 = '''
             UPDATE USUARIOS SET VICTORIES = ?
             WHERE 
             NICK = ? 
         '''
             #Selecciona el puntaje del jugador en la tabla
-            query3 = '''
+            self.query3 = '''
             SELECT VICTORIES FROM USUARIOS WHERE 
             NICK = ? 
         '''
             #Selecciona las victorias del jugador en la tabla
-            query4 = '''
+            self.query4 = '''
             SELECT SCORE FROM USUARIOS WHERE 
             NICK = ? 
         '''
-            if keys[pygame.K_e]:
-                for i in range(self.cant_jugadores):
-                    username = self.jugador[i].nombre
-                    if username == f'Invitado{i+1}': #si es un invitado no se actualiza la tabla de score con su puntaje
-                        continue
-                    new_score = int(self.jugador[i].score + (list(self.run_query(query4, (username,)))[0][0])) #puntaje del jugador actual + puntaje de ese jugador en la tabla
-                    self.run_query(query1, (new_score, username,)) #Actualizar el puntaje
-                    if self.jugador[i].winner:
-                        new_victories = 1 + list(self.run_query(query3, (username,)))[0][0] #victorias del ganador en la tabla +1
-                        self.run_query(query2, (new_victories, username,)) #Actualizar las victorias
-                
-                exit()
+            if keys[pygame.K_e]: # Si se presiona <e> se cerrará el juego
+                self.update_db() # Se actualiza la base de datos
+                self.gameover = True
+                self.replay = False # Coloca en False replay para salir del juego
+            elif keys[pygame.K_r]: # Si se presiona <r> se reiniciara el juego
+                self.update_db() # Se actualiza la base de datos
+                self.gameover = True
 
     def display_frame(self, screen,):
         """
@@ -734,7 +754,7 @@ class Game(object):
 
                 score_p = self.fuente2.render(
                     f'Jugador {self.jugador[i].nombre}: {self.jugador[i].score}', 1, textColor)
-                screen.blit(score_p, (255+(i*155), screen_size[1]-30))
+                screen.blit(score_p, (255+(i*155), 550))
 
             #Cambiar el color dependiendo del jugador del turno actual
             if self.Turno_actual == 0:
@@ -749,7 +769,20 @@ class Game(object):
             # renderizar texto (numero de casilla)
             turno = self.fuente2.render(
                 f'Turno de: {self.jugador[self.Turno_actual].nombre}', 1, textColor)
-            screen.blit(turno, (100, screen_size[1]-30))
+            screen.blit(turno, (100, 550))
+
+            if self.en_juego:
+                if len(self.en_juego_txt) < 21:
+                    self.en_juego_txt += ' .'
+                    time.sleep(0.1)
+                else:
+                    self.en_juego_txt = 'Espere su turno'
+                txt = self.en_juego_txt
+            else:
+                txt = 'Presione <SPACE> para girar y <p> para detener.'
+            inst = self.fuente3.render(
+                txt, 1, WHITE)
+            screen.blit(inst, (15, 580))
 
         #Si ya hay un ganador se muestra la pantalla de Game Over y el juego se detiene    
         else:
@@ -764,7 +797,7 @@ class Game(object):
             screen.blit(puntaje_win, (355, 300))
             # renderizar texto (numero de casilla)
             salir = self.fuente.render(
-                'Presione la tecla e para salir', 1, BLACK)
+                'Presione la tecla e para salir o r para reiniciar', 1, BLACK)
             screen.blit(salir, (355, 350))
 
         pygame.display.flip()  # Refresca la ventana
@@ -774,24 +807,28 @@ def main():
     """
     Funcion principal que ejecuta mediante un bucle infinito el juego.
     """
-    # Se inicializa la ventana de pygame
-    pygame.init()
-    cant_jugadores = num_p.main() #Se obtiene la cantidad de jugadores desde la ventana Cantidad_p
-    screen = pygame.display.set_mode(screen_size)  # Medidas
-    running = True
-    clock = pygame.time.Clock()  # Controla las fps
-    game = Game(cant_jugadores)
+    play_again = True
+    while True:
+        # Se inicializa la ventana de pygame
+        pygame.init()
+        cant_jugadores = num_p.main() #Se obtiene la cantidad de jugadores desde la ventana Cantidad_p
+        screen = pygame.display.set_mode(screen_size)  # Medidas
+        running = True
+        clock = pygame.time.Clock()  # Controla las fps
+        game = Game(cant_jugadores)
 
-    # Bucle infinito que corre el juego.
-    while running:
-        running = game.process_events() 
-        game.run_logic(screen,) #Se ejecutara la logica del juego
-        game.display_frame(screen,) #Se mostrara todo lo necesario en la pantalla
-        clock.tick(60)  # 60fps
-    pygame.quit()
+        # Bucle infinito que corre el juego.
+        while running and not game.gameover:
+            running = game.process_events() 
+            game.run_logic(screen,) #Se ejecutara la logica del juego
+            game.display_frame(screen,) #Se mostrara todo lo necesario en la pantalla
+            clock.tick(60)  # 60fps
+        play_again = game.replay
+        if not play_again:
+            pygame.quit()
+            break
 
 
 # Condicional que verifica si se ejecuta desde el archivo, o se esta importando para llamar al main().
 if __name__ == '__main__':
-    os.system('cls')
     main()

@@ -108,7 +108,6 @@ class Users:
             result = cursor.execute(query, parameters)
             conn.commit()
         
-        print(type(result))
         return result
     
     def sourceClients(self):
