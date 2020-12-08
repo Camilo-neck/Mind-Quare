@@ -1,7 +1,7 @@
 INSTRUCCIONES DEL JUEGO
 
 Bienvenido al juego MindQuare, cuyas reglas son:
-1) Escoja la cantidad de jugadores (2 a 4).
+1) Escoja la cantidad de jugadores (2 a 4) y marque la casilla en la parte inferior si    desea actualizar las preguntas desde la web.
 2) Cada jugador debe registrarse, Iniciar sesion o ingresar como invitado al juego.
 3) MindQuare hara que la partida sea completamente aleatoria.
 3) Se lanzaran los dados mostrando sus valores, y el total de casillas.

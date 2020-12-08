@@ -1,5 +1,4 @@
-colorama
-tk
+colorama==0.4.4
+tk==0.1.0
 pygame==2.0.0.dev18
-imageio
-imageio_ffmpeg
+bs4==0.0.1

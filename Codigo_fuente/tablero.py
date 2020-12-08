@@ -19,6 +19,8 @@ import login  # Se importa ventana del login
 import Cantidad_p as num_p  # Se importa la ventana que retorna la cantidad de jugadores
 import sqlite3  # Libreria para manejar la base de datos
 from sys import exit  # Librería del sistema para terminar juego
+from tkinter import messagebox # Importar mensaje del sistema desde tkinter
+
 
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
@@ -660,7 +662,6 @@ class Game(object):
                 self.EndMove = False
 
             if self.jugador[self.Turno_actual].score >= 60: #Si un jugador supera la casillas 60 este ganara
-                print('win')
                 self.jugador[self.Turno_actual].winner = True
                 self.win = True
         else:
@@ -806,6 +807,27 @@ class Game(object):
 
         pygame.display.flip()  # Refresca la ventana
 
+def validarArchivos():
+    '''
+    Comprobar si los archivos de las preguntas de cada categoria y sus respuestas existen, en caso contrario mostrar un mensaje de error y cerrar el juego
+    '''
+    try:
+        respuestas = open((os.getcwd() + "\Resources\Questions\Respuestas.txt"), "r")
+        respuestas.close()
+        RM = open((os.getcwd() + "\Resources\Questions\preguntas_matematicas.txt"), "r", encoding="utf-8")
+        RM.close()
+        RH = open((os.getcwd() + "\Resources\Questions\preguntas_historia.txt"), "r", encoding="utf-8")
+        RH.close()
+        RG = open((os.getcwd() + "\Resources\Questions\preguntas_geografia.txt"), "r", encoding="utf-8")
+        RG.close()
+        RC = open((os.getcwd() + "\Resources\Questions\preguntas_ciencia.txt"), "r", encoding="utf-8")
+        RC.close()
+        RE = open((os.getcwd() + "\Resources\Questions\preguntas_historia.txt"), "r", encoding="utf-8")
+        RE.close()
+
+    except FileNotFoundError:
+        messagebox.showerror(message="Ha ocurrido un error al leer las preguntas, Por favor actualizelas para jugar", title="Error de Archivo")
+        exit() 
 
 def main():
     """
@@ -818,6 +840,9 @@ def main():
         cant_jugadores,descargar = num_p.main() #Se obtiene la cantidad de jugadores, y la opcion de descargar las preguntas d ela web desde la ventana Cantidad_p
         if descargar == True:
             getQuestions.main()
+
+        validarArchivos() #Comprobar si los archivos de preguntas y respuestas existen    
+
         screen = pygame.display.set_mode(screen_size)  # Medidas
         running = True
         clock = pygame.time.Clock()  # Controla las fps

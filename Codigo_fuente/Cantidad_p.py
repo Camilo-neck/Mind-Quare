@@ -2,7 +2,10 @@ from tkinter import *
 import tkinter as tk
 
 class Seleccion():
-	def __init__(self):		
+	def __init__(self):
+		'''
+		Clase que involucra la ventana para escojer la cantidad de jugadores y escojer si se desea actualizar o no las preguntas desde el sitio web
+		'''		
 		self.root = Tk()
 		self.root.title('Seleccion de jugadores')
 		self.sw = self.root.winfo_screenwidth()
@@ -36,6 +39,7 @@ class Seleccion():
 		self.status_label.config(image=self.my_pic)
 		self.status_label.place(x=200,y=180)
 
+		#Dependiendo de si el cursor esta sobre la cantidad de jugadores o no se cambiara la imagen dependiendo de este numero
 		self.Two_Players.bind("<Enter>", lambda event, img="Resources/Images/2players.png",bttn=self.Two_Players: self.button_hover("<Enter>",img,bttn))
 		self.Two_Players.bind("<Leave>", lambda event ,bttn=self.Two_Players: self.button_hover_leave("<Enter>",bttn))
 
@@ -45,16 +49,21 @@ class Seleccion():
 		self.Four_Players.bind("<Enter>", lambda event, img="Resources/Images/4players.png",bttn=self.Four_Players: self.button_hover("<Enter>",img,bttn))
 		self.Four_Players.bind("<Leave>", lambda event ,bttn=self.Four_Players: self.button_hover_leave("<Enter>",bttn))
 
-		
+		#Check button para decidir si se actualizaran las preguntas desde la web o no
 		self.descargar = tk.BooleanVar()
 		self.descargar.set(False)
 		self.descargarMsg = Checkbutton(self.root, font = ('Rockwell',11),text = '¿Quiere actualizar las preguntas desde la web?', var = self.descargar, bg = 'black', fg = 'purple')
 		self.descargarMsg.place(x=100,y=350)
 
-
 		self.root.mainloop()
 
 	def button_hover(self,e,img,bttn):
+		'''
+		Si el cursor esta sobre bttn se cambiara la imagen
+		:param string e: valor que indica si el mouse esta sobre el boton o no
+		:param string img: ruta de la imagen a mostrar en el cuadro
+		:param tkinter.Button bttn: boton sobre el cual se aplicara el hovering
+		'''
 		bttn["bg"] = "red"
 		bttn["fg"] = "white"
 		my_pic = PhotoImage(file=img)
@@ -62,6 +71,11 @@ class Seleccion():
 		self.status_label.config(image=my_pic)
 
 	def button_hover_leave(self,e,bttn):
+		'''
+		Si el cursor no esta sobre bttn se cambiara la imagen al logo del jugeo
+		:param string e: valor que indica si el mouse esta sobre el boton o no
+		:param tkinter.Button bttn: boton sobre el cual se aplicara el hovering_leave
+		'''
 		bttn["bg"] = "SystemButtonFace"
 		bttn["fg"] = "black"
 		my_pic = PhotoImage(file='Resources/Images/leave.png')
@@ -69,6 +83,10 @@ class Seleccion():
 		self.status_label.config(image=my_pic)
 	
 	def Cantidad(self,cant):
+		'''
+		Guardar el valor de la cantidad escogida y cerrar la ventana
+		:param int cant: cantidad de jugadores
+		'''
 		self.cant = cant
 		self.root.destroy()
 

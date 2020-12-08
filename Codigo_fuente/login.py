@@ -11,10 +11,7 @@ import tkinter as tk, threading #Se importan todos los elementos de Tkinter
 from tkinter import ttk #Se importa el metodo ttk de Tkinter
 from tkinter import messagebox #Se importa el metodo ttk de Tkinter
 from tkinter import filedialog #Se importa el metodo ttk de Tkinter
-import imageio
-from PIL import Image, ImageTk
 import sqlite3 #Se importa la libreria para maneja la base de datos
-from tkinter.constants import TOP
 #import Inicio #Se importa el archivo inicio.py
 class Aplicacion:
     """
@@ -31,8 +28,8 @@ class Aplicacion:
         self.y = self.sh // 4
         self.root.title("MindQuare")
         self.root.iconbitmap("Resources\Images\Logo_Mindquare.ico")# Se carga el icono
-        self.root.geometry(f"550x405+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
-        self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
+        self.root.geometry(f"550x405+{self.x}+{self.y}")
+        self.root.protocol('WM_DELETE_WINDOW', self.__Cancel ) #Evitar que se pueda cerrar la ventana con el boton (x)
         self.root.resizable(width=False, height=False)
         self.root.config(bg="white")
 
@@ -276,6 +273,7 @@ class ventanaRegistro:
                 #Sino valida la bandera de constraseña
                 validadorP = True
             
+            #Buscar en la base de datos los usuarios que tengan el nickname o el email ingresado
             self.miCursor.execute(
             'SELECT * FROM USUARIOS WHERE NICK="'
             +colectaNick
@@ -285,7 +283,7 @@ class ventanaRegistro:
             )
             lista_identidad = self.miCursor.fetchall()
 
-            if lista_identidad != []:
+            if lista_identidad != []: #Si la lista obtenida no es vacia quiere decir que uno de estos valores ya existe asi que el usuario no se puede crear
                 messagebox.showwarning("Error", "Usuario o Email existentes.")
             else:
                 validadorId = True
@@ -316,11 +314,8 @@ def main():
     """
     Funcion principal que abre la aplicacion.
     """
-    #Inicio.video_inicio()
     login= Aplicacion()
     return login.usuario
-    #Intro()
-
 
 #Condicional que revisa si se esta ejecutando desde el archivo se ha importado para poder ejecutar el main. 
 if __name__ == "__main__":

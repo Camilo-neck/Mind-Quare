@@ -25,7 +25,7 @@ class Ventana(Tk):
         self.root.geometry(f"550x355+{self.x}+{self.y}")
         self.root.config(bg = 'black')
         self.root.resizable(width = False, height = False)
-        self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
+        self.root.protocol('WM_DELETE_WINDOW', self.__Cancel ) #Evitar que se pueda cerrar la ventana con el boton (x)
         self.value_answ = False
         self.answered = False
         self.answ_value = False
@@ -33,12 +33,8 @@ class Ventana(Tk):
 
         self.n_r = n_pregunta
 
-        #obtener las respuestas desde el archivo y guardarlas en una lista
-        try:
-            respuestas = open((os.getcwd() + "\Resources\Questions\Respuestas.txt"), "r")
-        except FileNotFoundError:
-            messagebox.showerror(message="Por favor actualize la preguntas para jugar", title="Error de ruta")
-            exit()
+        #obtener las respuestas desde el archivo y guardarlas en una lista      
+        respuestas = open((os.getcwd() + "\Resources\Questions\Respuestas.txt"), "r")
         self.RM = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
         self.RH = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
         self.RG = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
@@ -46,9 +42,9 @@ class Ventana(Tk):
         self.RE = respuestas.readline().strip('\n').replace("'","").replace(' ','').split(',')
         respuestas.close()
 
-        self.category()
+        self.category() #Extraer las preguntas por categoria desde los archivos
 
-        self.data = self.preguntas.readlines()[((self.n_r*5)):(self.n_r*5)+5]
+        self.data = self.preguntas.readlines()[((self.n_r*5)):(self.n_r*5)+5] #Leer la pregunta indicada en base a su indice (n_r)
 
         self.categoria_frame = Frame(self.root, bg=self.color)
         self.categoria_frame.pack(fill='both')
@@ -58,7 +54,7 @@ class Ventana(Tk):
         self.pregunta_frame = Frame(self.root)
         self.pregunta_frame.pack(fill='both')
 
-        self.pregunta()    
+        self.ajustar_enunciado() #Ajustar el enunciado para que este no se salga de la ventana
 
         Label(self.pregunta_frame, text = self.texto, font = ('Rockwell',12)).pack()
 
@@ -75,7 +71,9 @@ class Ventana(Tk):
         self.varOpcion = IntVar()
         self.cont = 0
         def respuest():
-
+            '''
+            Obtiene el valor de la seleccion y verifica si este es correcto o no
+            '''
             if self.varOpcion.get() == 1:
                 rta = 'A'
             elif self.varOpcion.get() == 2:
@@ -85,7 +83,7 @@ class Ventana(Tk):
             else:
                 rta = 'D'
 
-            if rta == self.R[self.n_r]:
+            if rta == self.R[self.n_r]: #comparar la respuesta con el archivo de respuestas en ese indice
                 self.validar.config(text = 'CORRECTO!', fg = 'Darkgreen', font = ('Rockwell',15))
                 self.answ_value = True
                 self.value_answ = self.answ_value
@@ -156,9 +154,9 @@ class Ventana(Tk):
             self.cat_name = 'Entretenimiento'
             #print('Entretenimiento')
 
-    def pregunta(self):
+    def ajustar_enunciado(self):
         '''
-        Funcion que lee la sinstrucciones desde el archivo y las imprime en la ventana siguinedo un margen
+        Funcion que ajusta el enunciado desde el archivo y lo imprime en la ventana siguiendo un margen
         '''
         self.texto = ''
         if len(self.data[0].strip()) < 75:
@@ -174,15 +172,18 @@ class Ventana(Tk):
         Metodo que cuenta el tiempo que lleva abierta la ventana y la cierra al terminarse el mismo, o al contestar la pregunta.
         :param int time: Tiempo que contará la ventana.
         """
+        #Si ya se respondio la pregunta se espera 2 segundos y se cierra la ventana
         if self.answered == True:
             self.preguntas.close()
             sleep(2)
             self.root.destroy()
             return None #salir
 
+        #Si el parametro de tiempo no es none se asignara ese valor a time
         if time is not None:
             self.time = time
 
+        #Si time es menor o igual a 0 se cierra la ventana y se toma como respuesta incorrecta 
         if self.time <= 0:
             self.preguntas.close()
             self.validar.config(text = 'Tiempo agotado!')
@@ -190,6 +191,7 @@ class Ventana(Tk):
             self.root.destroy()
             return None
 
+        #Si time es mayor a 0 reduce el valor del contador en 1 y este cambia de color dependiendo del tiempo restante
         else:
             self.time_l.config(text = f"{self.time}")
             if self.time > 20:
