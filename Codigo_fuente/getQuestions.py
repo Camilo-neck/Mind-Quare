@@ -59,7 +59,7 @@ def obt_respuestas(respuestas,a,b):
 
 def main():
     #leer la url y crear un objeto con la libreria bs4 que contendra el html del sitio web
-    url = "https://camilo-neck.github.io/Mind-Quare/"
+    url = "https://camilo-neck.github.io/MindQuare-Web/"
     page = urlopen(url)
     html = page.read().decode("utf-8")
     soup = BeautifulSoup(html, "html.parser")
