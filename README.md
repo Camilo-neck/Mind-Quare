@@ -10,19 +10,24 @@
 Universidad Nacional de Colombia.
 
 ### Objetivo 
-Videojuego en base a el lenguaje de programación Python :snake:, su temática será la de un juego de preguntas divididas por categorías donde los participantes deberán ir avanzando por un tablero lanzando los dados, dependiendo de la casilla en la que el jugador se sitúe habrá un efecto sobre la partida del mismo. 
+Videojuego en base a el lenguaje de programación Python :snake:, su temática es la de un juego de preguntas divididas por categorías donde los participantes deberán ir avanzando por un tablero lanzando los dados, dependiendo de la casilla en la que el jugador se sitúe habrá un efecto sobre la partida del mismo. 
 
 ### Contenido
+_Nota: El juego completo puede ejecutarse mediante MindQuare.bat_
 
-###### _Nota: El código de la entrega #2 a ejecutar es "Proyecto programacion.py", los demás archivos son avances de la próxima entrega que hemos ido avanzando en este mismo repositorio_
+-"Proyecto programacion.py" Demo de consola que incluye la logica y funcionamiento del juego en la consola cmd.
 
--Demo de consola "Proyecto programacion.py" que incluye la logica y funcionamiento del juego en la consola cmd.
+-"tablero.py" interfaz y logica completa del juego
 
--interfaz del tablero "tablero.py" un prototipo de la interfaz que tendra MindQuare en su version final.
+-"LogIn.py" Login y registro para iniciar sesion y asi guardar el puntaje del jugador o ingresar como invitado
 
--Login "LogIn.py" un prototipo junto con una base de datos en la que se puede registrar e iniciar sesion para acceder al juego.
+-"VentanaInicio.py" Ventana principal del juego para ver las instracciones, laderboard o ingresar al juego
 
--Video "Inicio.py" prueba usando libreria tkinter para reproducir un video al iniciar el juego (cuando este se termine de reproducir debe cerrarse (x) para continuar al login)
+-"VentanaPreguntas.py" Ventana que muestra las preguntas por categoria con un tiempo limite
+
+-"Cantidad_p.py" Ventana para escoger la cantidad de jugador y la opcion de actualizar o no las preguntas desde la web
+
+-"getQuestions.py" Obtener las respuestas y preguntas desde el sitio web: https://camilo-neck.github.io/MindQuare-Web/ 
 
 ### Requisitos
 Para el correcto funcionamiento de MindQuare se requieren la instalacion las siguientes librerias que no se encuentran instaladas por defecto:📋
@@ -30,31 +35,24 @@ _Se requiere de sistema operativo windows puesto que se incluyen funciones espec
 
 Demo de consola:
 -colorama : 
-pip install colorama
+pip install colorama==0.4.4
 
-Interfaces:
+MindQuare:
 -pygame : 
 pip install pygame==2.0.0.dev18 
 -tkinter : 
-pip install tk
-imageio :
--pip install imageio
-imageio_ffmpge:
--pip install imageio_ffmpeg
+pip install tk==0.1.0
+-bs4 :
+-pip install bs4==0.0.1
 
 ###### _Ejecutar el archivo requirements.py para descargar e instalar estas librerias._
 
 ### Instrucciones del juego
 
-Este es en demo en consola de MindQuare, cuyas reglas son:
-1) Se debe ingresar la cantidad de jugadores (debe ser un numero entero).
-2) Se debe ingresar el nombre de los respectivos jugadores.
+1) Escoja la cantidad de jugadores (2 a 4) y marque la casilla en la parte inferior si desea actualizar las preguntas desde la web.
+2) Cada jugador debe registrarse, Iniciar sesion o ingresar como invitado al juego.
 3) MindQuare hara que la partida sea completamente aleatoria.
 3) Se lanzaran los dados mostrando sus valores, y el total de casillas.
-4) Despues de lanzar los dados el jugador debera reponder una pregunta y dependiendo del tipo
-   de casilla este valor afectara la posicion del jugador.
-5) El tipo de casilla indica como el valor de los dados afecta al jugador.
-   - Trivia Normal, avanza o retrocede normalmente.
-   - Trivia Double, avanza o retrocede el doble.
-   - Trivia back or advance 1, retrocede o avanza solo 1.
-6) Gana el primer jugador que llegue a la casilla numero 60.
+4) Despues de lanzar los dados el jugador debera reponder una pregunta y dependiendo del tipo de casilla este valor afectara la posicion del jugador.
+5) El primer jugador en superar la casilla 60 ganara y en este momento los puntajes de los jugadores seran actualizados en el leaderboard
+
