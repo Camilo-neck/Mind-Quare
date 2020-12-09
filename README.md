@@ -15,17 +15,26 @@ Videojuego en base a el lenguaje de programación Python :snake:, su temática e
 ### Contenido
 _Nota: El juego completo puede ejecutarse mediante MindQuare.bat_
 
--"Proyecto programacion.py" Demo de consola que incluye la logica y funcionamiento del juego en la consola cmd.
-
--"tablero.py" interfaz y logica completa del juego
-
--"LogIn.py" Login y registro para iniciar sesion y asi guardar el puntaje del jugador o ingresar como invitado
+-"demo.py" Demo de consola que incluye la logica y funcionamiento del juego en la consola cmd.
+ ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/demo.png?raw=true)
 
 -"VentanaInicio.py" Ventana principal del juego para ver las instracciones, laderboard o ingresar al juego
-
--"VentanaPreguntas.py" Ventana que muestra las preguntas por categoria con un tiempo limite
+ ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/inicio.png?raw=true)
+ ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/instrucciones.png?raw=true)
+ ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/laderboard.png?raw=true) 
 
 -"Cantidad_p.py" Ventana para escoger la cantidad de jugador y la opcion de actualizar o no las preguntas desde la web
+ ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/cant.png?raw=true)
+
+-"LogIn.py" Login y registro para iniciar sesion y asi guardar el puntaje del jugador o ingresar como invitado
+ ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/login.png?raw=true)
+ ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/registro.png?raw=true)
+
+-"tablero.py" interfaz y logica completa del juego
+ ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/tablero.png?raw=true)
+
+-"VentanaPreguntas.py" Ventana que muestra las preguntas por categoria con un tiempo limite
+![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/preguntas.png?raw=true)
 
 -"getQuestions.py" Obtener las respuestas y preguntas desde el sitio web: https://camilo-neck.github.io/MindQuare-Web/ 
 
