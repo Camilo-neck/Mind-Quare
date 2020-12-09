@@ -257,6 +257,7 @@ class Game(object):
         # Se carga y coloca el icono
         icon = pygame.image.load('Resources/Images/Logo_Mindquare.ico')
         pygame.display.set_icon(icon)
+        self.exit = 0
         self.replay = True
         self.gameover = False
 
@@ -661,7 +662,7 @@ class Game(object):
                 self.adjust_player_on_square(self.Turno_actual) #Se acomodaran las casillas si ya se termino de mover
                 self.EndMove = False
 
-            if self.jugador[self.Turno_actual].score >= 60: #Si un jugador supera la casillas 60 este ganara
+            if self.jugador[self.Turno_actual].score >= 5: #Si un jugador supera la casillas 60 este ganara
                 self.jugador[self.Turno_actual].winner = True
                 self.win = True
         else:
@@ -791,19 +792,47 @@ class Game(object):
 
         #Si ya hay un ganador se muestra la pantalla de Game Over y el juego se detiene    
         else:
-            screen.fill(WHITE)
-            # renderizar texto (numero de casilla)
-            victoria = self.fuente2.render(
-                f'{self.jugador[self.Turno_actual].nombre} ha ganado!!', 1, RED)
-            screen.blit(victoria, (350, 250))
-            # renderizar texto (numero de casilla)
-            puntaje_win = self.fuente.render(
-                f'Score: {self.jugador[self.Turno_actual].score}', 1, BLACK)
-            screen.blit(puntaje_win, (355, 300))
-            # renderizar texto (numero de casilla)
-            salir = self.fuente.render(
-                'Presione la tecla e para salir o r para reiniciar', 1, BLACK)
-            screen.blit(salir, (355, 350))
+            # Se imprime fondo cargando la imagen y luego rellenando la pantalla con el mismo
+            image = pygame.image.load('Resources/Images/Fondo_win.jpg')
+            image = pygame.transform.smoothscale(image, screen_size)
+            screen.blit(image, (0,0))
+            # Condicional para imprimir el nombre del ganador con su color identidad
+            if self.Turno_actual == 0:
+                textColor = BLUE
+            elif self.Turno_actual == 1:
+                textColor = RED
+            elif self.Turno_actual == 2:
+                textColor = YELLOW
+            else:
+                textColor = ORANGE
+            fuente_winner = pygame.font.SysFont('Impact', 50)# Se declara fuente que dice game over
+            victoria = fuente_winner.render(
+                'GAME OVER', 1, RED)
+            screen.blit(victoria, (330, 100)) # Se renderiza y muestra en pantalla "GAME OVER"
+            # renderizar texto y mostrar el nombre del ganador con su color identidad
+            fuente_winner = pygame.font.SysFont('Impact', 40)
+            victoria = fuente_winner.render(
+                f'{self.jugador[self.Turno_actual].nombre} ha ganado!!', 1, textColor)
+            screen.blit(victoria, (290, 200))
+            # renderizar texto y mostrar el puntaje de cada jugador
+            fuente_text = pygame.font.SysFont('Impact', 20)
+            for i in range(self.cant_jugadores):
+                puntaje_win = fuente_text.render(
+                    f'{self.jugador[i].nombre} Score: {self.jugador[i].score}', 1, WHITE)
+                screen.blit(puntaje_win, (355, 280+(i*30)))
+            # renderizar texto y alternar una variable binaria para hacer parpadear el texto
+            if self.exit == 0:
+                salir = fuente_text.render(
+                    'Presione la tecla e para salir o r para reiniciar', 1, GRAY)
+                screen.blit(salir, (260, 50))
+                self.exit += 1
+                time.sleep(0.5)
+            else:
+                self.exit = 0
+                time.sleep(1.5)
+            # Se carga y muestra la imagen de la ficha del ganador.
+            image = pygame.transform.smoothscale(self.jugador[self.Turno_actual].image, [200,200])
+            screen.blit(image, (350,280+((i+1)*30)))
 
         pygame.display.flip()  # Refresca la ventana
 
