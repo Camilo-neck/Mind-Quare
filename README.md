@@ -15,28 +15,34 @@ Videojuego en base a el lenguaje de programación Python :snake:, su temática e
 ### Contenido
 _Nota: El juego completo puede ejecutarse mediante MindQuare.bat_
 
--"demo.py" Demo de consola que incluye la logica y funcionamiento del juego en la consola cmd.
+**-"demo.py" Demo de consola que incluye la logica y funcionamiento del juego en la consola cmd.**
+
  ![Menu](img/demo.png)
 
--"VentanaInicio.py" Ventana principal del juego para ver las instrucciones, laderboard o ingresar al juego
+**-"VentanaInicio.py" Ventana principal del juego para ver las instrucciones, laderboard o ingresar al juego**
+
  ![Menu](img/inicio.png)
  ![Menu](img/instrucciones.png)
  ![Menu](img/laderboard.png)
 
--"Cantidad_p.py" Ventana para escoger la cantidad de jugador y la opcion de actualizar o no las preguntas desde la web
+**-"Cantidad_p.py" Ventana para escoger la cantidad de jugador y la opcion de actualizar o no las preguntas desde la web**
+
  ![Menu](img/cant.png)
 
--"LogIn.py" Login y registro para iniciar sesion y asi guardar el puntaje del jugador o ingresar como invitado
+**-"LogIn.py" Login y registro para iniciar sesion y asi guardar el puntaje del jugador o ingresar como invitado**
+
  ![Menu](img/login.png)
  ![Menu](img/registro.png)
 
--"tablero.py" interfaz y logica completa del juego
+**-"tablero.py" interfaz y logica completa del juego**
+
  ![Menu](img/tablero.png)
 
--"VentanaPreguntas.py" Ventana que muestra las preguntas por categoria con un tiempo limite
+**-"VentanaPreguntas.py" Ventana que muestra las preguntas por categoria con un tiempo limite**
+
 ![Menu](img/preguntas.png)
 
--"getQuestions.py" Obtener las respuestas y preguntas desde el sitio web: https://camilo-neck.github.io/MindQuare-Web/ 
+**-"getQuestions.py" Obtener las respuestas y preguntas desde el sitio web: https://camilo-neck.github.io/MindQuare-Web/ **
 
 ### Requisitos
 Para el correcto funcionamiento de MindQuare se requieren la instalacion las siguientes librerias que no se encuentran instaladas por defecto:📋
