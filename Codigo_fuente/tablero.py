@@ -13,7 +13,6 @@ import random  # Se importa las demas funciones de random
 import pygame  # Se importa libreria pygame para la interfaz y las funciones del juego
 import os  # Libreria para utilzar funciones del OS
 import time  # Libreria para hacer manejar tiempos y retrasos en funciones
-import VentanaInicio as inicio  # Se importa el menú
 import VentanaPreguntas  # Se importa ventana que contiene las preguntas
 import login  # Se importa ventana del login
 import Cantidad_p as num_p  # Se importa la ventana que retorna la cantidad de jugadores

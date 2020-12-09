@@ -1,2 +1,3 @@
 cd Codigo_fuente
-py VentanaInicio.py
+py MindQuare.py
+pause
