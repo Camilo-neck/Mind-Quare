@@ -13,7 +13,7 @@ Universidad Nacional de Colombia.
 Videojuego en base a el lenguaje de programación Python :snake:, su temática es la de un juego de preguntas divididas por categorías donde los participantes deberán ir avanzando por un tablero lanzando los dados, dependiendo de la casilla en la que el jugador se sitúe habrá un efecto sobre la partida del mismo. 
 
 ### Contenido
-_Nota: El juego completo puede ejecutarse mediante MindQuare.bat_
+_Nota: El juego completo puede ejecutarse mediante MindQuare.bat o en su defecto por medio del archivo MindQuare.py ubicado en la carpeta Codigo_fuente/_
 
 **-"demo.py" Demo de consola que incluye la logica y funcionamiento del juego en la consola cmd.**
 
