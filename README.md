@@ -19,22 +19,22 @@ _Nota: El juego completo puede ejecutarse mediante MindQuare.bat_
  ![Menu](img/demo.png)
 
 -"VentanaInicio.py" Ventana principal del juego para ver las instracciones, laderboard o ingresar al juego
- ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/inicio.png?raw=true)
- ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/instrucciones.png?raw=true)
- ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/laderboard.png?raw=true) 
+ ![Menu](img/inicio.png)
+ ![Menu](img/instrucciones.png)
+ ![Menu](img/laderboard.png)
 
 -"Cantidad_p.py" Ventana para escoger la cantidad de jugador y la opcion de actualizar o no las preguntas desde la web
- ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/cant.png?raw=true)
+ ![Menu](img/cant.png)
 
 -"LogIn.py" Login y registro para iniciar sesion y asi guardar el puntaje del jugador o ingresar como invitado
- ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/login.png?raw=true)
- ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/registro.png?raw=true)
+ ![Menu](img/login.png)
+ ![Menu](img/registro.png)
 
 -"tablero.py" interfaz y logica completa del juego
- ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/tablero.png?raw=true)
+ ![Menu](img/tablero.png)
 
 -"VentanaPreguntas.py" Ventana que muestra las preguntas por categoria con un tiempo limite
-![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/preguntas.png?raw=true)
+![Menu](img/preguntas.png)
 
 -"getQuestions.py" Obtener las respuestas y preguntas desde el sitio web: https://camilo-neck.github.io/MindQuare-Web/ 
 
