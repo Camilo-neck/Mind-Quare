@@ -42,7 +42,7 @@ _Nota: El juego completo puede ejecutarse mediante MindQuare.bat_
 
 ![Menu](img/preguntas.png)
 
-**-"getQuestions.py" Obtener las respuestas y preguntas desde el sitio web: https://camilo-neck.github.io/MindQuare-Web/ **
+**-"getQuestions.py" Obtener las respuestas y preguntas desde el sitio web: https://camilo-neck.github.io/MindQuare-Web **
 
 ### Requisitos
 Para el correcto funcionamiento de MindQuare se requieren la instalacion las siguientes librerias que no se encuentran instaladas por defecto:📋
