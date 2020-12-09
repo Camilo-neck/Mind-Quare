@@ -16,7 +16,7 @@ Videojuego en base a el lenguaje de programación Python :snake:, su temática e
 _Nota: El juego completo puede ejecutarse mediante MindQuare.bat_
 
 -"demo.py" Demo de consola que incluye la logica y funcionamiento del juego en la consola cmd.
- ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/demo.png?raw=true)
+ ![Not founded](https://github.com/Camilo-neck/Mind-Quare/blob/main/img/demo.png?raw=true)
 
 -"VentanaInicio.py" Ventana principal del juego para ver las instracciones, laderboard o ingresar al juego
  ![Not founded](https://github.com/jorozcove/Taller-Tkinter/blob/main/img/inicio.png?raw=true)
