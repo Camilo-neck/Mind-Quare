@@ -18,7 +18,7 @@ _Nota: El juego completo puede ejecutarse mediante MindQuare.bat_
 -"demo.py" Demo de consola que incluye la logica y funcionamiento del juego en la consola cmd.
  ![Menu](img/demo.png)
 
--"VentanaInicio.py" Ventana principal del juego para ver las instracciones, laderboard o ingresar al juego
+-"VentanaInicio.py" Ventana principal del juego para ver las instrucciones, laderboard o ingresar al juego
  ![Menu](img/inicio.png)
  ![Menu](img/instrucciones.png)
  ![Menu](img/laderboard.png)
