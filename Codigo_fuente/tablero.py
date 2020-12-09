@@ -662,7 +662,7 @@ class Game(object):
                 self.adjust_player_on_square(self.Turno_actual) #Se acomodaran las casillas si ya se termino de mover
                 self.EndMove = False
 
-            if self.jugador[self.Turno_actual].score >= 5: #Si un jugador supera la casillas 60 este ganara
+            if self.jugador[self.Turno_actual].score >= 60: #Si un jugador supera la casillas 60 este ganara
                 self.jugador[self.Turno_actual].winner = True
                 self.win = True
         else:
