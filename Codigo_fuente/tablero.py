@@ -211,6 +211,7 @@ class Player(pygame.sprite.Sprite):
         self.n_square = n_square
         self.nombre = nombre
         self.winner = False
+        # Crear listas de preguntas para el jugador
         self.preguntas_M = preguntas_M
         self.preguntas_H = preguntas_H
         self.preguntas_G = preguntas_G
@@ -253,7 +254,7 @@ class Game(object):
         self.fuente2 = pygame.font.SysFont('Impact', 15)
         self.fuente3 = pygame.font.SysFont('Impact', 12)
         # Se coloca el titulo de la ventana
-        pygame.display.set_caption("Tablero")
+        pygame.display.set_caption("MinQuare")
         # Se carga y coloca el icono
         icon = pygame.image.load('Resources/Images/Logo_Mindquare.ico')
         pygame.display.set_icon(icon)
@@ -838,6 +839,10 @@ def main():
         # Se inicializa la ventana de pygame
         pygame.init()
         cant_jugadores,descargar = num_p.main() #Se obtiene la cantidad de jugadores, y la opcion de descargar las preguntas d ela web desde la ventana Cantidad_p
+        if cant_jugadores == -1:
+            messagebox.showerror(message="No seleccionó ninguna cantidad de jugadores", title="Error de Juego")
+            exit() 
+        
         if descargar == True:
             getQuestions.main()
 

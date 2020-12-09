@@ -18,6 +18,7 @@ class V_inicio():
         self.x = self.sw // 3
         self.y = self.sh // 4
         self.root.geometry(f"500x400+{self.x}+{self.y}")
+        self.root.iconbitmap("Resources\Images\Logo_Mindquare.ico")# Se carga el icono
         self.root.title('MindQuare')
         self.root.resizable(width = False, height = False)
         self.imagenFondo = PhotoImage(file = "Resources\Images\GameLogoR.png")
@@ -60,6 +61,7 @@ class V_inicio():
 #------------Ranking--------------------
 class Users:
     db_name = 'Resources\\Data_base\\Users.db'
+    def __Cancel(self, event=None): self.Volver()
     def __init__(self):
         '''
         Clase que contiene la informacion se los puntajes de los usuarios registrados en la base de datos
@@ -73,27 +75,55 @@ class Users:
         self.sh = self.wind.winfo_screenheight()
         self.x = self.sw // 3
         self.y = self.sh // 4
-        self.wind.geometry(f"550x250+{self.x}+{self.y}")
+        self.wind.geometry(f"550x245+{self.x}+{self.y}")
+        self.wind.iconbitmap("Resources\Images\Logo_Mindquare.ico")# Se carga el icono
+        self.wind.protocol('WM_DELETE_WINDOW', self.__Cancel )# Función para modificar la accion al presionar la (x) de cerrar ventana.
+
+        self.style = ttk.Style() # Crear variable ttk para manejar estilos de la tabla
+        self.style.theme_use("clam") # Se escoje un tema para el diseño de la tabla.
+        self.style.configure("Treeview", # Configurar las casillas de la tabla
+                    background = "#8579F5",
+                    foreground = "black",
+                    font = ('Impact', 11),
+                    rowheight = 26,
+                    fieldbackground = "#8579F5"
+        )
+        self.style.configure("Treeview.Heading", # Configurar las cabeceras de la tabla.
+                    background = "#8623f7",
+                    foreground = "white",
+                    font = ('Impact',11),
+                    rowheight = 25,
+                    fieldbackground = "#8623f7"
+        )
+        # Con este map se reconocen los eventos y se realiza una modificación en el estilo
+        self.style.map("Treeview", 
+                    background=[('selected', 'green')], # Al seleccionar una fila tomará el color rojo
+        )
+        self.style.map("Treeview.Heading",
+                    background=[('active', 'red')], # Al ubicar el cursor sobre una cabecera tomará el color rojo.
+        )
 
         # Tabla
         self.tree = ttk.Treeview(height = 10)
-        self.tree['columns']=('#1', "#2", "#3", "#4")
-        self.tree.grid(row = 9, column = 0, columnspan = 2)
-        self.tree.column("#0", width=130, minwidth=100)
-        self.tree.column("#1", width=130, minwidth=100)
-        self.tree.column("#2", width=100, minwidth=100)
-        self.tree.column("#3", width=100, minwidth=100)
-        self.tree.column("#4", width=100, minwidth=100)
+        self.tree['columns']=('#1', "#2", "#3", "#4") # Se definen las columnas (no se coloca la #0 porque está por defecto)
+        self.tree.grid(row = 9, column = 0, columnspan = 2) # Se ubica la tabla en la ventana
+        # Caracteristicas fisicas de las columnas
+        self.tree.column("#0", width=100, minwidth=100)
+        self.tree.column("#1", width=100, minwidth=100)
+        self.tree.column("#2", width=195, minwidth=190)
+        self.tree.column("#3", width=100, minwidth=20)
+        self.tree.column("#4", width=50, minwidth=30)
+        # Nombre y justificacion de las cabeceras.
         self.tree.heading('#0', text = 'Nickname', anchor = CENTER)
-        self.tree.heading('#1', text = 'Nombre', anchor = CENTER)
+        self.tree.heading('#1', text = 'Name', anchor = CENTER)
         self.tree.heading('#2', text = 'Email', anchor = CENTER)
         self.tree.heading('#3', text = 'Victories', anchor = CENTER)
         self.tree.heading('#4', text = 'Score', anchor = CENTER)
 
         # Boton de volver
-        ttk.Button(text = 'Volver', command = self.Volver).grid(row = 10, column = 0, sticky = W + E)
+        tk.Button(text = 'Volver', bg= '#8623f7', activebackground = '#FF0000', font = ('Copperplate Gothic Bold', 11), command = self.Volver).place(x=250, y=220)
 
-        self.sourceClients()
+        self.sourceUsers() # Limpiar la tabla y rellenarla con lo obtenido en la base de datos.
         self.wind.mainloop()
 
     def run_query(self, query, parameters = ()): #Funcion para consultar base de datos
@@ -104,13 +134,13 @@ class Users:
         :return: sqlite3.Cursor result
         """
         with sqlite3.connect(self.db_name) as conn:
-            cursor = conn.cursor()
-            result = cursor.execute(query, parameters)
-            conn.commit()
+            cursor = conn.cursor() # Se crea un cursor para la base de datos
+            result = cursor.execute(query, parameters) # Se ejecutan las instrucciones.
+            conn.commit() # Se hace un commit de la ejecucion a la base de datos.
         
         return result
     
-    def sourceClients(self):
+    def sourceUsers(self):
         '''
         Metodo para limpiar la tabla,buscar los datos y rellenar la tabla
         '''
@@ -136,6 +166,7 @@ class Users:
 
 #--------------------Instrucciones---------------
 class Instrucciones:
+    def __Cancel(self, event=None): self.Volver()
     def __init__(self):
         """
         Clase que inicaliza y crea la ventana de Instrucciones.
@@ -151,6 +182,7 @@ class Instrucciones:
         self.root.geometry(f"660x425+{self.x}+{self.y}")#root.geometry(anchoxalto+padx+pady)
         self.root.resizable(width=False, height=False)
         self.root.config(bg="white")
+        self.root.protocol('WM_DELETE_WINDOW', self.__Cancel )
 
         self.imagenPrincipal = tk.PhotoImage(file="Resources\Images\FondoR2.png")
         self.Canva = tk.Canvas(self.root, width=720, height=405, bg='blue')
@@ -244,7 +276,7 @@ class Instrucciones:
         self.Entr.bind("<Leave>", lambda event: self.button_hover_leave("<leave>"))
 
         #boton para volver a la ventana principal
-        self.volver = tk.Button(self.root, text="VOLVER",bg='#43046D', fg='#FFFFFF',font=('Impact',12), activebackground='red', command=self.volver)
+        self.volver = tk.Button(self.root, text="VOLVER",bg='#43046D', fg='#FFFFFF',font=('Impact',12), activebackground='red', command=self.Volver)
         self.volver.pack(side=BOTTOM)
 
         self.root.mainloop()
@@ -292,7 +324,7 @@ class Instrucciones:
             y+=1
         archivo.close()
 
-    def volver(self):
+    def Volver(self):
         '''
         Funcion para destruir la ventana actual y volver a la ventana de inicio
         '''

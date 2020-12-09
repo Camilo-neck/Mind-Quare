@@ -143,7 +143,7 @@ class ventanaRegistro:
         -Menor a 8 caracteres.
         -Que contenga un espacio.
     """
-    def __Cancel(event=None): pass
+    def __Cancel(self, event=None): self.volver()
     def __init__(self):
         # ---------------INTERFAZ REGISTRO---------------
         self.registro = tk.Tk()

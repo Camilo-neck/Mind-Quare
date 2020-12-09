@@ -17,12 +17,12 @@ class Ventana(Tk):
         :param int temp: Es el tiempo que durará la ventana abierta.
         """
         self.root = Tk()
-        self.root.title('PREGUNTA')
         self.sw = self.root.winfo_screenwidth()
         self.sh = self.root.winfo_screenheight()
         self.x = self.sw // 3
         self.y = 100
         self.root.geometry(f"550x355+{self.x}+{self.y}")
+        self.root.iconbitmap("Resources\Images\Logo_Mindquare.ico")
         self.root.config(bg = 'black')
         self.root.resizable(width = False, height = False)
         self.root.protocol('WM_DELETE_WINDOW', self.__Cancel ) #Evitar que se pueda cerrar la ventana con el boton (x)
@@ -43,6 +43,7 @@ class Ventana(Tk):
         respuestas.close()
 
         self.category() #Extraer las preguntas por categoria desde los archivos
+        self.root.title('PREGUNTA DE '+ self.cat_name.upper())# Establecer titulo de la ventana según la categoría obtenida.
 
         self.data = self.preguntas.readlines()[((self.n_r*5)):(self.n_r*5)+5] #Leer la pregunta indicada en base a su indice (n_r)
 

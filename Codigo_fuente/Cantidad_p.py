@@ -7,12 +7,13 @@ class Seleccion():
 		Clase que involucra la ventana para escojer la cantidad de jugadores y escojer si se desea actualizar o no las preguntas desde el sitio web
 		'''		
 		self.root = Tk()
-		self.root.title('Seleccion de jugadores')
+		self.root.title('MindQuare')
 		self.sw = self.root.winfo_screenwidth()
 		self.sh = self.root.winfo_screenheight()
 		self.x = self.sw // 3
 		self.y = self.sh // 4
 		self.root.geometry(f"550x405+{self.x}+{self.y}")
+		self.root.iconbitmap("Resources\Images\Logo_Mindquare.ico")
 		self.root.resizable(width=False, height=False)
 		self.root.config(bg="purple")
 
@@ -92,7 +93,10 @@ class Seleccion():
 
 def main():
 	Ventana = Seleccion()
-	return Ventana.cant,Ventana.descargar.get()
+	try:
+		return Ventana.cant,Ventana.descargar.get()
+	except AttributeError:
+		return -1, Ventana.descargar.get()
 
 if __name__ == "__main__":
 	main()
