@@ -1,11 +1,11 @@
 """
 MIND QUARE - Juego interactivo de preguntas con tablero.
-Tablero del juego programado con pygame(Edicion Beta).
+Tablero y logica del juego programada con pygame.
 Desarrollado por:
     -Camilo Andres Cuello
     -Juan Andres Orozco
     -Santiago Ospina
-Universidad Nacional de Colombia.
+Universidad Nacional de Colombia - Facultad de Ingenieria.
 """
 from random import randint, shuffle  # Se importa la funcion randint de random
 import getQuestions

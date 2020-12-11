@@ -1,3 +1,12 @@
+"""
+MIND QUARE - Juego interactivo de preguntas con tablero.
+Algoritmo que extrae las preguntas desde la web y las escribe en archivos .txt.
+Desarrollado por:
+    -Camilo Andres Cuello
+    -Juan Andres Orozco
+    -Santiago Ospina
+Universidad Nacional de Colombia - Facultad de Ingenieria.
+"""
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import os

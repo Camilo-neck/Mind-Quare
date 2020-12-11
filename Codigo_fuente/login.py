@@ -1,6 +1,6 @@
 """
 MIND QUARE - Juego interactivo de preguntas con tablero.
-Registro y acceso al juego programado con Tkinter(Edicion Beta).
+Registro y acceso de usuarios al juego, programado con Tkinter.
 Desarrollado por:
     -Camilo Andres Cuello
     -Juan Andres Orozco

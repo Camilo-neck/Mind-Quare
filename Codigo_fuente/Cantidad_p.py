@@ -1,3 +1,13 @@
+"""
+MIND QUARE - Juego interactivo de preguntas con tablero.
+Ventana que permite seleccionar la cantidad de jugadores de la partida y actualizar las preguntas
+desde la web.
+Desarrollado por:
+    -Camilo Andres Cuello
+    -Juan Andres Orozco
+    -Santiago Ospina
+Universidad Nacional de Colombia - Facultad de Ingenieria.
+"""
 from tkinter import *
 import tkinter as tk
 
