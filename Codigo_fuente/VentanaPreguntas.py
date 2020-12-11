@@ -90,8 +90,10 @@ class Ventana(Tk):
                 rta = 'B'
             elif self.varOpcion.get() == 3:
                 rta = 'C'
-            else:
+            elif self.varOpcion.get() == 4:
                 rta = 'D'
+            else:
+                rta = ' '
 
             if rta == self.R[self.n_r]: #comparar la respuesta con el archivo de respuestas en ese indice
                 self.validar.config(text = 'CORRECTO!', fg = 'Darkgreen', font = ('Rockwell',15))

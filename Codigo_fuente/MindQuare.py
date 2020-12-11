@@ -254,7 +254,7 @@ class Game(object):
         self.fuente2 = pygame.font.SysFont('Impact', 15)
         self.fuente3 = pygame.font.SysFont('Impact', 12)
         # Se coloca el titulo de la ventana
-        pygame.display.set_caption("MinQuare")
+        pygame.display.set_caption("MindQuare")
         # Se carga y coloca el icono
         icon = pygame.image.load('Resources/Images/Logo_Mindquare.ico')
         pygame.display.set_icon(icon)
