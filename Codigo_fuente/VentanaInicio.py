@@ -39,7 +39,7 @@ class V_inicio():
         self.play = Button(text = 'Jugar', bg = '#8623f7', activebackground = 'Lightgreen', font = ('Copperplate Gothic Bold', 11), command = self.jugar)
         self.play.place(x = 223, y = 250)
         self.info = Button(text = 'Instrucciones', bg = '#8623f7', activebackground = 'Yellow', font = ('Copperplate Gothic Bold', 11), command = self.instrucciones)
-        self.Ranking = Button(text = 'Laderboard', bg = '#8623f7', activebackground = 'Yellow', font = ('Copperplate Gothic Bold', 11), command = self.Laderboard)
+        self.Ranking = Button(text = 'Leaderboard', bg = '#8623f7', activebackground = 'Yellow', font = ('Copperplate Gothic Bold', 11), command = self.Laderboard)
         self.info.place(x = 190, y = 290)
         self.Ranking.place(x = 200, y = 330)
         self.salir = Button(text = 'Salir', bg = '#8623f7', activebackground = 'Red', font = ('Copperplate Gothic Bold', 11), command= self.root.destroy)
