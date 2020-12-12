@@ -7,7 +7,7 @@
     -Juan Andres Orozco
     -Santiago Ospina
 
-Universidad Nacional de Colombia.
+Universidad Nacional de Colombia - Facultad de Ingenieria 2020-2.
 
 ### Objetivo 
 Videojuego en base a el lenguaje de programación Python :snake:, su temática es la de un juego de preguntas divididas por categorías donde los participantes deberán ir avanzando por un tablero lanzando los dados, dependiendo de la casilla en la que el jugador se sitúe habrá un efecto sobre la partida del mismo. 
