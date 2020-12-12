@@ -19,7 +19,7 @@ import sqlite3
 class V_inicio():
     def __init__(self):
         '''
-        Ventana principal que contiene los botones de 'JUGAR' , 'INSTRUCCIONES' , 'LADERBOARD' y 'Salir'
+        Ventana principal que contiene los botones de 'JUGAR' , 'INSTRUCCIONES' , 'LEADERBOARD' y 'Salir'
         '''
         self.root = Tk()
         self.sw = self.root.winfo_screenwidth()
@@ -39,7 +39,7 @@ class V_inicio():
         self.play = Button(text = 'Jugar', bg = '#8623f7', activebackground = 'Lightgreen', font = ('Copperplate Gothic Bold', 11), command = self.jugar)
         self.play.place(x = 223, y = 250)
         self.info = Button(text = 'Instrucciones', bg = '#8623f7', activebackground = 'Yellow', font = ('Copperplate Gothic Bold', 11), command = self.instrucciones)
-        self.Ranking = Button(text = 'Laderboard', bg = '#8623f7', activebackground = 'Yellow', font = ('Copperplate Gothic Bold', 11), command = self.Laderboard)
+        self.Ranking = Button(text = 'Leaderboard', bg = '#8623f7', activebackground = 'Yellow', font = ('Copperplate Gothic Bold', 11), command = self.leaderboard)
         self.info.place(x = 190, y = 290)
         self.Ranking.place(x = 200, y = 330)
         self.salir = Button(text = 'Salir', bg = '#8623f7', activebackground = 'Red', font = ('Copperplate Gothic Bold', 11), command= self.root.destroy)
@@ -60,7 +60,7 @@ class V_inicio():
         '''
         self.root.destroy()
         Instrucciones()
-    def Laderboard(self):
+    def leaderboard(self):
         '''
         Cerrar la ventana y abrir la ventana de Users
         '''
@@ -78,7 +78,7 @@ class Users:
 
         # Abrir 
         self.wind = Tk()
-        self.wind.title('Laderboard')
+        self.wind.title('leaderboard')
         self.wind.config(bg = '#000')
         self.sw = self.wind.winfo_screenwidth()
         self.sh = self.wind.winfo_screenheight()
