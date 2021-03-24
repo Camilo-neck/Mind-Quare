@@ -283,8 +283,9 @@ class Game(object):
             self.adjust_player_on_square(i)
 
         # Se crean los dados
-        self.DADO1 = Dices('Resources\Images\Dice1.png', 1)
-        self.DADO2 = Dices('Resources\Images\Dice1.png', 1)
+        dados_dir = 'Resources\Images\Dice1.png'
+        self.DADO1 = Dices(dados_dir, 1)
+        self.DADO2 = Dices(dados_dir, 1)
         self.dados = [self.DADO1, self.DADO2]
 
         self.tipo_casilla = []
