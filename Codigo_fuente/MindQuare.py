@@ -21,7 +21,6 @@ import sqlite3  # Libreria para manejar la base de datos
 from sys import exit  # Librería del sistema para terminar juego
 from tkinter import messagebox # Importar mensaje del sistema desde tkinter
 
-
 # Definir Colores en RGB
 BLACK = [0, 0, 0]
 WHITE = [255, 255, 255]
@@ -39,7 +38,6 @@ CYAN = [0, 255, 255]
 screen_size = [900, 600]  # ancho y largo de la ventana
 
 # Se crea la clase de las casillas como objetos, generando metodos para diferenciar sus funciones.
-
 
 class Squares():
     """
